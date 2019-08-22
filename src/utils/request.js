@@ -5,15 +5,15 @@ import { getToken } from '@/utils/auth'
 
 // 创建axios实例
 const service = axios.create({
-  baseURL: process.env.BASE_API, // api的base_url
+  baseURL: process.env.BASE_API, // url = base url + request url
+  headers: { 'Content-Type': 'application/json;charset=utf-8' },
   timeout: 15000 // 请求超时时间
 })
-
 // request拦截器
 service.interceptors.request.use(config => {
-  if (store.getters.token) {
-    //config.headers['Authorization'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
-  }
+  if (!config.params || !config.params.format)
+    config.params = { ...config.params, format: 'json' };
+  // config.data.token = getToken();
   return config
 }, error => {
   // Do something with request error
@@ -24,19 +24,15 @@ service.interceptors.request.use(config => {
 // respone拦截器
 service.interceptors.response.use(
   response => {
-  /**
-  * code为非200是抛错 可结合自己业务进行修改
-  */
-    const res = response.data;   
-    if (res.result) {
-      Message({
-        message: res.msg,
-        type: 'error',
-        duration: 3 * 1000
-      })
+    /**
+    * code为非200是抛错 可结合自己业务进行修改
+    */
+    const res = response.data
+    if (res.errcode) {
+      Toast.fail(res.msg);
 
       // 401:未登录;
-      if (res.errcode === 401||res.errcode === 403) {
+      if (res.errcode === 401 || res.errcode === 403) {
         MessageBox.confirm('你已被登出，可以取消继续留在该页面，或者重新登录', '确定登出', {
           confirmButtonText: '重新登录',
           cancelButtonText: '取消',
@@ -47,9 +43,9 @@ service.interceptors.response.use(
           })
         })
       }
-      return Promise.reject('error')
+      return Promise.reject(new Error(res.msg || 'Error'))
     } else {
-      return response.data
+      return res
     }
   },
   error => {
