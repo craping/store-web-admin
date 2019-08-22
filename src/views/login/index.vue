@@ -21,6 +21,7 @@
           </span>
           </el-input>
         </el-form-item>
+
         <el-form-item prop="password">
           <el-input name="password"
                     :type="pwdType"
@@ -36,6 +37,23 @@
           </span>
           </el-input>
         </el-form-item>
+
+        <el-form-item prop="role">
+          <el-select name="role" style="width:318px;"
+            v-model="loginForm.role" placeholder="请选择角色">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          <span slot="prefix">
+            <svg-icon icon-class="role" class="color-main"></svg-icon>
+          </span>
+          </el-select>
+        </el-form-item>
+
+
         <el-form-item style="margin-bottom: 60px">
           <el-button style="width: 100%" type="primary" :loading="loading" @click.native.prevent="handleLogin">
             登录
@@ -44,22 +62,12 @@
       </el-form>
     </el-card>
     <img :src="login_center_bg" class="login-center-layout">
-    <el-dialog
-      title="特别赞助"
-      :visible.sync="dialogVisible"
-      width="30%">
-      <span>mall项目已由CODING特别赞助，点击去支持，页面加载完后点击<span class="color-main font-medium">免费体验</span>按钮即可完成支持，谢谢！</span>
-      <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogCancel">残忍拒绝</el-button>
-    <el-button type="primary" @click="dialogConfirm">去支持</el-button>
-  </span>
-    </el-dialog>
   </div>
 </template>
 
 <script>
   import {isvalidUsername} from '@/utils/validate';
-  import {setSupport,getSupport,SupportUrl} from '@/utils/support';
+  import {setSupport,SupportUrl} from '@/utils/support';
   import login_center_bg from '@/assets/images/login_center_bg.png'
 
   export default {
@@ -79,19 +87,34 @@
           callback()
         }
       };
+      const validateRole = (rule, value, callback) => {
+        if (value.length < 1) {
+          callback(new Error('请选择登录角色'))
+        } else {
+          callback()
+        }
+      }; 
       return {
         loginForm: {
           username: 'admin',
           password: '123456',
+          role: ''
         },
         loginRules: {
           username: [{required: true, trigger: 'blur', validator: validateUsername}],
-          password: [{required: true, trigger: 'blur', validator: validatePass}]
+          password: [{required: true, trigger: 'blur', validator: validatePass}],
+          role: [{required: true, trigger: 'change', validator: validateRole}]
         },
+        options: [{
+          value: '1',
+          label: '超级管理员'
+        }, {
+          value: '2',
+          label: '供应商'
+        }],
         loading: false,
         pwdType: 'password',
-        login_center_bg,
-        dialogVisible:false
+        login_center_bg
       }
     },
     methods: {
@@ -105,11 +128,6 @@
       handleLogin() {
         this.$refs.loginForm.validate(valid => {
           if (valid) {
-            let isSupport = getSupport();
-            if(isSupport===undefined||isSupport==null){
-              this.dialogVisible =true;
-              return;
-            }
             this.loading = true;
             this.$store.dispatch('Login', this.loginForm).then(() => {
               this.loading = false;
@@ -123,15 +141,6 @@
           }
         })
       },
-      dialogConfirm(){
-        this.dialogVisible =false;
-        setSupport(true);
-        window.location.href=SupportUrl;
-      },
-      dialogCancel(){
-        this.dialogVisible = false;
-        setSupport(false);
-      }
     }
   }
 </script>

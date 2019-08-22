@@ -194,6 +194,7 @@ export const constantRouterMap = [
       }
     ]
   },
+  
   {
     path:'/sms',
     component: Layout,
@@ -298,6 +299,27 @@ export const constantRouterMap = [
         component: () => import('@/views/sms/advertise/update'),
         meta: {title: '编辑广告'},
         hidden:true
+      }
+    ]
+  },
+  {
+    path:'/sup',
+    component: Layout,
+    redirect: '/sup/sups',
+    name: 'sup',
+    meta: {title: '供应商', icon: 'courier'},
+    children: [
+      {
+        path: 'sups',
+        name: 'sups',
+        component: () => import('@/views/sup/sups'),
+        meta: {title: '供应商列表', icon: 'teamwork'}
+      },
+      {
+        path: 'addSup',
+        name: 'addSup',
+        component: () => import('@/views/sup/add'),
+        meta: {title: '添加供应商', icon: 'add-user'}
       }
     ]
   },

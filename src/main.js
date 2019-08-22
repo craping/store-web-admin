@@ -13,6 +13,8 @@ import App from './App'
 import router from './router'
 import store from './store'
 
+import http from '@/utils/axios'
+
 import '@/icons' // icon
 import '@/permission' // permission control
 
@@ -20,6 +22,7 @@ Vue.use(ElementUI, { locale })
 Vue.use(VCharts)
 
 Vue.config.productionTip = false
+Vue.prototype.$http = http
 
 new Vue({
   el: '#app',
