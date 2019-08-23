@@ -1,16 +1,19 @@
 import request from '@/utils/request'
 export function fetchList(pid,params) {
   return request({
-    url:'/sku/'+pid,
-    method:'get',
-    params:params
+    url:'sku/list',
+    method:'post',
+    data:{...{pid:pid}, ...params}
   })
 }
 
-export function update(pid,data) {
+export function update(pid,skuStockList) {
   return request({
-    url:'/sku/update/'+pid,
+    url:'sku/update',
     method:'post',
-    data:data
+    data:{
+      pid:pid,
+      skuStockList:skuStockList
+    }
   })
 }

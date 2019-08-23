@@ -2,8 +2,8 @@ import request from '@/utils/request'
 export function fetchList(params) {
   return request({
     url:'/brand/list',
-    method:'get',
-    params:params
+    method:'post',
+    data:params
   })
 }
 export function createBrand(data) {
@@ -31,23 +31,25 @@ export function updateFactoryStatus(data) {
 
 export function deleteBrand(id) {
   return request({
-    url:'/brand/delete/'+id,
-    method:'get',
+    url:'/brand/delete',
+    method:'post',
+    data:{id:id}
   })
 }
 
 export function getBrand(id) {
   return request({
-    url:'/brand/'+id,
-    method:'get',
+    url:'/brand/info',
+    method:'post',
+    data:{id:id}
   })
 }
 
 export function updateBrand(id,data) {
   return request({
-    url:'/brand/update/'+id,
+    url:'/brand/update',
     method:'post',
-    data:data
+    data:{...{id:id}, ...data}
   })
 }
 

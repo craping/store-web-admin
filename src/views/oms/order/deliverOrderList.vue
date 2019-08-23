@@ -73,7 +73,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          deliveryOrder(this.list).then(response=>{
+          deliveryOrder(this.list).then(data=>{
             this.$router.back();
             this.$message({
               type: 'success',

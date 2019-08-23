@@ -106,8 +106,8 @@
     },
     created() {
       if(this.isEdit){
-        getProductAttr(this.$route.query.id).then(response => {
-          this.productAttr = response.data;
+        getProductAttr(this.$route.query.id).then(data => {
+          this.productAttr = data.info;
           this.inputListFormat = this.productAttr.inputList.replace(/,/g,'\n');
         });
       }else{
@@ -124,8 +124,8 @@
     methods: {
       getCateList() {
         let listQuery = {pageNum: 1, pageSize: 100};
-        fetchList(listQuery).then(response => {
-          this.productAttrCateList = response.data.list;
+        fetchList(listQuery).then(data => {
+          this.productAttrCateList = data.info;
         });
       },
       resetProductAttr() {
@@ -142,7 +142,7 @@
               type: 'warning'
             }).then(() => {
               if(this.isEdit){
-                updateProductAttr(this.$route.query.id,this.productAttr).then(response=>{
+                updateProductAttr(this.$route.query.id,this.productAttr).then(data=>{
                   this.$message({
                     message: '修改成功',
                     type: 'success',
@@ -151,7 +151,7 @@
                   this.$router.back();
                 });
               }else{
-                createProductAttr(this.productAttr).then(response=>{
+                createProductAttr(this.productAttr).then(data=>{
                   this.$message({
                     message: '提交成功',
                     type: 'success',

@@ -214,7 +214,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          updateStatus(row.id, {status: row.status}).then(response => {
+          updateStatus(row.id, {status: row.status}).then(data => {
             this.$message({
               type: 'success',
               message: '修改成功!'
@@ -234,7 +234,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          deleteFlash(row.id).then(response => {
+          deleteFlash(row.id).then(data => {
             this.$message({
               type: 'success',
               message: '删除成功!'
@@ -255,7 +255,7 @@
           type: 'warning'
         }).then(() => {
           if (this.isEdit) {
-            updateFlash(this.flashPromotion.id,this.flashPromotion).then(response => {
+            updateFlash(this.flashPromotion.id,this.flashPromotion).then(data => {
               this.$message({
                 message: '修改成功！',
                 type: 'success'
@@ -264,7 +264,7 @@
               this.getList();
             })
           } else {
-            createFlash(this.flashPromotion).then(response => {
+            createFlash(this.flashPromotion).then(data => {
               this.$message({
                 message: '添加成功！',
                 type: 'success'
@@ -280,10 +280,10 @@
       },
       getList() {
         this.listLoading = true;
-        fetchList(this.listQuery).then(response => {
+        fetchList(this.listQuery).then(data => {
           this.listLoading = false;
-          this.list = response.data.list;
-          this.total = response.data.total;
+          this.list = data.info;
+          this.total = data.totalnum;
         });
       }
     }

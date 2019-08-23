@@ -384,8 +384,8 @@
     },
     created() {
       this.id = this.list = this.$route.query.id;
-      getOrderDetail(this.id).then(response => {
-        this.order = response.data;
+      getOrderDetail(this.id).then(data => {
+        this.order = data.info;
       });
     },
     filters: {
@@ -532,14 +532,14 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          updateReceiverInfo(this.receiverInfo).then(response=>{
+          updateReceiverInfo(this.receiverInfo).then(data=>{
             this.receiverDialogVisible=false;
             this.$message({
               type: 'success',
               message: '修改成功!'
             });
-            getOrderDetail(this.id).then(response => {
-              this.order = response.data;
+            getOrderDetail(this.id).then(data => {
+              this.order = data.info;
             });
           });
         });
@@ -557,14 +557,14 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          updateMoneyInfo(this.moneyInfo).then(response=>{
+          updateMoneyInfo(this.moneyInfo).then(data=>{
             this.moneyDialogVisible=false;
             this.$message({
               type: 'success',
               message: '修改成功!'
             });
-            getOrderDetail(this.id).then(response => {
-              this.order = response.data;
+            getOrderDetail(this.id).then(data => {
+              this.order = data.info;
             });
           });
         });
@@ -601,14 +601,14 @@
             let params = new URLSearchParams();
             params.append("ids",[this.closeInfo.id]);
             params.append("note",this.closeInfo.note);
-            closeOrder(params).then(response=>{
+            closeOrder(params).then(data=>{
               this.closeDialogVisible=false;
               this.$message({
                 type: 'success',
                 message: '订单关闭成功!'
               });
-              getOrderDetail(this.id).then(response => {
-                this.order = response.data;
+              getOrderDetail(this.id).then(data => {
+                this.order = data.info;
               });
             });
         });
@@ -628,14 +628,14 @@
           params.append("id",this.markInfo.id);
           params.append("note",this.markInfo.note);
           params.append("status",this.order.status);
-          updateOrderNote(params).then(response=>{
+          updateOrderNote(params).then(data=>{
             this.markOrderDialogVisible=false;
             this.$message({
               type: 'success',
               message: '订单备注成功!'
             });
-            getOrderDetail(this.id).then(response => {
-              this.order = response.data;
+            getOrderDetail(this.id).then(data => {
+              this.order = data.info;
             });
           });
         });
@@ -648,7 +648,7 @@
         }).then(() => {
           let params = new URLSearchParams();
           params.append("ids",[this.id]);
-          deleteOrder(params).then(response=>{
+          deleteOrder(params).then(data=>{
             this.$message({
               message: '删除成功！',
               type: 'success',

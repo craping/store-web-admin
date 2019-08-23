@@ -126,7 +126,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          updateStatus(row.id, {status: row.status}).then(response => {
+          updateStatus(row.id, {status: row.status}).then(data => {
             this.$message({
               type: 'success',
               message: '修改成功!'
@@ -153,7 +153,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          deleteSession(row.id).then(response => {
+          deleteSession(row.id).then(data => {
             this.$message({
               type: 'success',
               message: '删除成功!'
@@ -169,7 +169,7 @@
           type: 'warning'
         }).then(() => {
           if (this.isEdit) {
-            updateSession(this.flashSession.id,this.flashSession).then(response => {
+            updateSession(this.flashSession.id,this.flashSession).then(data => {
               this.$message({
                 message: '修改成功！',
                 type: 'success'
@@ -178,7 +178,7 @@
               this.getList();
             })
           } else {
-            createSession(this.flashSession).then(response => {
+            createSession(this.flashSession).then(data => {
               this.$message({
                 message: '添加成功！',
                 type: 'success'
@@ -191,9 +191,9 @@
       },
       getList() {
         this.listLoading = true;
-        fetchList({}).then(response => {
+        fetchList({}).then(data => {
           this.listLoading = false;
-          this.list = response.data;
+          this.list = data.info;
         });
       }
     }

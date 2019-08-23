@@ -83,8 +83,8 @@
     },
     created() {
       if (this.isEdit) {
-        getBrand(this.$route.query.id).then(response => {
-          this.brand = response.data;
+        getBrand(this.$route.query.id).then(data => {
+          this.brand = data.info;
         });
       }else{
         this.brand = Object.assign({},defaultBrand);
@@ -100,7 +100,7 @@
               type: 'warning'
             }).then(() => {
               if (this.isEdit) {
-                updateBrand(this.$route.query.id, this.brand).then(response => {
+                updateBrand(this.$route.query.id, this.brand).then(data => {
                   this.$refs[formName].resetFields();
                   this.$message({
                     message: '修改成功',
@@ -110,7 +110,7 @@
                   this.$router.back();
                 });
               } else {
-                createBrand(this.brand).then(response => {
+                createBrand(this.brand).then(data => {
                   this.$refs[formName].resetFields();
                   this.brand = Object.assign({},defaultBrand);
                   this.$message({

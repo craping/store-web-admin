@@ -222,7 +222,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          updateStatus(row.id,{status:row.status}).then(response=>{
+          updateStatus(row.id,{status:row.status}).then(data=>{
             this.getList();
             this.$message({
               type: 'success',
@@ -272,10 +272,10 @@
       },
       getList() {
         this.listLoading = true;
-        fetchList(this.listQuery).then(response => {
+        fetchList(this.listQuery).then(data => {
           this.listLoading = false;
-          this.list = response.data.list;
-          this.total = response.data.total;
+          this.list = data.info;
+          this.total = data.totalnum;
         })
       },
       deleteHomeAdvertise(ids){
@@ -286,7 +286,7 @@
         }).then(() => {
           let params=new URLSearchParams();
           params.append("ids",ids);
-          deleteHomeAdvertise(params).then(response=>{
+          deleteHomeAdvertise(params).then(data=>{
             this.getList();
             this.$message({
               type: 'success',

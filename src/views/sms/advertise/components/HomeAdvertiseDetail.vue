@@ -120,8 +120,8 @@
     },
     created(){
       if (this.isEdit) {
-        getHomeAdvertise(this.$route.query.id).then(response => {
-          this.homeAdvertise = response.data;
+        getHomeAdvertise(this.$route.query.id).then(data => {
+          this.homeAdvertise = data.info;
         });
       }else{
         this.homeAdvertise = Object.assign({},defaultHomeAdvertise);
@@ -137,7 +137,7 @@
               type: 'warning'
             }).then(() => {
               if (this.isEdit) {
-                updateHomeAdvertise(this.$route.query.id, this.homeAdvertise).then(response => {
+                updateHomeAdvertise(this.$route.query.id, this.homeAdvertise).then(data => {
                   this.$refs[formName].resetFields();
                   this.$message({
                     message: '修改成功',
@@ -147,7 +147,7 @@
                   this.$router.back();
                 });
               } else {
-                createHomeAdvertise(this.homeAdvertise).then(response => {
+                createHomeAdvertise(this.homeAdvertise).then(data => {
                   this.$refs[formName].resetFields();
                   this.homeAdvertise = Object.assign({},defaultHomeAdvertise);
                   this.$message({

@@ -224,7 +224,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          deleteCoupon(row.id).then(response=>{
+          deleteCoupon(row.id).then(data=>{
             this.$message({
               type: 'success',
               message: '删除成功!'
@@ -235,10 +235,10 @@
       },
       getList(){
         this.listLoading=true;
-        fetchList(this.listQuery).then(response=>{
+        fetchList(this.listQuery).then(data=>{
           this.listLoading = false;
-          this.list = response.data.list;
-          this.total = response.data.total;
+          this.list = data.info;
+          this.total = data.totalnum;
         });
       }
     }

@@ -133,8 +133,8 @@
         this.hasEditCreated=true;
       },
       getProductCateList() {
-        fetchListWithChildren().then(response => {
-          let list = response.data;
+        fetchListWithChildren().then(data => {
+          let list = data.info;
           this.productCateOptions = [];
           for (let i = 0; i < list.length; i++) {
             let children = [];
@@ -148,9 +148,9 @@
         });
       },
       getBrandList() {
-        fetchBrandList({pageNum: 1, pageSize: 100}).then(response => {
+        fetchBrandList({pageNum: 1, pageSize: 100}).then(data => {
           this.brandOptions = [];
-          let brandList = response.data.list;
+          let brandList = data.info;
           for (let i = 0; i < brandList.length; i++) {
             this.brandOptions.push({label: brandList[i].name, value: brandList[i].id});
           }
@@ -159,7 +159,7 @@
       getCateNameById(id){
         let name=null;
         for(let i=0;i<this.productCateOptions.length;i++){
-          for(let j=0;i<this.productCateOptions[i].children.length;j++){
+          for(let j=0;j<this.productCateOptions[i].children.length;j++){
             if(this.productCateOptions[i].children[j].value===id){
               name=this.productCateOptions[i].children[j].label;
               return name;

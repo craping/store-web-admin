@@ -66,9 +66,9 @@
       },
       getList() {
         this.listLoading = true;
-        fetchSelectList({flashPromotionId:this.$route.query.flashPromotionId}).then(response => {
+        fetchSelectList({flashPromotionId:this.$route.query.flashPromotionId}).then(data => {
           this.listLoading = false;
-          this.list = response.data;
+          this.list = data.info;
         });
       }
     }

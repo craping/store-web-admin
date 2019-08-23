@@ -409,17 +409,17 @@
         });
       },
       getBrandList() {
-        fetchBrandList({pageNum: 1, pageSize: 100}).then(response => {
+        fetchBrandList({pageNum: 1, pageSize: 100}).then(data => {
           this.brandOptions = [];
-          let brandList = response.data.list;
+          let brandList = data.info;
           for (let i = 0; i < brandList.length; i++) {
             this.brandOptions.push({label: brandList[i].name, value: brandList[i].id});
           }
         });
       },
       getProductCateList() {
-        fetchListWithChildren().then(response => {
-          let list = response.data;
+        fetchListWithChildren().then(data => {
+          let list = data.info;
           this.productCateOptions = [];
           for (let i = 0; i < list.length; i++) {
             let children = [];
@@ -438,16 +438,16 @@
         this.editSkuInfo.productSn=row.productSn;
         this.editSkuInfo.productAttributeCategoryId = row.productAttributeCategoryId;
         this.editSkuInfo.keyword=null;
-        fetchSkuStockList(row.id,{keyword:this.editSkuInfo.keyword}).then(response=>{
-          this.editSkuInfo.stockList=response.data;
+        fetchSkuStockList(row.id,{keyword:this.editSkuInfo.keyword}).then(data=>{
+          this.editSkuInfo.stockList=data.info;
         });
-        fetchProductAttrList(row.productAttributeCategoryId,{type:0}).then(response=>{
-          this.editSkuInfo.productAttr=response.data.list;
+        fetchProductAttrList(row.productAttributeCategoryId,{type:0}).then(data=>{
+          this.editSkuInfo.productAttr=data.info;
         });
       },
       handleSearchEditSku(){
-        fetchSkuStockList(this.editSkuInfo.productId,{keyword:this.editSkuInfo.keyword}).then(response=>{
-          this.editSkuInfo.stockList=response.data;
+        fetchSkuStockList(this.editSkuInfo.productId,{keyword:this.editSkuInfo.keyword}).then(data=>{
+          this.editSkuInfo.stockList=data.info;
         });
       },
       handleEditSkuConfirm(){
@@ -464,7 +464,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(()=>{
-          updateSkuStockList(this.editSkuInfo.productId,this.editSkuInfo.stockList).then(response=>{
+          updateSkuStockList(this.editSkuInfo.productId,this.editSkuInfo.stockList).then(data=>{
             this.$message({
               message: '修改成功',
               type: 'success',
@@ -592,10 +592,11 @@
         console.log("handleShowLog",row);
       },
       updatePublishStatus(publishStatus, ids) {
-        let params = new URLSearchParams();
-        params.append('ids', ids);
-        params.append('publishStatus', publishStatus);
-        updatePublishStatus(params).then(response => {
+        let params = {
+          ids:ids,
+          publishStatus:publishStatus
+        };
+        updatePublishStatus(params).then(data => {
           this.$message({
             message: '修改成功',
             type: 'success',
@@ -604,10 +605,11 @@
         });
       },
       updateNewStatus(newStatus, ids) {
-        let params = new URLSearchParams();
-        params.append('ids', ids);
-        params.append('newStatus', newStatus);
-        updateNewStatus(params).then(response => {
+        let params = {
+          ids:ids,
+          newStatus:newStatus
+        };
+        updateNewStatus(params).then(data => {
           this.$message({
             message: '修改成功',
             type: 'success',
@@ -616,10 +618,11 @@
         });
       },
       updateRecommendStatus(recommendStatus, ids) {
-        let params = new URLSearchParams();
-        params.append('ids', ids);
-        params.append('recommendStatus', recommendStatus);
-        updateRecommendStatus(params).then(response => {
+        let params = {
+          ids:ids,
+          recommendStatus:recommendStatus
+        };
+        updateRecommendStatus(params).then(data => {
           this.$message({
             message: '修改成功',
             type: 'success',
@@ -628,10 +631,11 @@
         });
       },
       updateDeleteStatus(deleteStatus, ids) {
-        let params = new URLSearchParams();
-        params.append('ids', ids);
-        params.append('deleteStatus', deleteStatus);
-        updateDeleteStatus(params).then(response => {
+        let params = {
+          ids:ids,
+          deleteStatus:deleteStatus
+        };
+        updateDeleteStatus(params).then(data => {
           this.$message({
             message: '删除成功',
             type: 'success',

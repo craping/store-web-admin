@@ -120,10 +120,10 @@
     methods: {
       getList() {
         this.listLoading = true;
-        fetchList(this.$route.query.cid, this.listQuery).then(response => {
+        fetchList(this.$route.query.cid, this.listQuery).then(data => {
           this.listLoading = false;
-          this.list = response.data.list;
-          this.total = response.data.total;
+          this.list = data.info;
+          this.total = data.totalnum;
         });
       },
       addProductAttr() {
@@ -175,7 +175,7 @@
         }).then(() => {
           let data = new URLSearchParams();
           data.append("ids", ids);
-          deleteProductAttr(data).then(response => {
+          deleteProductAttr(data).then(data => {
             this.$message({
               message: '删除成功',
               type: 'success',

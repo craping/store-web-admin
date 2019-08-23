@@ -209,7 +209,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          deleteFlashProductRelation(row.id).then(response => {
+          deleteFlashProductRelation(row.id).then(data => {
             this.$message({
               type: 'success',
               message: '删除成功!'
@@ -255,7 +255,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          createFlashProductRelation(selectProducts).then(response=>{
+          createFlashProductRelation(selectProducts).then(data=>{
             this.selectDialogVisible=false;
             this.dialogData.multipleSelection=[];
             this.getList();
@@ -272,7 +272,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-            updateFlashProductRelation(this.flashProductRelation.id,this.flashProductRelation).then(response => {
+            updateFlashProductRelation(this.flashProductRelation.id,this.flashProductRelation).then(data => {
               this.$message({
                 message: '修改成功！',
                 type: 'success'
@@ -284,16 +284,16 @@
       },
       getList() {
         this.listLoading = true;
-        fetchList(this.listQuery).then(response => {
+        fetchList(this.listQuery).then(data => {
           this.listLoading = false;
-          this.list = response.data.list;
-          this.total = response.data.total;
+          this.list = data.info;
+          this.total = data.totalnum;
         });
       },
       getDialogList(){
-        fetchProductList(this.dialogData.listQuery).then(response=>{
-          this.dialogData.list=response.data.list;
-          this.dialogData.total=response.data.total;
+        fetchProductList(this.dialogData.listQuery).then(data=>{
+          this.dialogData.list=data.info;
+          this.dialogData.total=data.totalnum;
         })
       }
     }

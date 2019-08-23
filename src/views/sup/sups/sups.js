@@ -202,7 +202,7 @@ export default {
             let params = new URLSearchParams();
             params.append('ids', this.closeOrder.orderIds);
             params.append('note', this.closeOrder.content);
-            closeOrder(params).then(response => {
+            closeOrder(params).then(data => {
                 this.closeOrder.orderIds = [];
                 this.closeOrder.dialogVisible = false;
                 this.getList();
@@ -215,20 +215,19 @@ export default {
         },
         getList() {
             this.listLoading = true;
-            // fetchList(this.listQuery).then(response => {
+            // fetchList(this.listQuery).then(data => {
             //     this.listLoading = false;
-            //     this.list = response.data.list;
-            //     this.total = response.data.total;
+            //     this.list = data.info;
+            //     this.total = data.totalnum;
             // });
 
-            this.$http.post("sup/supList?format=json", this.listQuery).then(response => {
-                //const data = response.data;
+            this.$http.post("sup/supList?format=json", this.listQuery).then(data => {
                 this.listLoading = false;
-                this.list = response.data.info;
-                this.total = response.data.totalnum;
+                this.list = data.info;
+                this.total = data.totalnum;
                 console.log(response);
                 // if (!data.result) {
-                //     this.bettings = data.data.info;
+                //     this.bettings = data.info;
                 // } else {
                 //     Toast.fail(data.msg);
                 // }
@@ -246,7 +245,7 @@ export default {
             }).then(() => {
                 let params = new URLSearchParams();
                 params.append("ids", ids);
-                deleteOrder(params).then(response => {
+                deleteOrder(params).then(data => {
                     this.$message({
                         message: '删除成功！',
                         type: 'success',

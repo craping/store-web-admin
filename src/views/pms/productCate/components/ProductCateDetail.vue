@@ -112,16 +112,16 @@
     },
     created() {
       if (this.isEdit) {
-        getProductCate(this.$route.query.id).then(response => {
-          this.productCate = response.data;
+        getProductCate(this.$route.query.id).then(data => {
+          this.productCate = data.info;
         });
-        getProductAttrInfo(this.$route.query.id).then(response => {
-          if (response.data != null && response.data.length > 0) {
+        getProductAttrInfo(this.$route.query.id).then(data => {
+          if (data.info != null && data.info.length > 0) {
             this.filterProductAttrList = [];
-            for (let i = 0; i < response.data.length; i++) {
+            for (let i = 0; i < data.info.length; i++) {
               this.filterProductAttrList.push({
                 key: Date.now() + i,
-                value: [response.data[i].attributeCategoryId, response.data[i].attributeId]
+                value: [data.info[i].attributeCategoryId, data.info[i].attributeId]
               })
             }
           }
@@ -134,14 +134,14 @@
     },
     methods: {
       getSelectProductCateList() {
-        fetchList(0, {pageSize: 100, pageNum: 1}).then(response => {
-          this.selectProductCateList = response.data.list;
+        fetchList(0, {pageSize: 100, pageNum: 1}).then(data => {
+          this.selectProductCateList = data.info;
           this.selectProductCateList.unshift({id: 0, name: '无上级分类'});
         });
       },
       getProductAttrCateList() {
-        fetchListWithAttr().then(response => {
-          let list = response.data;
+        fetchListWithAttr().then(data => {
+          let list = data.info;
           for (let i = 0; i < list.length; i++) {
             let productAttrCate = list[i];
             let children = [];
@@ -178,7 +178,7 @@
             }).then(() => {
               if (this.isEdit) {
                 this.productCate.productAttributeIdList = this.getProductAttributeIdList();
-                updateProductCate(this.$route.query.id, this.productCate).then(response => {
+                updateProductCate(this.$route.query.id, this.productCate).then(data => {
                   this.$message({
                     message: '修改成功',
                     type: 'success',
@@ -188,7 +188,7 @@
                 });
               } else {
                 this.productCate.productAttributeIdList = this.getProductAttributeIdList();
-                createProductCate(this.productCate).then(response => {
+                createProductCate(this.productCate).then(data => {
                   this.$refs[formName].resetFields();
                   this.resetForm(formName);
                   this.$message({

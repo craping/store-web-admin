@@ -62,8 +62,8 @@ export default {
     },
     created() {
         if (this.isEdit) {
-            getCoupon(this.$route.query.id).then(response => {
-                this.coupon = response.data;
+            getCoupon(this.$route.query.id).then(data => {
+                this.coupon = data.info;
             });
         }
     },
@@ -77,7 +77,7 @@ export default {
                         type: 'warning'
                     }).then(() => {
                         if (this.isEdit) {
-                            updateCoupon(this.$route.query.id, this.coupon).then(response => {
+                            updateCoupon(this.$route.query.id, this.coupon).then(data => {
                                 this.$refs[formName].resetFields();
                                 this.$message({
                                     message: '修改成功',
@@ -87,7 +87,7 @@ export default {
                                 this.$router.back();
                             });
                         } else {
-                            //createCoupon(this.coupon).then(response => {
+                            //createCoupon(this.coupon).then(data => {
                                 //this.$refs[formName].resetFields();
                                 // this.$message({
                                 //     message: '提交成功',
@@ -97,9 +97,8 @@ export default {
                                 //this.$router.back();
                             //});
                             const data = {seq: this.seq, token: this.token}
-                            this.$http.post("sup/add?format=json", this.supplier).then(response => {
-                                const data = response.data;
-                                console.log(response.result);
+                            this.$http.post("sup/add?format=json", this.supplier).then(data => {
+                                console.log(data.result);
                                 if (!data.result) {
                                    
                                 } else {

@@ -10,8 +10,8 @@ export function fetchList(params) {
 export function fetchSimpleList(params) {
   return request({
     url:'/product/simpleList',
-    method:'get',
-    params:params
+    method:'post',
+    data:params
   })
 }
 
@@ -19,7 +19,7 @@ export function updateDeleteStatus(params) {
   return request({
     url:'/product/update/deleteStatus',
     method:'post',
-    params:params
+    data:params
   })
 }
 
@@ -27,7 +27,7 @@ export function updateNewStatus(params) {
   return request({
     url:'/product/update/newStatus',
     method:'post',
-    params:params
+    data:params
   })
 }
 
@@ -35,7 +35,7 @@ export function updateRecommendStatus(params) {
   return request({
     url:'/product/update/recommendStatus',
     method:'post',
-    params:params
+    data:params
   })
 }
 
@@ -43,7 +43,7 @@ export function updatePublishStatus(params) {
   return request({
     url:'/product/update/publishStatus',
     method:'post',
-    params:params
+    data:params
   })
 }
 
@@ -57,16 +57,17 @@ export function createProduct(data) {
 
 export function updateProduct(id,data) {
   return request({
-    url:'/product/update/'+id,
+    url:'/product/update',
     method:'post',
-    data:data
+    data:{...{id:id}, ...data}
   })
 }
 
 export function getProduct(id) {
   return request({
-    url:'/product/updateInfo/'+id,
-    method:'get',
+    url:'/product/updateInfo',
+    method:'post',
+    data:{id:id}
   })
 }
 

@@ -156,7 +156,7 @@
       handleConfirm(){
         if(this.operateReasonId==null){
           //添加操作
-          addReason(this.returnReason).then(response=>{
+          addReason(this.returnReason).then(data=>{
             this.dialogVisible=false;
             this.operateReasonId=null;
             this.$message({
@@ -168,7 +168,7 @@
           });
         }else{
           //编辑操作
-          updateReason(this.operateReasonId,this.returnReason).then(response=>{
+          updateReason(this.operateReasonId,this.returnReason).then(data=>{
             this.dialogVisible=false;
             this.operateReasonId=null;
             this.$message({
@@ -183,8 +183,8 @@
       handleUpdate(index, row){
         this.dialogVisible=true;
         this.operateReasonId=row.id;
-        getReasonDetail(row.id).then(response=>{
-          this.returnReason=response.data;
+        getReasonDetail(row.id).then(data=>{
+          this.returnReason=data.info;
         });
       },
       handleDelete(index, row){
@@ -201,7 +201,7 @@
         let param = new URLSearchParams();
         param.append("status",row.status);
         param.append("ids",ids);
-        updateStatus(param).then(response=>{
+        updateStatus(param).then(data=>{
           this.$message({
             message: '状态修改成功',
             type: 'success'
@@ -236,10 +236,10 @@
       },
       getList(){
         this.listLoading = true;
-        fetchList(this.listQuery).then(response => {
+        fetchList(this.listQuery).then(data => {
           this.listLoading = false;
-          this.list = response.data.list;
-          this.total = response.data.total;
+          this.list = data.info;
+          this.total = data.totalnum;
         });
       },
       deleteReason(ids){
@@ -250,7 +250,7 @@
         }).then(() => {
           let params = new URLSearchParams();
           params.append("ids",ids);
-          deleteReason(params).then(response=>{
+          deleteReason(params).then(data=>{
             this.$message({
               message: '删除成功！',
               type: 'success',

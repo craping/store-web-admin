@@ -121,8 +121,8 @@
     },
     created(){
       if(this.isEdit){
-        getProduct(this.$route.query.id).then(response=>{
-          this.productParam=response.data;
+        getProduct(this.$route.query.id).then(data=>{
+          this.productParam=data.info;
         });
       }
     },
@@ -153,7 +153,7 @@
           type: 'warning'
         }).then(() => {
           if(isEdit){
-            updateProduct(this.$route.query.id,this.productParam).then(response=>{
+            updateProduct(this.$route.query.id,this.productParam).then(data=>{
               this.$message({
                 type: 'success',
                 message: '提交成功',
@@ -162,7 +162,7 @@
               this.$router.back();
             });
           }else{
-            createProduct(this.productParam).then(response=>{
+            createProduct(this.productParam).then(data=>{
               this.$message({
                 type: 'success',
                 message: '提交成功',
