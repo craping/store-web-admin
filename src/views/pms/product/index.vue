@@ -402,10 +402,10 @@
       },
       getList() {
         this.listLoading = true;
-        fetchList(this.listQuery).then(response => {
+        fetchList(this.listQuery).then(data => {
           this.listLoading = false;
-          this.list = response.data.list;
-          this.total = response.data.total;
+          this.list = data.info;
+          this.total = data.totalnum;
         });
       },
       getBrandList() {

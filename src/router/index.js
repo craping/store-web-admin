@@ -75,27 +75,27 @@ export const constantRouterMap = [
         path: 'productCate',
         name: 'productCate',
         component: () => import('@/views/pms/productCate/index'),
-        meta: {title: '商品分类', icon: 'product-cate'}
+        meta: {title: '商品类目', icon: 'product-cate'}
       },
       {
         path: 'addProductCate',
         name: 'addProductCate',
         component: () => import('@/views/pms/productCate/add'),
-        meta: {title: '添加商品分类'},
+        meta: {title: '添加商品类目'},
         hidden: true
       },
       {
         path: 'updateProductCate',
         name: 'updateProductCate',
         component: () => import('@/views/pms/productCate/update'),
-        meta: {title: '修改商品分类'},
+        meta: {title: '修改商品类目'},
         hidden: true
       },
       {
         path: 'productAttr',
         name: 'productAttr',
         component: () => import('@/views/pms/productAttr/index'),
-        meta: {title: '商品类型', icon: 'product-attr'}
+        meta: {title: '规格类型', icon: 'product-attr'}
       },
       {
         path: 'productAttrList',

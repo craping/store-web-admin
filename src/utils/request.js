@@ -29,7 +29,11 @@ service.interceptors.response.use(
     */
     const res = response.data
     if (res.errcode) {
-      Toast.fail(res.msg);
+      Message({
+        message: res.msg,
+        type: 'error',
+        duration: 3 * 1000
+      })
 
       // 401:未登录;
       if (res.errcode === 401 || res.errcode === 403) {

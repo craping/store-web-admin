@@ -29,13 +29,12 @@ const user = {
     Login({ commit }, userInfo) {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
-        login(username, userInfo.password).then(response => {
-          const data = response.data
+        login(username, userInfo.password).then(data => {
           console.log(data.info);
           const tokenStr = data.info
           setToken(tokenStr)
           commit('SET_TOKEN', tokenStr)
-          resolve()
+          resolve(data)
         }).catch(error => {
           reject(error)
         })
@@ -45,8 +44,7 @@ const user = {
     // 获取用户信息
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
-        getInfo(user.state.token).then(response => {
-          const data = response.data
+        getInfo(user.state.token).then(data => {
           if (data.info.roles && data.info.roles.length > 0) { // 验证返回的roles是否是一个非空数组
             commit('SET_ROLES', data.info.roles)
           } else {
@@ -54,7 +52,7 @@ const user = {
           }
           commit('SET_NAME', data.info.username)
           commit('SET_AVATAR', data.info.icon)
-          resolve(response)
+          resolve(data)
         }).catch(error => {
           reject(error)
         })
