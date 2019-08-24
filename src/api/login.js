@@ -1,19 +1,20 @@
 import request from '@/utils/request'
 
-export function login(username, password) {
+export function login(username, password, role) {
   return request({
-    url: '/admin/login?format=json',
+    url: '/admin/login',
     method: 'post',
     data: {
       username,
-      password
+      password,
+      role
     }
   })
 }
 
 export function getInfo(token) {
   return request({
-    url: '/admin/info?format=json',
+    url: '/admin/info',
     method: 'post',
     data: {
       token

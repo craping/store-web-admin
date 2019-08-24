@@ -13,7 +13,7 @@ import App from './App'
 import router from './router'
 import store from './store'
 
-import http from '@/utils/axios'
+import http from '@/utils/request'
 
 import '@/icons' // icon
 import '@/permission' // permission control

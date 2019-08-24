@@ -224,9 +224,9 @@ export default {
             this.$http.post("sup/supList?format=json", this.listQuery).then(response => {
                 //const data = response.data;
                 this.listLoading = false;
-                this.list = response.data.info;
-                this.total = response.data.totalnum;
-                console.log(response);
+                this.list = response.info;
+                this.total = response.totalnum;
+                console.log(this.$store.getters.roles[0]);
                 // if (!data.result) {
                 //     this.bettings = data.data.info;
                 // } else {

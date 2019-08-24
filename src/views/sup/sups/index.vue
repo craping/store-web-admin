@@ -71,9 +71,6 @@
         <el-table-column label="创建时间" width="200" align="center">
           <template slot-scope="scope">{{scope.row.create_time | formatCreateTime}}</template>
         </el-table-column>
-        <el-table-column label="备注" width="200" align="center">
-          <template slot-scope="scope">{{scope.row.remark}}</template>
-        </el-table-column>
         <el-table-column label="状态" width="80" align="center">
           <template slot-scope="scope">{{scope.row.status | formatStatus}}</template>
         </el-table-column>

@@ -28,10 +28,6 @@
     <el-form-item label="邮箱地址：" prop="email">
       <el-input v-model="supplier.email" class="input-width" placeholder="请输入Email地址"></el-input>
     </el-form-item>
-    <el-form-item label="备注：">
-      <el-input class="input-width" type="textarea" :rows="5" placeholder="请输入备注" v-model="supplier.remark">
-      </el-input>
-    </el-form-item>
 
     <el-form-item>
       <el-button type="primary" @click="onSubmit('supplierForm')">提交</el-button>
