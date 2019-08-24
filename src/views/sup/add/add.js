@@ -9,8 +9,7 @@ const defaultSupplier = {
     contact: "龙先生",
     tel_no: "0755-86666666",
     mobile: "18688988888",
-    email: "yashilandai@qq.com",
-    remark: "",
+    email: "yashilandai@qq.com"
 };
 export default {
     name: 'supplierAdd',
