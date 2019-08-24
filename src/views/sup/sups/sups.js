@@ -223,15 +223,9 @@ export default {
 
             this.$http.post("sup/supList?format=json", this.listQuery).then(data => {
                 this.listLoading = false;
-<<<<<<< HEAD
-                this.list = response.info;
-                this.total = response.totalnum;
-                console.log(this.$store.getters.roles[0]);
-=======
                 this.list = data.info;
                 this.total = data.totalnum;
-                console.log(response);
->>>>>>> branch 'master' of https://github.com/craping/store-web-admin.git
+                console.log(this.$store.getters.roles[0]);
                 // if (!data.result) {
                 //     this.bettings = data.info;
                 // } else {
