@@ -116,10 +116,10 @@
     methods: {
       getList() {
         this.listLoading = true;
-        fetchList(this.listQuery).then(response => {
+        fetchList(this.listQuery).then(data => {
           this.listLoading = false;
-          this.list = response.data.list;
-          this.total = response.data.total;
+          this.list = data.info;
+          this.total = data.totalnum;
         });
       },
       addProductAttrCate() {
@@ -141,7 +141,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          deleteProductAttrCate(row.id).then(response=>{
+          deleteProductAttrCate(row.id).then(data=>{
             this.$message({
               message: '删除成功',
               type: 'success',
@@ -169,7 +169,7 @@
             let data = new URLSearchParams();
             data.append("name",this.productAttrCate.name);
             if(this.dialogTitle==="添加品牌"){
-              createProductAttrCate(data).then(response=>{
+              createProductAttrCate(data).then(data=>{
                 this.$message({
                   message: '添加成功',
                   type: 'success',
@@ -179,7 +179,7 @@
                 this.getList();
               });
             }else{
-              updateProductAttrCate(this.productAttrCate.id,data).then(response=>{
+              updateProductAttrCate(this.productAttrCate.id,data).then(data=>{
                 this.$message({
                   message: '修改成功',
                   type: 'success',

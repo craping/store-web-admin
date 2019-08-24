@@ -78,14 +78,14 @@
       beforeUpload(file) {
         let _self = this;
         return new Promise((resolve, reject) => {
-          policy().then(response => {
-            _self.dataObj.policy = response.data.policy;
-            _self.dataObj.signature = response.data.signature;
-            _self.dataObj.ossaccessKeyId = response.data.accessKeyId;
-            _self.dataObj.key = response.data.dir + '/${filename}';
-            _self.dataObj.dir = response.data.dir;
-            _self.dataObj.host = response.data.host;
-            // _self.dataObj.callback = response.data.callback;
+          policy().then(data => {
+            _self.dataObj.policy = data.info.policy;
+            _self.dataObj.signature = data.info.signature;
+            _self.dataObj.ossaccessKeyId = data.info.accessKeyId;
+            _self.dataObj.key = data.info.dir + '/${filename}';
+            _self.dataObj.dir = data.info.dir;
+            _self.dataObj.host = data.info.host;
+            // _self.dataObj.callback = data.info.callback;
             resolve(true)
           }).catch(err => {
             console.log(err)

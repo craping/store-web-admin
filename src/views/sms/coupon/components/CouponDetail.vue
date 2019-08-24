@@ -227,8 +227,8 @@
     },
     created(){
       if(this.isEdit){
-        getCoupon(this.$route.query.id).then(response=>{
-          this.coupon=response.data;
+        getCoupon(this.$route.query.id).then(data=>{
+          this.coupon=data.info;
         });
       }
       this.getProductCateList();
@@ -243,7 +243,7 @@
               type: 'warning'
             }).then(() => {
               if(this.isEdit){
-                updateCoupon(this.$route.query.id,this.coupon).then(response=>{
+                updateCoupon(this.$route.query.id,this.coupon).then(data=>{
                   this.$refs[formName].resetFields();
                   this.$message({
                     message: '修改成功',
@@ -253,7 +253,7 @@
                   this.$router.back();
                 });
               }else{
-                createCoupon(this.coupon).then(response=>{
+                createCoupon(this.coupon).then(data=>{
                   this.$refs[formName].resetFields();
                   this.$message({
                     message: '提交成功',
@@ -281,9 +281,9 @@
       searchProductMethod(query){
         if (query !== '') {
           this.loading = true;
-          fetchProductList({keyword:query}).then(response=>{
+          fetchProductList({keyword:query}).then(data=>{
             this.loading=false;
-            let productList = response.data;
+            let productList = data.info;
             this.selectProductOptions = [];
             for(let i=0;i<productList.length;i++){
               let item = productList[i];
@@ -331,8 +331,8 @@
         return null;
       },
       getProductCateList() {
-        fetchListWithChildren().then(response => {
-          let list = response.data;
+        fetchListWithChildren().then(data => {
+          let list = data.info;
           this.productCateOptions = [];
           for (let i = 0; i < list.length; i++) {
             let children = [];

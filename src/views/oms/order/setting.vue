@@ -89,7 +89,7 @@
               cancelButtonText: '取消',
               type: 'warning'
             }).then(() => {
-              updateOrderSetting(1,this.orderSetting).then(response=>{
+              updateOrderSetting(1,this.orderSetting).then(data=>{
                 this.$message({
                   type: 'success',
                   message: '提交成功!',
@@ -107,8 +107,8 @@
         });
       },
       getDetail(){
-        getOrderSetting(1).then(response=>{
-          this.orderSetting=response.data;
+        getOrderSetting(1).then(data=>{
+          this.orderSetting=data.info;
         })
       }
     }

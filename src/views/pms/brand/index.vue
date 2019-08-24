@@ -170,12 +170,12 @@
     methods: {
       getList() {
         this.listLoading = true;
-        fetchList(this.listQuery).then(response => {
+        fetchList(this.listQuery).then(data => {
           this.listLoading = false;
-          this.list = response.data.list;
-          this.total = response.data.total;
-          this.totalPage = response.data.totalPage;
-          this.pageSize = response.data.pageSize;
+          this.list = data.info;
+          this.total = data.totalnum;
+          this.totalPage = data.info.totalPage;
+          this.pageSize = data.info.pageSize;
         });
       },
       handleSelectionChange(val) {
@@ -190,7 +190,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          deleteBrand(row.id).then(response => {
+          deleteBrand(row.id).then(data => {
             this.$message({
               message: '删除成功',
               type: 'success',
@@ -210,7 +210,7 @@
         var data = new URLSearchParams();
         data.append("ids", row.id);
         data.append("factoryStatus", row.factoryStatus);
-        updateFactoryStatus(data).then(response => {
+        updateFactoryStatus(data).then(data => {
           this.$message({
             message: '修改成功',
             type: 'success',
@@ -229,7 +229,7 @@
         ;
         data.append("ids", row.id);
         data.append("showStatus", row.showStatus);
-        updateShowStatus(data).then(response => {
+        updateShowStatus(data).then(data => {
           this.$message({
             message: '修改成功',
             type: 'success',
@@ -286,7 +286,7 @@
         let data = new URLSearchParams();
         data.append("ids", ids);
         data.append("showStatus", showStatus);
-        updateShowStatus(data).then(response => {
+        updateShowStatus(data).then(data => {
           this.getList();
           this.$message({
             message: '修改成功',

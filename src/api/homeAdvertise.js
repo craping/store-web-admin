@@ -2,15 +2,15 @@ import request from '@/utils/request'
 export function fetchList(params) {
   return request({
     url:'/home/advertise/list',
-    method:'get',
-    params:params
+    method:'post',
+    data:params
   })
 }
 export function updateStatus(id,params) {
   return request({
-    url:'/home/advertise/update/status/'+id,
+    url:'/home/advertise/update/status',
     method:'post',
-    params:params
+    data:{...{id:id}, ...params}
   })
 }
 export function deleteHomeAdvertise(data) {
@@ -29,15 +29,16 @@ export function createHomeAdvertise(data) {
 }
 export function getHomeAdvertise(id) {
   return request({
-    url:'/home/advertise/'+id,
-    method:'get',
+    url:'/home/advertise/info',
+    method:'post',
+    data:{id:id}
   })
 }
 
 export function updateHomeAdvertise(id,data) {
   return request({
-    url:'/home/advertise/update/'+id,
+    url:'/home/advertise/update',
     method:'post',
-    data:data
+    data:{...{id:id}, ...data}
   })
 }

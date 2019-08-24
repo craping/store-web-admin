@@ -136,10 +136,10 @@
       },
       getList() {
         this.listLoading = true;
-        fetchList(this.parentId, this.listQuery).then(response => {
+        fetchList(this.parentId, this.listQuery).then(data => {
           this.listLoading = false;
-          this.list = response.data.list;
-          this.total = response.data.total;
+          this.list = data.info;
+          this.total = data.totalnum;
         });
       },
       handleSizeChange(val) {
@@ -157,7 +157,7 @@
         ids.push(row.id)
         data.append('ids',ids);
         data.append('navStatus',row.navStatus);
-        updateNavStatus(data).then(response=>{
+        updateNavStatus(data).then(data=>{
           this.$message({
             message: '修改成功',
             type: 'success',
@@ -171,7 +171,7 @@
         ids.push(row.id)
         data.append('ids',ids);
         data.append('showStatus',row.showStatus);
-        updateShowStatus(data).then(response=>{
+        updateShowStatus(data).then(data=>{
           this.$message({
             message: '修改成功',
             type: 'success',
@@ -194,7 +194,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          deleteProductCate(row.id).then(response => {
+          deleteProductCate(row.id).then(data => {
             this.$message({
               message: '删除成功',
               type: 'success',

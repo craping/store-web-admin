@@ -400,7 +400,7 @@
         let params = new URLSearchParams();
         params.append('ids', this.closeOrder.orderIds);
         params.append('note', this.closeOrder.content);
-        closeOrder(params).then(response=>{
+        closeOrder(params).then(data=>{
           this.closeOrder.orderIds=[];
           this.closeOrder.dialogVisible=false;
           this.getList();
@@ -413,10 +413,10 @@
       },
       getList() {
         this.listLoading = true;
-        fetchList(this.listQuery).then(response => {
+        fetchList(this.listQuery).then(data => {
           this.listLoading = false;
-          this.list = response.data.list;
-          this.total = response.data.total;
+          this.list = data.info;
+          this.total = data.totalnum;
         });
       },
       deleteOrder(ids){
@@ -427,7 +427,7 @@
         }).then(() => {
           let params = new URLSearchParams();
           params.append("ids",ids);
-          deleteOrder(params).then(response=>{
+          deleteOrder(params).then(data=>{
             this.$message({
               message: '删除成功！',
               type: 'success',

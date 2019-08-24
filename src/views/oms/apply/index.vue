@@ -236,7 +236,7 @@
               ids.push(this.multipleSelection[i].id);
             }
             params.append("ids",ids);
-            deleteApply(params).then(response=>{
+            deleteApply(params).then(data=>{
               this.getList();
               this.$message({
                 type: 'success',
@@ -257,10 +257,10 @@
       },
       getList(){
         this.listLoading=true;
-        fetchList(this.listQuery).then(response => {
+        fetchList(this.listQuery).then(data => {
           this.listLoading = false;
-          this.list = response.data.list;
-          this.total = response.data.total;
+          this.list = data.info;
+          this.total = data.totalnum;
         });
       }
     }

@@ -337,7 +337,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          createHotProduct(selectProducts).then(response=>{
+          createHotProduct(selectProducts).then(data=>{
             this.selectDialogVisible=false;
             this.dialogData.multipleSelection=[];
             this.getList();
@@ -359,7 +359,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          updateHotProductSort(this.sortDialogData).then(response=>{
+          updateHotProductSort(this.sortDialogData).then(data=>{
             this.sortDialogVisible=false;
             this.getList();
             this.$message({
@@ -371,10 +371,10 @@
       },
       getList() {
         this.listLoading = true;
-        fetchList(this.listQuery).then(response => {
+        fetchList(this.listQuery).then(data => {
           this.listLoading = false;
-          this.list = response.data.list;
-          this.total = response.data.total;
+          this.list = data.info;
+          this.total = data.totalnum;
         })
       },
       updateRecommendStatusStatus(ids,status){
@@ -386,7 +386,7 @@
           let params=new URLSearchParams();
           params.append("ids",ids);
           params.append("recommendStatus",status);
-          updateRecommendStatus(params).then(response=>{
+          updateRecommendStatus(params).then(data=>{
             this.getList();
             this.$message({
               type: 'success',
@@ -409,7 +409,7 @@
         }).then(() => {
           let params=new URLSearchParams();
           params.append("ids",ids);
-          deleteHotProduct(params).then(response=>{
+          deleteHotProduct(params).then(data=>{
             this.getList();
             this.$message({
               type: 'success',
@@ -419,9 +419,9 @@
         })
       },
       getDialogList(){
-        fetchProductList(this.dialogData.listQuery).then(response=>{
-          this.dialogData.list=response.data.list;
-          this.dialogData.total=response.data.total;
+        fetchProductList(this.dialogData.listQuery).then(data=>{
+          this.dialogData.list=data.info;
+          this.dialogData.total=data.total;
         })
       }
     }

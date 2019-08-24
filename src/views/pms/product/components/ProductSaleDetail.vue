@@ -191,10 +191,10 @@
       if (this.isEdit) {
         // this.handleEditCreated();
       } else {
-        fetchMemberLevelList({defaultStatus: 0}).then(response => {
+        fetchMemberLevelList({defaultStatus: 0}).then(data => {
           let memberPriceList = [];
-          for (let i = 0; i < response.data.length; i++) {
-            let item = response.data[i];
+          for (let i = 0; i < data.info.length; i++) {
+            let item = data.info[i];
             memberPriceList.push({memberLevelId: item.id, memberLevelName: item.name})
           }
           this.value.memberPriceList = memberPriceList;

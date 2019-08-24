@@ -170,8 +170,8 @@
       }
     },
     created() {
-      getCoupon(this.$route.query.id).then(response => {
-        this.coupon = response.data;
+      getCoupon(this.$route.query.id).then(data => {
+        this.coupon = data.info;
       });
       this.listQuery.couponId=this.$route.query.id;
       this.getList();
@@ -245,10 +245,10 @@
     methods: {
       getList(){
         this.listLoading=true;
-        fetchCouponHistoryList(this.listQuery).then(response=>{
+        fetchCouponHistoryList(this.listQuery).then(data=>{
           this.listLoading=false;
-          this.list=response.data.list;
-          this.total=response.data.total;
+          this.list=data.info;
+          this.total=data.totalnum;
         });
       },
       handleResetSearch() {

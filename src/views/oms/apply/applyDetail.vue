@@ -307,9 +307,9 @@
         this.$router.push({path:'/oms/orderDetail',query:{id:this.orderReturnApply.orderId}});
       },
       getDetail() {
-        getApplyDetail(this.id).then(response => {
+        getApplyDetail(this.id).then(data => {
           console.log("getDetail")
-          this.orderReturnApply = response.data;
+          this.orderReturnApply = data.info;
           this.productList = [];
           this.productList.push(this.orderReturnApply);
           if (this.orderReturnApply.proofPics != null) {
@@ -324,9 +324,9 @@
         });
       },
       getCompanyAddressList() {
-        fetchList().then(response => {
+        fetchList().then(data => {
           console.log("getCompanyAddressList()")
-          this.companyAddressList = response.data;
+          this.companyAddressList = data.info;
           for (let i = 0; i < this.companyAddressList.length; i++) {
             if (this.companyAddressList[i].receiveStatus === 1&&this.orderReturnApply.status===0) {
               this.updateStatusParam.companyAddressId = this.companyAddressList[i].id;
@@ -341,7 +341,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          updateApplyStatus(this.id,this.updateStatusParam).then(response=>{
+          updateApplyStatus(this.id,this.updateStatusParam).then(data=>{
             this.$message({
               type: 'success',
               message: '操作成功!',
