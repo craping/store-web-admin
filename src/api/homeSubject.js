@@ -2,8 +2,8 @@ import request from '@/utils/request'
 export function fetchList(params) {
   return request({
     url:'/home/recommendSubject/list',
-    method:'get',
-    params:params
+    method:'post',
+    data:params
   })
 }
 
@@ -33,8 +33,8 @@ export function createHomeSubject(data) {
 
 export function updateHomeSubjectSort(params) {
   return request({
-    url:'/home/recommendSubject/update/sort/'+params.id,
+    url:'/home/recommendSubject/update/sort',
     method:'post',
-    params:params
+    data:params
   })
 }
