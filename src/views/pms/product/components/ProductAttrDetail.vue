@@ -15,7 +15,7 @@
       </el-form-item>
       <el-form-item label="商品规格：">
         <el-card shadow="never" class="cardBg">
-          <div v-for="(productAttr,idx) in selectProductAttr">
+          <div v-for="(productAttr,idx) in selectProductAttr" :key="idx">
             {{productAttr.name}}：
             <el-checkbox-group v-if="productAttr.handAddStatus===0" v-model="selectProductAttr[idx].values">
               <el-checkbox v-for="item in getInputListArr(productAttr.inputList)" :label="item" :key="item"
@@ -24,7 +24,7 @@
             <div v-else>
               <el-checkbox-group v-model="selectProductAttr[idx].values">
                 <div v-for="(item,index) in selectProductAttr[idx].options" style="display: inline-block"
-                     class="littleMarginLeft">
+                     class="littleMarginLeft" :key="index">
                   <el-checkbox :label="item" :key="item"></el-checkbox>
                   <el-button type="text" class="littleMarginLeft" @click="handleRemoveProductAttrValue(idx,index)">删除
                   </el-button>
@@ -56,6 +56,14 @@
             </template>
           </el-table-column>
           <el-table-column
+            label="成本价"
+            width="80"
+            align="center">
+            <template slot-scope="scope">
+              <el-input v-model="scope.row.cot"></el-input>
+            </template>
+          </el-table-column>
+          <el-table-column
             label="商品库存"
             width="80"
             align="center">
@@ -63,14 +71,14 @@
               <el-input v-model="scope.row.stock"></el-input>
             </template>
           </el-table-column>
-          <el-table-column
+          <!-- <el-table-column
             label="库存预警值"
             width="80"
             align="center">
             <template slot-scope="scope">
               <el-input v-model="scope.row.lowStock"></el-input>
             </template>
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column
             label="SKU编号"
             align="center">
@@ -103,7 +111,7 @@
       </el-form-item>
       <el-form-item label="属性图片：" v-if="hasAttrPic">
         <el-card shadow="never" class="cardBg">
-          <div v-for="(item,index) in selectProductAttrPics">
+          <div v-for="(item,index) in selectProductAttrPics" :key="index">
             <span>{{item.name}}:</span>
             <single-upload v-model="item.pic"
                            style="width: 300px;display: inline-block;margin-left: 10px"></single-upload>
@@ -112,7 +120,7 @@
       </el-form-item>
       <el-form-item label="商品参数：">
         <el-card shadow="never" class="cardBg">
-          <div v-for="(item,index) in selectProductParam" :class="{littleMarginTop:index!==0}">
+          <div v-for="(item,index) in selectProductParam" :class="{littleMarginTop:index!==0}" :key="index">
             <div class="paramInputLabel">{{item.name}}:</div>
             <el-select v-if="item.inputType===1" class="paramInput" v-model="selectProductParam[index].value">
               <el-option

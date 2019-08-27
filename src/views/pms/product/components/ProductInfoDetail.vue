@@ -136,15 +136,15 @@
         fetchListWithChildren().then(data => {
           let list = data.info;
           this.productCateOptions = [];
-          for (let i = 0; i < list.length; i++) {
+          list.forEach(el1 => {
             let children = [];
-            if (list[i].children != null && list[i].children.length > 0) {
-              for (let j = 0; j < list[i].children.length; j++) {
-                children.push({label: list[i].children[j].name, value: list[i].children[j].id});
-              }
+            if (el1.children != null && el1.children.length > 0){
+              el1.children.forEach(el2 => {
+                children.push({label: el2.name, value: el2.id});
+              });
             }
-            this.productCateOptions.push({label: list[i].name, value: list[i].id, children: children});
-          }
+            this.productCateOptions.push({label: el1.name, value: el1.id, children: children});
+          });
         });
       },
       getBrandList() {
