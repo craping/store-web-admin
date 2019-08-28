@@ -174,8 +174,8 @@
           this.listLoading = false;
           this.list = data.info;
           this.total = data.totalnum;
-          this.totalPage = data.info.totalPage;
-          this.pageSize = data.info.pageSize;
+          this.totalPage = data.totalPage;
+          this.pageSize = data.pageSize;
         });
       },
       handleSelectionChange(val) {

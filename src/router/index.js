@@ -194,7 +194,35 @@ export const constantRouterMap = [
       }
     ]
   },
-  
+  {
+    path: '/ams',
+    name: 'ams',
+    component: Layout,
+    meta: {title: '分销', icon: 'tree'},
+    children:[{
+      path: 'level',
+      name: 'level',
+      component: () => import('@/views/ams/level/index'),
+      meta: {title: '等级管理', icon: 'level'}
+    },{
+      path: 'addLevel',
+      name: 'addLevel',
+      component: () => import('@/views/ams/level/add'),
+      meta: {title: '添加等级', icon: 'level'},
+      hidden: true
+    },{
+      path: 'updateLevel',
+      name: 'updateLevel',
+      component: () => import('@/views/ams/level/update'),
+      meta: {title: '编辑等级', icon: 'level'},
+      hidden: true
+    },{
+      path: 'price',
+      name: 'price',
+      component: () => import('@/views/sms/flash/index'),
+      meta: {title: '价格管理', icon: 'price'}
+    }]
+  },
   {
     path:'/sms',
     component: Layout,
@@ -202,7 +230,7 @@ export const constantRouterMap = [
     name: 'sms',
     meta: {title: '营销', icon: 'sms'},
     children: [
-      {
+      /* {
         path: 'flash',
         name: 'flash',
         component: () => import('@/views/sms/flash/index'),
@@ -279,7 +307,7 @@ export const constantRouterMap = [
         name: 'homeSubject',
         component: () => import('@/views/sms/subject/index'),
         meta: {title: '专题推荐', icon: 'sms-subject'}
-      },
+      }, */
       {
         path: 'advertise',
         name: 'homeAdvertise',

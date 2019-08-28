@@ -1,13 +1,13 @@
 <template>
   <div style="margin-top: 50px">
     <el-form :model="value" ref="productSaleForm" label-width="120px" style="width: 600px" size="small">
-      <el-form-item label="赠送积分：">
+      <el-form-item label="赠送积分：" v-show="false">
         <el-input v-model="value.giftPoint"></el-input>
       </el-form-item>
-      <el-form-item label="赠送成长值：">
+      <el-form-item label="赠送成长值：" v-show="false">
         <el-input v-model="value.giftGrowth"></el-input>
       </el-form-item>
-      <el-form-item label="积分购买限制：">
+      <el-form-item label="积分购买限制：" v-show="false">
         <el-input v-model="value.usePointLimit"></el-input>
       </el-form-item>
       <el-form-item label="预告商品：">
@@ -57,7 +57,7 @@
       <el-form-item label="商品备注：">
         <el-input v-model="value.note" type="textarea" :autoSize="true"></el-input>
       </el-form-item>
-      <el-form-item label="选择优惠方式：">
+      <el-form-item label="选择优惠方式：" v-show="false">
         <el-radio-group v-model="value.promotionType" size="small">
           <el-radio-button :label="0">无优惠</el-radio-button>
           <el-radio-button :label="1">特惠促销</el-radio-button>
@@ -94,7 +94,7 @@
 
       </el-form-item>
       <el-form-item v-show="value.promotionType===2">
-        <div v-for="(item, index) in value.memberPriceList" :class="{littleMargin:index!==0}">
+        <div v-for="(item, index) in value.memberPriceList" :class="{littleMargin:index!==0}" :key="index">
           {{item.memberLevelName}}：
           <el-input v-model="item.memberPrice" style="width: 200px"></el-input>
         </div>
