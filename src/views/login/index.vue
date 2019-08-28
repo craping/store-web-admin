@@ -106,10 +106,10 @@
           role: [{required: true, trigger: 'change', validator: validateRole}]
         },
         options: [{
-          value: '1',
+          value: 'admin',
           label: '管理员'
         }, {
-          value: '2',
+          value: 'sup',
           label: '供应商'
         }],
         loading: false,
