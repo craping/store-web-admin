@@ -37,7 +37,8 @@ const user = {
           setToken(tokenStr)
           commit('SET_TOKEN', tokenStr)
           commit('SET_ROLES', resp.roles)
-          commit('SET_AVATAR', data.info.icon)
+          commit('SET_AVATAR', resp.icon)
+          commit('SET_NAME', resp.username)
           resolve(data)
         }).catch(error => {
           reject(error)
@@ -50,7 +51,7 @@ const user = {
       return new Promise((resolve, reject) => {
         getInfo().then(data => {
           //commit('SET_ROLES', data.info.roles)
-          commit('SET_NAME', data.info.username)
+          //commit('SET_NAME', data.info.username)
           //commit('SET_AVATAR', data.info.icon)
           resolve(data)
         }).catch(error => {
