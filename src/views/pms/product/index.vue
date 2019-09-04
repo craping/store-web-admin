@@ -96,6 +96,9 @@
             <p>品牌：{{scope.row.brandName}}</p>
           </template>
         </el-table-column>
+        <el-table-column label="供应商" align="center">
+          <template slot-scope="scope">{{scope.row.supName}}</template>
+        </el-table-column>
         <el-table-column label="价格/货号" width="120" align="center">
           <template slot-scope="scope">
             <p>价格：￥{{scope.row.price}}</p>
@@ -141,7 +144,7 @@
         <el-table-column label="销量" width="100" align="center">
           <template slot-scope="scope">{{scope.row.sale}}</template>
         </el-table-column>
-        <el-table-column label="审核状态" width="100" align="center">
+        <!-- <el-table-column label="审核状态" width="100" align="center">
           <template slot-scope="scope">
             <p>{{scope.row.verifyStatus | verifyStatusFilter}}</p>
             <p>
@@ -151,23 +154,13 @@
               </el-button>
             </p>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column label="操作" width="160" align="center">
           <template slot-scope="scope">
             <p>
               <el-button
                 size="mini"
-                @click="handleShowProduct(scope.$index, scope.row)">查看
-              </el-button>
-              <el-button
-                size="mini"
                 @click="handleUpdateProduct(scope.$index, scope.row)">编辑
-              </el-button>
-            </p>
-            <p>
-              <el-button
-                size="mini"
-                @click="handleShowLog(scope.$index, scope.row)">日志
               </el-button>
               <el-button
                 size="mini"
@@ -175,6 +168,16 @@
                 @click="handleDelete(scope.$index, scope.row)">删除
               </el-button>
             </p>
+            <!-- <p>
+              <el-button
+                size="mini"
+                @click="handleShowProduct(scope.$index, scope.row)">查看
+              </el-button>
+              <el-button
+                size="mini"
+                @click="handleShowLog(scope.$index, scope.row)">日志
+              </el-button>
+            </p> -->
           </template>
         </el-table-column>
       </el-table>
@@ -214,7 +217,7 @@
     <el-dialog
       title="编辑货品信息"
       :visible.sync="editSkuInfo.dialogVisible"
-      width="40%">
+      width="60%">
       <span>商品货号：</span>
       <span>{{editSkuInfo.productSn}}</span>
       <el-input placeholder="按sku编号搜索" v-model="editSkuInfo.keyword" size="small" style="width: 50%;margin-left: 20px">
@@ -241,15 +244,23 @@
         </el-table-column>
         <el-table-column
           label="销售价格"
-          width="80"
+          width="100"
           align="center">
           <template slot-scope="scope">
             <el-input v-model="scope.row.price"></el-input>
           </template>
         </el-table-column>
         <el-table-column
+          label="成本"
+          width="100"
+          align="center">
+          <template slot-scope="scope">
+            <el-input v-model="scope.row.cost"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column
           label="商品库存"
-          width="80"
+          width="100"
           align="center">
           <template slot-scope="scope">
             <el-input v-model="scope.row.stock"></el-input>

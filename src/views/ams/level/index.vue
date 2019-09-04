@@ -43,8 +43,8 @@
         <el-table-column label="订单指标" align="center">
           <template slot-scope="scope">≥{{scope.row.orderQuantity}}单</template>
         </el-table-column>
-        <el-table-column label="折扣率" align="center">
-          <template slot-scope="scope">{{scope.row.discount}}</template>
+        <el-table-column label="佣金返点率" align="center">
+          <template slot-scope="scope">{{scope.row.rebate*100}}%</template>
         </el-table-column>
         <el-table-column label="操作" width="200" align="center">
           <template slot-scope="scope">

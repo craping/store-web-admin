@@ -5,21 +5,26 @@
 @import './sidebar.scss';
 
 body {
+  margin: 0 auto;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
 }
-
-html {
+* {
   box-sizing: border-box;
 }
-
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
+div{
+  margin: 0 auto;
 }
+// html {
+//   box-sizing: border-box;
+// }
+// *,
+// *:before,
+// *:after {
+//   box-sizing: inherit;
+// }
 
 div:focus{
   outline: none;
@@ -92,7 +97,7 @@ a:hover {
 
 //添加、更新表单样式
 .form-container {
-  position: absolute;
+  // position: absolute;
   left: 0;
   right: 0;
   width: 720px;

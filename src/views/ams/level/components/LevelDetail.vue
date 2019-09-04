@@ -7,8 +7,8 @@
       <el-form-item label="订单指标：">
         <el-input-number v-model="level.orderQuantity" controls-position="right" :min="0"></el-input-number>
       </el-form-item>
-      <el-form-item label="折扣率：">
-        <el-input-number v-model="level.discount" controls-position="right" :step="0.01" :min="0.01" :max="1"></el-input-number>
+      <el-form-item label="佣金返点率：">
+        <el-input-number v-model="level.rebate" controls-position="right" :step="0.01" :min="0.01" :max="1"></el-input-number>
       </el-form-item>
       <!-- <el-form-item label="等级图标：" prop="logo">
         <single-upload v-model="level.logo"></single-upload>
@@ -26,7 +26,7 @@
     const defaultLevel={
         name:'',
         orderQuantity:0,
-        discount:1.00
+        rebate:1.00
     };
   export default {
     name: 'LevelDetail',

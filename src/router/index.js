@@ -217,10 +217,10 @@ export const constantRouterMap = [
       meta: {title: '编辑等级', icon: 'level'},
       hidden: true
     },{
-      path: 'price',
-      name: 'price',
-      component: () => import('@/views/sms/flash/index'),
-      meta: {title: '价格管理', icon: 'price'}
+      path: 'commission',
+      name: 'commission',
+      component: () => import('@/views/ams/commission/index'),
+      meta: {title: '佣金管理', icon: 'price'}
     }]
   },
   {

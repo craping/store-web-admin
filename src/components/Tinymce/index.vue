@@ -50,9 +50,9 @@
         default: 360
       },
       width: {
-        type: Number,
+        type: String,
         required: false,
-        default: 720
+        default: "100%"
       }
     },
     data() {

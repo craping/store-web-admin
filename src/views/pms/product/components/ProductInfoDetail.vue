@@ -1,11 +1,23 @@
 <template>
   <div style="margin-top: 50px">
-    <el-form :model="value" :rules="rules" ref="productInfoForm" label-width="120px" style="width: 600px" size="small">
+    <el-form :model="value" :rules="rules" ref="productInfoForm" label-width="120px" style="width: 600px;margin: 0 auto;" size="small">
       <el-form-item label="商品分类：" prop="productCategoryId">
         <el-cascader
           v-model="selectProductCateValue"
           :options="productCateOptions">
         </el-cascader>
+      </el-form-item>
+      <el-form-item label="供应商：" prop="supId">
+        <el-select
+          v-model="value.supId"
+          placeholder="请选择供应商">
+          <el-option
+            v-for="item in supOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="商品名称：" prop="name">
         <el-input v-model="value.name"></el-input>
@@ -83,6 +95,7 @@
         selectProductCateValue: [],
         productCateOptions: [],
         brandOptions: [],
+        supOptions: [],
         rules: {
           name: [
             {required: true, message: '请输入商品名称', trigger: 'blur'},
@@ -90,6 +103,7 @@
           ],
           subTitle: [{required: true, message: '请输入商品副标题', trigger: 'blur'}],
           productCategoryId: [{required: true, message: '请选择商品分类', trigger: 'blur'}],
+          supId: [{required: true, message: '请选择供应商', trigger: 'blur'}],
           brandId: [{required: true, message: '请选择商品品牌', trigger: 'blur'}],
           description: [{required: true, message: '请输入商品介绍', trigger: 'blur'}],
           requiredProp: [{required: true, message: '该项为必填项', trigger: 'blur'}]
@@ -99,6 +113,7 @@
     created() {
       this.getProductCateList();
       this.getBrandList();
+      this.getSupList();
     },
     computed:{
       //商品的编号
@@ -155,6 +170,14 @@
             this.brandOptions.push({label: brandList[i].name, value: brandList[i].id});
           }
         });
+      },
+      getSupList() {
+        this.$http.post("sup/supList", {status:1, pageNum:1}).then(data => {
+          this.supOptions = [];
+          data.info.forEach(el => {
+            this.supOptions.push({label: el.nickname, value: el.id});
+          });
+        })
       },
       getCateNameById(id){
         let name=null;

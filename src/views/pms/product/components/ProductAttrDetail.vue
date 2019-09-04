@@ -1,6 +1,6 @@
 <template>
   <div style="margin-top: 50px">
-    <el-form :model="value" ref="productAttrForm" label-width="120px" style="width: 720px" size="small">
+    <el-form :model="value" ref="productAttrForm" label-width="120px" style="width: 80%;margin: 0 auto;" size="small">
       <el-form-item label="属性类型：">
         <el-select v-model="value.productAttributeCategoryId"
                    placeholder="请选择属性类型"
@@ -49,7 +49,7 @@
           </el-table-column>
           <el-table-column
             label="销售价格"
-            width="80"
+            width="100"
             align="center">
             <template slot-scope="scope">
               <el-input v-model="scope.row.price"></el-input>
@@ -57,10 +57,10 @@
           </el-table-column>
           <el-table-column
             label="成本价"
-            width="80"
+            width="100"
             align="center">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.cot"></el-input>
+              <el-input v-model="scope.row.cost"></el-input>
             </template>
           </el-table-column>
           <el-table-column
@@ -140,10 +140,10 @@
       <el-form-item label="规格参数：">
         <el-tabs v-model="activeHtmlName" type="card">
           <el-tab-pane label="电脑端详情" name="pc">
-            <tinymce :width="595" :height="300" v-model="value.detailHtml"></tinymce>
+            <tinymce :height="300" width="99%" v-model="value.detailHtml"></tinymce>
           </el-tab-pane>
           <el-tab-pane label="移动端详情" name="mobile">
-            <tinymce :width="595" :height="300" v-model="value.detailMobileHtml"></tinymce>
+            <tinymce :height="300" width="99%" v-model="value.detailMobileHtml"></tinymce>
           </el-tab-pane>
         </el-tabs>
       </el-form-item>
@@ -424,8 +424,10 @@
         }).then(() => {
           if(this.value.skuStockList!==null&&this.value.skuStockList.length>0){
             let price=this.value.skuStockList[0].price;
+            let cost=this.value.skuStockList[0].cost;
             for(let i=0;i<this.value.skuStockList.length;i++){
               this.value.skuStockList[i].price=price;
+              this.value.skuStockList[i].cost=cost;
             }
           }
         });
