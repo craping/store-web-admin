@@ -40,10 +40,24 @@
       </el-form-item>
       <el-form-item label="服务保证：">
         <el-checkbox-group v-model="selectServiceList">
-          <el-checkbox :label="1">无忧退货</el-checkbox>
-          <el-checkbox :label="2">快速退款</el-checkbox>
+          <el-checkbox :label="1">7天无理由退货</el-checkbox>
+          <el-checkbox :label="2">正品保障</el-checkbox>
           <el-checkbox :label="3">免费包邮</el-checkbox>
         </el-checkbox-group>
+      </el-form-item>
+      <el-form-item label="基础运费：" v-show="!selectServiceList.includes(3)">
+        <el-col :span="4">
+          <el-input v-model="value.baseCarriage"></el-input>
+        </el-col>
+        <el-col :span="8">
+          &nbsp;元 每增加1{{value.unit}}，运费增加
+        </el-col>
+        <el-col :span="4">
+          <el-input v-model="value.incrementCarriage"></el-input>
+        </el-col>
+        <el-col :span="4">
+          &nbsp;元
+        </el-col>
       </el-form-item>
       <el-form-item label="详细页标题：">
         <el-input v-model="value.detailTitle"></el-input>

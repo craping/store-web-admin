@@ -1,7 +1,7 @@
 <template> 
   <div>
     <el-upload
-      action="http://macro-oss.oss-cn-shenzhen.aliyuncs.com"
+      action="http://store-images.oss-cn-shenzhen.aliyuncs.com"
       :data="dataObj"
       list-type="picture"
       :multiple="false" :show-file-list="showFileList"
@@ -20,7 +20,7 @@
 </template>
 <script>
   import {policy} from '@/api/oss'
-
+  import {UUID} from '@/utils'
   export default {
     name: 'singleUpload',
     props: {
@@ -82,9 +82,10 @@
             _self.dataObj.policy = data.info.policy;
             _self.dataObj.signature = data.info.signature;
             _self.dataObj.ossaccessKeyId = data.info.accessKeyId;
-            _self.dataObj.key = data.info.dir + '/${filename}';
+            _self.dataObj.key = data.info.dir + "/"+UUID()+"."+file.name.split(".")[1];//'/${filename}';
             _self.dataObj.dir = data.info.dir;
             _self.dataObj.host = data.info.host;
+            _self.dataObj.url = _self.dataObj.host +"/"+ _self.dataObj.key;
             // _self.dataObj.callback = data.info.callback;
             resolve(true)
           }).catch(err => {
@@ -96,7 +97,7 @@
       handleUploadSuccess(res, file) {
         this.showFileList = true;
         this.fileList.pop();
-        this.fileList.push({name: file.name, url: this.dataObj.host + '/' + this.dataObj.dir + '/' + file.name});
+        this.fileList.push({name: file.name,url:this.dataObj.url});
         this.emitInput(this.fileList[0].url);
       }
     }

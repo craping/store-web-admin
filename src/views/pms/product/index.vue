@@ -115,7 +115,7 @@
                 v-model="scope.row.publishStatus">
               </el-switch>
             </p>
-            <p>新品：
+            <!-- <p>新品：
               <el-switch
                 @change="handleNewStatusChange(scope.$index, scope.row)"
                 :active-value="1"
@@ -130,7 +130,7 @@
                 :inactive-value="0"
                 v-model="scope.row.recommandStatus">
               </el-switch>
-            </p>
+            </p> -->
           </template>
         </el-table-column>
         <el-table-column label="排序" width="100" align="center">
