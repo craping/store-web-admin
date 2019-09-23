@@ -34,6 +34,7 @@ const user = {
           const resp = data.info;
           const tokenStr = resp.token;
           console.log(resp.token);
+          console.log(resp.roles);
           setToken(tokenStr)
           commit('SET_TOKEN', tokenStr)
           commit('SET_ROLES', resp.roles)

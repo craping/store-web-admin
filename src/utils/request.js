@@ -17,7 +17,7 @@ service.interceptors.request.use(config => {
     
   console.log("token:" + getToken())
   config.data.token = getToken();
-  //config.data.role = store.getters.roles;
+  config.data.role = store.getters.roles;
   console.log(store.getters.roles)
   return config
 }, error => {

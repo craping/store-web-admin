@@ -38,6 +38,7 @@ export const constantRouterMap = [
     redirect: '/pms/product',
     name: 'pms',
     meta: {title: '商品', icon: 'product'},
+    role: 'admin',
     children: [{
       path: 'product',
       name: 'product',
