@@ -96,8 +96,8 @@
       }; 
       return {
         loginForm: {
-          username: 'admin',
-          password: '123456',
+          username: 'qweasd',
+          password: '111111',
           role: ''
         },
         loginRules: {

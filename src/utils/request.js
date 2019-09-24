@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import store from '@/store'
-import { getToken } from '@/utils/auth'
+import { getToken, getRole } from '@/utils/auth'
 
 // 创建axios实例
 const service = axios.create({
@@ -14,11 +14,11 @@ service.interceptors.request.use(config => {
   if (!config.params || !config.params.format){
     config.params = { ...config.params, format: 'json' };
   }
-    
+  
+  console.log("roles:" + getRole())
   console.log("token:" + getToken())
   config.data.token = getToken();
-  config.data.role = store.getters.roles;
-  console.log(store.getters.roles)
+  config.data.role = getRole();
   return config
 }, error => {
   // Do something with request error
