@@ -73,7 +73,7 @@
         <el-table-column label="申请时间" width="180" align="center">
           <template slot-scope="scope">{{scope.row.createTime | formatTime}}</template>
         </el-table-column>
-        <el-table-column label="用户账号" align="center">
+        <el-table-column label="用户账号" width="220" align="center">
           <template slot-scope="scope">{{scope.row.memberUsername}}</template>
         </el-table-column>
         <el-table-column label="退款金额" width="180" align="center">
@@ -85,7 +85,7 @@
         <el-table-column label="处理时间" width="180" align="center">
           <template slot-scope="scope">{{scope.row.handleTime | formatTime}}</template>
         </el-table-column>
-        <el-table-column label="操作" width="180" align="center">
+        <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button
             size="mini"
@@ -230,12 +230,13 @@
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            let params = new URLSearchParams();
             let ids=[];
             for(let i=0;i<this.multipleSelection.length;i++){
               ids.push(this.multipleSelection[i].id);
             }
-            params.append("ids",ids);
+            let params = {
+              ids:ids
+            }
             deleteApply(params).then(data=>{
               this.getList();
               this.$message({

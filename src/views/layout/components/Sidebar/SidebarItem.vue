@@ -1,6 +1,6 @@
 <template>
   <div class="menu-wrapper">
-    <template v-for="item in routes" v-if="!item.hidden&&item.children">
+    <template v-for="item in routes" v-if="!item.hidden&&item.children && showItem(item.role)">
 
       <router-link v-if="hasOneShowingChildren(item.children) && !item.children[0].children&&!item.alwaysShow" :to="item.path+'/'+item.children[0].path"
         :key="item.children[0].name">
@@ -10,13 +10,13 @@
         </el-menu-item>
       </router-link>
 
-      <el-submenu v-else :index="item.name||item.path" :key="item.name">
+      <el-submenu v-else-if="showItem(item.role)" :index="item.name||item.path" :key="item.name">
         <template slot="title">
           <svg-icon v-if="item.meta&&item.meta.icon" :icon-class="item.meta.icon"></svg-icon>
           <span v-if="item.meta&&item.meta.title" slot="title">{{item.meta.title}}</span>
         </template>
 
-        <template v-for="child in item.children" v-if="!child.hidden">
+        <template v-for="child in item.children" v-if="!child.hidden && showItem(child.role)">
           <sidebar-item :is-nest="true" class="nest-menu" v-if="child.children&&child.children.length>0" :routes="[child]" :key="child.path"></sidebar-item>
 
           <router-link v-else :to="item.path+'/'+child.path" :key="child.name">
@@ -33,7 +33,13 @@
 </template>
 
 <script>
+import { getRole } from '@/utils/auth'
 export default {
+  data(){
+    return{
+      role: getRole()
+    }
+  },
   name: 'SidebarItem',
   props: {
     routes: {
@@ -45,6 +51,12 @@ export default {
     }
   },
   methods: {
+    showItem(itemRole) {
+      if (itemRole == "common" || this.role == itemRole){
+        return true;
+      }
+      return false;
+    },
     hasOneShowingChildren(children) {
       const showingChildren = children.filter(item => {
         return !item.hidden

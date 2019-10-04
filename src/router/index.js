@@ -25,9 +25,11 @@ export const constantRouterMap = [
     path: '',
     component: Layout,
     redirect: '/home',
+    role: 'common',
     children: [{
       path: 'home',
       name: 'home',
+      role: 'common',
       component: () => import('@/views/home/index'),
       meta: {title: '首页', icon: 'home'}
     }]
@@ -38,21 +40,25 @@ export const constantRouterMap = [
     redirect: '/pms/product',
     name: 'pms',
     meta: {title: '商品', icon: 'product'},
+    role: 'admin',
     children: [{
       path: 'product',
       name: 'product',
+      role: 'admin',
       component: () => import('@/views/pms/product/index'),
       meta: {title: '商品列表', icon: 'product-list'}
     },
       {
         path: 'addProduct',
         name: 'addProduct',
+        role: 'admin',
         component: () => import('@/views/pms/product/add'),
         meta: {title: '添加商品', icon: 'product-add'}
       },
       {
         path: 'updateProduct',
         name: 'updateProduct',
+        role: 'admin',
         component: () => import('@/views/pms/product/update'),
         meta: {title: '修改商品', icon: 'product-add'},
         hidden: true
@@ -60,6 +66,7 @@ export const constantRouterMap = [
       {
         path: 'productRecycle',
         name: 'productRecycle',
+        role: 'admin',
         component: () => import('@/views/pms/product/index'),
         meta: {title: '商品回收站', icon: 'product-recycle'},
         hidden: true
@@ -67,6 +74,7 @@ export const constantRouterMap = [
       {
         path: 'productComment',
         name: 'productComment',
+        role: 'admin',
         component: () => import('@/views/pms/product/index'),
         meta: {title: '商品评价', icon: 'product-comment'},
         hidden: true
@@ -74,12 +82,14 @@ export const constantRouterMap = [
       {
         path: 'productCate',
         name: 'productCate',
+        role: 'admin',
         component: () => import('@/views/pms/productCate/index'),
         meta: {title: '商品类目', icon: 'product-cate'}
       },
       {
         path: 'addProductCate',
         name: 'addProductCate',
+        role: 'admin',
         component: () => import('@/views/pms/productCate/add'),
         meta: {title: '添加商品类目'},
         hidden: true
@@ -87,6 +97,7 @@ export const constantRouterMap = [
       {
         path: 'updateProductCate',
         name: 'updateProductCate',
+        role: 'admin',
         component: () => import('@/views/pms/productCate/update'),
         meta: {title: '修改商品类目'},
         hidden: true
@@ -94,12 +105,14 @@ export const constantRouterMap = [
       {
         path: 'productAttr',
         name: 'productAttr',
+        role: 'admin',
         component: () => import('@/views/pms/productAttr/index'),
         meta: {title: '规格类型', icon: 'product-attr'}
       },
       {
         path: 'productAttrList',
         name: 'productAttrList',
+        role: 'admin',
         component: () => import('@/views/pms/productAttr/productAttrList'),
         meta: {title: '商品属性列表'},
         hidden: true
@@ -107,6 +120,7 @@ export const constantRouterMap = [
       {
         path: 'addProductAttr',
         name: 'addProductAttr',
+        role: 'admin',
         component: () => import('@/views/pms/productAttr/addProductAttr'),
         meta: {title: '添加商品属性'},
         hidden: true
@@ -114,6 +128,7 @@ export const constantRouterMap = [
       {
         path: 'updateProductAttr',
         name: 'updateProductAttr',
+        role: 'admin',
         component: () => import('@/views/pms/productAttr/updateProductAttr'),
         meta: {title: '修改商品属性'},
         hidden: true
@@ -121,12 +136,14 @@ export const constantRouterMap = [
       {
         path: 'brand',
         name: 'brand',
+        role: 'admin',
         component: () => import('@/views/pms/brand/index'),
         meta: {title: '品牌管理', icon: 'product-brand'}
       },
       {
         path: 'addBrand',
         name: 'addBrand',
+        role: 'admin',
         component: () => import('@/views/pms/brand/add'),
         meta: {title: '添加品牌'},
         hidden: true
@@ -134,6 +151,7 @@ export const constantRouterMap = [
       {
         path: 'updateBrand',
         name: 'updateBrand',
+        role: 'admin',
         component: () => import('@/views/pms/brand/update'),
         meta: {title: '编辑品牌'},
         hidden: true
@@ -146,16 +164,19 @@ export const constantRouterMap = [
     redirect: '/oms/order',
     name: 'oms',
     meta: {title: '订单', icon: 'order'},
+    role: 'common',
     children: [
       {
         path: 'order',
         name: 'order',
+        role: 'common',
         component: () => import('@/views/oms/order/index'),
         meta: {title: '订单列表', icon: 'product-list'}
       },
       {
         path: 'orderDetail',
         name: 'orderDetail',
+        role: 'common',
         component: () => import('@/views/oms/order/orderDetail'),
         meta: {title: '订单详情'},
         hidden:true
@@ -163,6 +184,7 @@ export const constantRouterMap = [
       {
         path: 'deliverOrderList',
         name: 'deliverOrderList',
+        role: 'common',
         component: () => import('@/views/oms/order/deliverOrderList'),
         meta: {title: '发货列表'},
         hidden:true
@@ -170,24 +192,28 @@ export const constantRouterMap = [
       {
         path: 'orderSetting',
         name: 'orderSetting',
+        role: 'admin',
         component: () => import('@/views/oms/order/setting'),
         meta: {title: '订单设置', icon: 'order-setting'}
       },
       {
         path: 'returnApply',
         name: 'returnApply',
+        role: 'common',
         component: () => import('@/views/oms/apply/index'),
         meta: {title: '退货申请处理', icon: 'order-return'}
       },
       {
         path: 'returnReason',
         name: 'returnReason',
+        role: 'admin',
         component: () => import('@/views/oms/apply/reason'),
         meta: {title: '退货原因设置', icon: 'order-return-reason'}
       },
       {
         path: 'returnApplyDetail',
         name: 'returnApplyDetail',
+        role: 'admin',
         component: () => import('@/views/oms/apply/applyDetail'),
         meta: {title: '退货原因详情'},
         hidden:true
@@ -199,26 +225,31 @@ export const constantRouterMap = [
     name: 'ams',
     component: Layout,
     meta: {title: '分销', icon: 'tree'},
+    role: 'admin',
     children:[{
       path: 'level',
       name: 'level',
+      role: 'admin',
       component: () => import('@/views/ams/level/index'),
       meta: {title: '等级管理', icon: 'level'}
     },{
       path: 'addLevel',
       name: 'addLevel',
+      role: 'admin',
       component: () => import('@/views/ams/level/add'),
       meta: {title: '添加等级', icon: 'level'},
       hidden: true
     },{
       path: 'updateLevel',
       name: 'updateLevel',
+      role: 'admin',
       component: () => import('@/views/ams/level/update'),
       meta: {title: '编辑等级', icon: 'level'},
       hidden: true
     },{
       path: 'commission',
       name: 'commission',
+      role: 'admin',
       component: () => import('@/views/ams/commission/index'),
       meta: {title: '佣金管理', icon: 'price'}
     }]
@@ -229,6 +260,7 @@ export const constantRouterMap = [
     redirect: '/sms/coupon',
     name: 'sms',
     meta: {title: '营销', icon: 'sms'},
+    role: 'admin',
     children: [
       /* {
         path: 'flash',
@@ -311,12 +343,14 @@ export const constantRouterMap = [
       {
         path: 'advertise',
         name: 'homeAdvertise',
+        role: 'admin',
         component: () => import('@/views/sms/advertise/index'),
         meta: {title: '广告列表', icon: 'sms-ad'}
       },
       {
         path: 'addAdvertise',
         name: 'addHomeAdvertise',
+        role: 'admin',
         component: () => import('@/views/sms/advertise/add'),
         meta: {title: '添加广告'},
         hidden:true
@@ -324,6 +358,7 @@ export const constantRouterMap = [
       {
         path: 'updateAdvertise',
         name: 'updateHomeAdvertise',
+        role: 'admin',
         component: () => import('@/views/sms/advertise/update'),
         meta: {title: '编辑广告'},
         hidden:true
@@ -336,16 +371,19 @@ export const constantRouterMap = [
     redirect: '/sup/sups',
     name: 'sup',
     meta: {title: '供应商', icon: 'courier'},
+    role: 'admin',
     children: [
       {
         path: 'sups',
         name: 'sups',
+        role: 'admin',
         component: () => import('@/views/sup/sups'),
         meta: {title: '供应商列表', icon: 'teamwork'}
       },
       {
         path: 'addSup',
         name: 'addSup',
+        role: 'admin',
         component: () => import('@/views/sup/add'),
         meta: {title: '添加供应商', icon: 'add-user'}
       }

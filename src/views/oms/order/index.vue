@@ -85,7 +85,7 @@
         <el-table-column label="提交时间" width="180" align="center">
           <template slot-scope="scope">{{scope.row.createTime | formatCreateTime}}</template>
         </el-table-column>
-        <el-table-column label="用户账号" align="center">
+        <el-table-column label="用户账号" width="200" align="center">
           <template slot-scope="scope">{{scope.row.memberUsername}}</template>
         </el-table-column>
         <el-table-column label="订单金额" width="120" align="center">
@@ -100,7 +100,7 @@
         <el-table-column label="订单状态" width="120" align="center">
           <template slot-scope="scope">{{scope.row.status | formatStatus}}</template>
         </el-table-column>
-        <el-table-column label="操作" width="200" align="center">
+        <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -397,9 +397,10 @@
           });
           return;
         }
-        let params = new URLSearchParams();
-        params.append('ids', this.closeOrder.orderIds);
-        params.append('note', this.closeOrder.content);
+        let params = {
+          ids:this.closeOrder.orderIds,
+          note:this.closeOrder.content
+        }
         closeOrder(params).then(data=>{
           this.closeOrder.orderIds=[];
           this.closeOrder.dialogVisible=false;
@@ -425,8 +426,9 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          let params = new URLSearchParams();
-          params.append("ids",ids);
+          let params = {
+            ids:ids
+          }
           deleteOrder(params).then(data=>{
             this.$message({
               message: '删除成功！',
@@ -446,8 +448,9 @@
           receiverPhone:order.receiverPhone,
           receiverPostCode:order.receiverPostCode,
           address:address,
-          deliveryCompany:null,
-          deliverySn:null
+          deliveryCompany:order.deliveryCompany,
+          deliverySn:order.deliverySn,
+          deliveryFare:order.freightAmount
         };
         return listItem;
       }

@@ -99,10 +99,16 @@
           <el-col class="form-border form-left-bg font-small" :span="6" style="height:52px;line-height:32px">确认退款金额
           </el-col>
           <el-col class="form-border font-small" style="height:52px" :span="18">
-            ￥
-            <el-input size="small" v-model="updateStatusParam.returnAmount"
-                      :disabled="orderReturnApply.status!==0"
-                      style="width:200px;margin-left: 10px"></el-input>
+            ￥<el-input size="small" v-model="updateStatusParam.returnAmount" :disabled="orderReturnApply.status!==0" 
+              style="width:200px;margin-left: 10px"></el-input>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col class="form-border form-left-bg font-small" :span="6" style="height:52px;line-height:32px">订单运费金额
+          </el-col>
+          <el-col class="form-border font-small" style="height:52px" :span="18">
+            ￥<el-input size="small" v-model="updateStatusParam.freightAmount" :disabled="orderReturnApply.status!==0" 
+              style="width:200px;margin-left: 10px"></el-input>
           </el-col>
         </el-row>
         <div v-show="orderReturnApply.status!==3">
@@ -206,6 +212,7 @@
     receiveMan: 'admin',
     receiveNote: null,
     returnAmount: 0,
+    freightAmount: 0,
     status: 0
   };
   const defaultOrderReturnApply = {
@@ -220,6 +227,12 @@
     returnName: null,
     returnPhone: null,
     status: null,
+    cancelTime: null,
+    receiveStatus: null,
+    deliveryCompany: null,
+    deliverySn: null,
+    deliveryTime: null,
+    freightAmount: null,
     handleTime: null,
     productPic: null,
     productName: null,
@@ -318,6 +331,7 @@
           //退货中和完成
           if(this.orderReturnApply.status===1||this.orderReturnApply.status===2){
             this.updateStatusParam.returnAmount=this.orderReturnApply.returnAmount;
+            this.updateStatusParam.freightAmount=this.orderReturnApply.freightAmount;
             this.updateStatusParam.companyAddressId=this.orderReturnApply.companyAddressId;
           }
           this.getCompanyAddressList();

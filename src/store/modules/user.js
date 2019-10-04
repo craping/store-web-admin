@@ -1,12 +1,12 @@
 import { login, logout, getInfo } from '@/api/login'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getToken, setToken, removeToken, getRole, setRole, removeRole } from '@/utils/auth'
 
 const user = {
   state: {
     token: getToken(),
     name: '',
     avatar: '',
-    roles: ''
+    roles: getRole()
   },
 
   mutations: {
@@ -30,13 +30,13 @@ const user = {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
         login(username, userInfo.password, userInfo.role).then(data => {
-          console.log(data.info);
           const resp = data.info;
           const tokenStr = resp.token;
-          console.log(resp.token);
-          setToken(tokenStr)
+          const roleStr = resp.roles;
+          setToken(tokenStr);
+          setRole(roleStr);
           commit('SET_TOKEN', tokenStr)
-          commit('SET_ROLES', resp.roles)
+          commit('SET_ROLES', roleStr)
           commit('SET_AVATAR', resp.icon)
           commit('SET_NAME', resp.username)
           resolve(data)
@@ -67,6 +67,7 @@ const user = {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', '')
           removeToken()
+          removeRole()
           resolve()
         }).catch(error => {
           reject(error)
@@ -79,6 +80,7 @@ const user = {
       return new Promise(resolve => {
         commit('SET_TOKEN', '')
         removeToken()
+        removeRole()
         resolve()
       })
     }

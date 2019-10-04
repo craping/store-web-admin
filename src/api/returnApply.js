@@ -2,8 +2,8 @@ import request from '@/utils/request'
 export function fetchList(params) {
   return request({
     url:'/returnApply/list',
-    method:'get',
-    params:params
+    method:'post',
+    data:params
   })
 }
 
@@ -11,20 +11,21 @@ export function deleteApply(params) {
   return request({
     url:'/returnApply/delete',
     method:'post',
-    params:params
+    data:params
   })
 }
 export function updateApplyStatus(id,data) {
   return request({
-    url:'/returnApply/update/status/'+id,
+    url:'/returnApply/update/updateStatus',
     method:'post',
-    data:data
+    data:{...{id:id}, ...data}
   })
 }
 
 export function getApplyDetail(id) {
   return request({
-    url:'/returnApply/'+id,
-    method:'get'
+    url:'/returnApply/getItem',
+    method:'post',
+    data:{id:id}
   })
 }
