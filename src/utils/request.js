@@ -35,14 +35,14 @@ service.interceptors.response.use(
     const res = response.data
     if (res.errcode) {
       Message({
-        message: res.msg,
+        message: '错误码:' + res.errcode + '，' + res.msg,
         type: 'error',
         duration: 3 * 1000
       })
 
       // 401:未登录;
-      if (res.errcode === 401 || res.errcode === 403) {
-        MessageBox.confirm('你已被登出，可以取消继续留在该页面，或者重新登录', '确定登出', {
+      if (res.errcode === 101 || res.errcode === 999) {
+        MessageBox.confirm('ErrCode:' + res.errcode + '；你已被登出，可以取消继续留在该页面，或者重新登录', '确定登出', {
           confirmButtonText: '重新登录',
           cancelButtonText: '取消',
           type: 'warning'

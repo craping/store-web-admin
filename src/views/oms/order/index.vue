@@ -62,6 +62,17 @@
               </el-option>
             </el-select>
           </el-form-item>
+
+          <el-form-item label="供应商：">
+            <el-select v-model="listQuery.supId" filterable class="input-width" placeholder="全部" clearable>
+              <el-option v-for="item in suppliers"
+                :key="item.id"
+                :label="item.nickname"
+                :value="item.id">
+              </el-option>
+            </el-select>
+          </el-form-item>
+
         </el-form>
       </div>
     </el-card>
@@ -179,7 +190,7 @@
   </div>
 </template>
 <script>
-  import {fetchList,closeOrder,deleteOrder} from '@/api/order'
+  import {fetchList,closeOrder,deleteOrder,getSupList} from '@/api/order'
   import {formatDate} from '@/utils/date';
   import LogisticsDialog from '@/views/oms/order/components/logisticsDialog';
   const defaultListQuery = {
@@ -191,6 +202,7 @@
     orderType: null,
     sourceType: null,
     createTime: null,
+    supId: null
   };
   export default {
     name: "orderList",
@@ -203,72 +215,39 @@
         total: null,
         operateType: null,
         multipleSelection: [],
+        suppliers: [],
         closeOrder:{
           dialogVisible:false,
           content:null,
           orderIds:[]
         },
         statusOptions: [
-          {
-            label: '待付款',
-            value: 0
-          },
-          {
-            label: '待发货',
-            value: 1
-          },
-          {
-            label: '已发货',
-            value: 2
-          },
-          {
-            label: '已完成',
-            value: 3
-          },
-          {
-            label: '已关闭',
-            value: 4
-          }
+          { label: '待付款', value: 0 },
+          { label: '待发货', value: 1 },
+          { label: '已发货', value: 2 },
+          { label: '已收货', value: 3 },
+          { label: '已关闭', value: 4 },
+          { label: '已完成', value: 5 }
         ],
         orderTypeOptions: [
-          {
-            label: '正常订单',
-            value: 0
-          },
-          {
-            label: '秒杀订单',
-            value: 1
-          }
+          { label: '正常订单', value: 0 },
+          { label: '秒杀订单', value: 1 }
         ],
         sourceTypeOptions: [
-          {
-            label: 'PC订单',
-            value: 0
-          },
-          {
-            label: 'APP订单',
-            value: 1
-          }
+          { label: 'PC订单', value: 0 },
+          { label: 'APP订单', value: 1 }
         ],
         operateOptions: [
-          {
-            label: "批量发货",
-            value: 1
-          },
-          {
-            label: "关闭订单",
-            value: 2
-          },
-          {
-            label: "删除订单",
-            value: 3
-          }
+          { label: "批量发货", value: 1 },
+          { label: "关闭订单", value: 2 },
+          { label: "删除订单", value: 3 }
         ],
         logisticsDialogVisible:false
       }
     },
     created() {
       this.getList();
+      this.initSupList();
     },
     filters: {
       formatCreateTime(time) {
@@ -418,6 +397,11 @@
           this.listLoading = false;
           this.list = data.info;
           this.total = data.totalnum;
+        });
+      },
+      initSupList() {
+        getSupList().then(data => {
+          this.suppliers = data.info;
         });
       },
       deleteOrder(ids){

@@ -37,23 +37,6 @@
           </span>
           </el-input>
         </el-form-item>
-
-        <el-form-item prop="role">
-          <el-select name="role" style="width:318px;"
-            v-model="loginForm.role" placeholder="请选择角色">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          <span slot="prefix">
-            <svg-icon icon-class="role" class="color-main"></svg-icon>
-          </span>
-          </el-select>
-        </el-form-item>
-
-
         <el-form-item style="margin-bottom: 60px">
           <el-button style="width: 100%" type="primary" :loading="loading" @click.native.prevent="handleLogin">
             登录
@@ -86,32 +69,16 @@
         } else {
           callback()
         }
-      };
-      const validateRole = (rule, value, callback) => {
-        if (value.length < 1) {
-          callback(new Error('请选择登录角色'))
-        } else {
-          callback()
-        }
-      }; 
+      }
       return {
         loginForm: {
-          username: 'qweasd',
-          password: '111111',
-          role: ''
+          username: 'admin',
+          password: '123456'
         },
         loginRules: {
           username: [{required: true, trigger: 'blur', validator: validateUsername}],
-          password: [{required: true, trigger: 'blur', validator: validatePass}],
-          role: [{required: true, trigger: 'change', validator: validateRole}]
+          password: [{required: true, trigger: 'blur', validator: validatePass}]
         },
-        options: [{
-          value: 'admin',
-          label: '管理员'
-        }, {
-          value: 'sup',
-          label: '供应商'
-        }],
         loading: false,
         pwdType: 'password',
         login_center_bg

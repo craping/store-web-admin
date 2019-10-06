@@ -96,7 +96,7 @@ export default {
                                 //this.$router.back();
                             //});
                             const data = {seq: this.seq, token: this.token}
-                            this.$http.post("sup/add?format=json", this.supplier).then(data => {
+                            this.$http.post("admin/add?format=json", this.supplier).then(data => {
                                 console.log(data.result);
                                 if (!data.result) {
                                    

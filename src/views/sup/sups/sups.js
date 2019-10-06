@@ -221,7 +221,7 @@ export default {
             //     this.total = data.totalnum;
             // });
 
-            this.$http.post("sup/supList?format=json", this.listQuery).then(data => {
+            this.$http.post("admin/supList?format=json", this.listQuery).then(data => {
                 this.listLoading = false;
                 this.list = data.info;
                 this.total = data.totalnum;
