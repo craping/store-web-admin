@@ -51,7 +51,7 @@
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
         <el-table-column label="供应商名称" width="200" align="center">
-          <template slot-scope="scope">{{scope.row.nickname}}</template>
+          <template slot-scope="scope">{{scope.row.nick_name}}</template>
         </el-table-column>
         <el-table-column label="公司名称" width="350" align="center">
           <template slot-scope="scope">{{scope.row.com_name}}</template>

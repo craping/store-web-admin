@@ -217,6 +217,21 @@ export const constantRouterMap = [
         component: () => import('@/views/oms/apply/applyDetail'),
         meta: {title: '退货原因详情'},
         hidden:true
+      },
+      {
+        path: 'companyAddress',
+        name: 'companyAddress',
+        role: 'sup',
+        component: () => import('@/views/oms/companyAddress/address'),
+        meta: {title: '仓库地址管理', icon: 'address'}
+      },
+      {
+        path: 'addCompanyAddress',
+        name: 'addCompanyAddress',
+        role: 'sup',
+        component: () => import('@/views/oms/companyAddress/add'),
+        meta: {title: '新增仓库地址'},
+        hidden:true
       }
     ]
   },

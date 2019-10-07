@@ -97,14 +97,13 @@ export default {
                             //});
                             const data = {seq: this.seq, token: this.token}
                             this.$http.post("admin/add?format=json", this.supplier).then(data => {
-                                console.log(data.result);
-                                if (!data.result) {
-                                   
-                                } else {
-                                    
-                                }
-                            })
-                            .catch(error => {
+                                this.$message({
+                                    message: '提交成功',
+                                    type: 'success',
+                                    duration: 1000
+                                });
+                                this.$router.back();
+                            }).catch(error => {
                                 console.log(error);
                             });
                         }
