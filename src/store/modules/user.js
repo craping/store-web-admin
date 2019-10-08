@@ -50,9 +50,9 @@ const user = {
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
         getInfo().then(data => {
-          //commit('SET_ROLES', data.info.roles)
-          //commit('SET_NAME', data.info.username)
-          //commit('SET_AVATAR', data.info.icon)
+          commit('SET_ROLES', data.info.roles)
+          commit('SET_NAME', data.info.username)
+          commit('SET_AVATAR', data.info.icon)
           resolve(data)
         }).catch(error => {
           reject(error)

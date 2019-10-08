@@ -221,11 +221,10 @@ export default {
             //     this.total = data.totalnum;
             // });
 
-            this.$http.post("sup/supList?format=json", this.listQuery).then(data => {
+            this.$http.post("admin/supList?format=json", this.listQuery).then(data => {
                 this.listLoading = false;
                 this.list = data.info;
                 this.total = data.totalnum;
-                console.log(this.$store.getters.roles[0]);
                 // if (!data.result) {
                 //     this.bettings = data.info;
                 // } else {

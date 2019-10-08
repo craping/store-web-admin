@@ -7,6 +7,14 @@ export function fetchList(params) {
   })
 }
 
+export function getSupList() {
+  return request({
+    url:'/admin/querySupList',
+    method:'post',
+    data:{}
+  })
+}
+
 export function closeOrder(params) {
   return request({
     url:'/order/update/close',
