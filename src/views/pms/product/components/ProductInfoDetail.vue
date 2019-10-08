@@ -172,10 +172,10 @@
         });
       },
       getSupList() {
-        this.$http.post("sup/supList", {status:1, pageNum:1}).then(data => {
+        this.$http.post("admin/supList", {status:1, pageNum:1}).then(data => {
           this.supOptions = [];
           data.info.forEach(el => {
-            this.supOptions.push({label: el.nickname, value: el.id});
+            this.supOptions.push({label: el.nick_name, value: el.id});
           });
         })
       },
