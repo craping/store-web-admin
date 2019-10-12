@@ -54,9 +54,9 @@
       <el-form-item label="市场价：">
         <el-input v-model="value.originalPrice"></el-input>
       </el-form-item>
-      <el-form-item label="商品库存：">
+      <!-- <el-form-item label="商品库存：">
         <el-input v-model="value.stock"></el-input>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="计量单位：">
         <el-input v-model="value.unit"></el-input>
       </el-form-item>
@@ -172,10 +172,10 @@
         });
       },
       getSupList() {
-        this.$http.post("sup/supList", {status:1, pageNum:1}).then(data => {
+        this.$http.post("admin/supList", {status:1, pageNum:1}).then(data => {
           this.supOptions = [];
           data.info.forEach(el => {
-            this.supOptions.push({label: el.nickname, value: el.id});
+            this.supOptions.push({label: el.nick_name, value: el.id});
           });
         })
       },
