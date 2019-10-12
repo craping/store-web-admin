@@ -1,54 +1,26 @@
 <template>
   <div class="app-container">
-    <!-- <div class="address-layout">
-      <el-row :gutter="20">
-        <el-col :span="6">
-          <div class="out-border">
-            <div class="layout-title">GitHub地址</div>
-            <div class="color-main address-content">
-              <a href="https://github.com/macrozheng/mall">项目地址</a>
-            </div>
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="out-border">
-            <div class="layout-title">码云地址</div>
-            <div class="color-main address-content">
-              <a href="https://gitee.com/macrozheng/mall">项目地址</a>
-            </div>
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="out-border">
-            <div class="layout-title">学习教程</div>
-            <div class="color-main address-content">
-              <a href="https://github.com/macrozheng/mall-learning">项目地址</a>
-            </div>
-          </div>
-        </el-col>
-      </el-row>
-    </div> -->
     <div class="total-layout">
       <el-row :gutter="20">
         <el-col :span="8">
           <div class="total-frame">
             <img :src="img_home_order" class="total-icon">
             <div class="total-title">今日订单总数</div>
-            <div class="total-value">200</div>
+            <div class="total-value">{{statisticalData.todayOrderCount}}</div>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="total-frame">
             <img :src="img_home_today_amount" class="total-icon">
             <div class="total-title">今日销售总额</div>
-            <div class="total-value">￥5000.00</div>
+            <div class="total-value">￥{{statisticalData.todaySellTotalAmount}}</div>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="total-frame">
             <img :src="img_home_yesterday_amount" class="total-icon">
             <div class="total-title">昨日销售总额</div>
-            <div class="total-value">￥5000.00</div>
+            <div class="total-value">￥{{statisticalData.yesterdaySellTotalAmount}}</div>
           </div>
         </el-col>
         <!--<el-col :span="6">-->
@@ -75,94 +47,101 @@
           <el-col :span="8">
             <div class="un-handle-item">
               <span class="font-medium">待付款订单</span>
-              <span style="float: right" class="color-danger">(10)</span>
+              <span style="float: right" class="color-danger">
+                ({{statisticalData.prePaymentOrderCount}})
+              </span>
             </div>
           </el-col>
           <el-col :span="8">
             <div class="un-handle-item">
-              <span class="font-medium">已完成订单</span>
-              <span style="float: right" class="color-danger">(10)</span>
+              <span class="font-medium">待发货订单</span>
+              <span style="float: right" class="color-danger">
+                ({{statisticalData.preShipOrderCount}})
+              </span>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="un-handle-item">
+              <span class="font-medium">已发货订单</span>
+              <span style="float: right" class="color-danger">
+                ({{statisticalData.shippedOrderCount}})
+              </span>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="8">
+            <div class="un-handle-item">
+              <span class="font-medium">待处理退货订单</span>
+              <span style="float: right" class="color-danger">
+                ({{statisticalData.returnApplyOrderCount}})
+              </span>
             </div>
           </el-col>
           <el-col :span="8">
             <div class="un-handle-item">
               <span class="font-medium">待确认收货订单</span>
-              <span style="float: right" class="color-danger">(10)</span>
+              <span style="float: right" class="color-danger">
+                ({{statisticalData.preReceiveOrderCount}})
+              </span>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="un-handle-item">
+              <span class="font-medium">待处理退款订单</span>
+              <span style="float: right" class="color-danger">
+                ({{statisticalData.refundOrderCount}})
+              </span>
             </div>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
-          <el-col :span="8">
-            <div class="un-handle-item">
-              <span class="font-medium">待发货订单</span>
-              <span style="float: right" class="color-danger">(10)</span>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="un-handle-item">
-              <span class="font-medium">新缺货登记</span>
-              <span style="float: right" class="color-danger">(10)</span>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="un-handle-item">
-              <span class="font-medium">待处理退款申请</span>
-              <span style="float: right" class="color-danger">(10)</span>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
+        <!--<el-row :gutter="20">
           <el-col :span="8">
             <div class="un-handle-item">
               <span class="font-medium">已发货订单</span>
-              <span style="float: right" class="color-danger">(10)</span>
+              <span style="float: right" class="color-danger">
+                ({{statisticalData.prePaymentOrderCount}})
+              </span>
             </div>
           </el-col>
           <el-col :span="8">
             <div class="un-handle-item">
               <span class="font-medium">待处理退货订单</span>
-              <span style="float: right" class="color-danger">(10)</span>
+              <span style="float: right" class="color-danger">
+                ({{statisticalData.prePaymentOrderCount}})
+              </span>
             </div>
           </el-col>
           <el-col :span="8">
             <div class="un-handle-item">
               <span class="font-medium">广告位即将到期</span>
-              <span style="float: right" class="color-danger">(10)</span>
+              <span style="float: right" class="color-danger">
+                ({{statisticalData.prePaymentOrderCount}})
+              </span>
             </div>
           </el-col>
-        </el-row>
+        </el-row>-->
       </div>
     </div>
-    <div class="overview-layout">
+    <div class="overview-layout" v-if="role=='admin'">
       <el-row :gutter="20">
-        <el-col :span="12">
-          <div class="out-border">
-            <div class="layout-title">商品总览</div>
-            <div style="padding: 40px">
-              <el-row>
-                <el-col :span="6" class="color-danger overview-item-value">100</el-col>
-                <el-col :span="6" class="color-danger overview-item-value">400</el-col>
-                <el-col :span="6" class="color-danger overview-item-value">50</el-col>
-                <el-col :span="6" class="color-danger overview-item-value">500</el-col>
-              </el-row>
-              <el-row class="font-medium">
-                <el-col :span="6" class="overview-item-title">已下架</el-col>
-                <el-col :span="6" class="overview-item-title">已上架</el-col>
-                <el-col :span="6" class="overview-item-title">库存紧张</el-col>
-                <el-col :span="6" class="overview-item-title">全部商品</el-col>
-              </el-row>
-            </div>
-          </div>
-        </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
           <div class="out-border">
             <div class="layout-title">用户总览</div>
             <div style="padding: 40px">
               <el-row>
-                <el-col :span="6" class="color-danger overview-item-value">100</el-col>
-                <el-col :span="6" class="color-danger overview-item-value">200</el-col>
-                <el-col :span="6" class="color-danger overview-item-value">1000</el-col>
-                <el-col :span="6" class="color-danger overview-item-value">5000</el-col>
+                <el-col :span="6" class="color-danger overview-item-value">
+                  {{statisticalData.todayNewMemberCount}}
+                </el-col>
+                <el-col :span="6" class="color-danger overview-item-value">
+                  {{statisticalData.yesterdayNewMemberCount}}
+                </el-col>
+                <el-col :span="6" class="color-danger overview-item-value">
+                  {{statisticalData.thisMonthNewMemberCount}}
+                </el-col>
+                <el-col :span="6" class="color-danger overview-item-value">
+                  {{statisticalData.memberTotalCount}}
+                </el-col>
               </el-row>
               <el-row class="font-medium">
                 <el-col :span="6" class="overview-item-title">今日新增</el-col>
@@ -173,8 +152,30 @@
             </div>
           </div>
         </el-col>
+        <!--
+        <el-col :span="12">
+          <div class="out-border">
+            <div class="layout-title">商品总览</div>
+            <div style="padding: 40px">
+              <el-row>
+                <el-col :span="6" class="color-danger overview-item-value">-<div :class="[classNameA, classNameB]"></div></el-col>
+                <el-col :span="6" class="color-danger overview-item-value">-</el-col>
+                <el-col :span="6" class="color-danger overview-item-value">-<div :class="[classNameA, classNameB]"></div></el-col>
+                <el-col :span="6" class="color-danger overview-item-value">-</el-col>
+              </el-row>
+              <el-row class="font-medium">
+                <el-col :span="6" class="overview-item-title">已下架</el-col>
+                <el-col :span="6" class="overview-item-title">已上架</el-col>
+                <el-col :span="6" class="overview-item-title">库存紧张</el-col>
+                <el-col :span="6" class="overview-item-title">全部商品</el-col>
+              </el-row>
+            </div>
+          </div>
+        </el-col>
+        -->
       </el-row>
     </div>
+    <!--
     <div class="statistics-layout">
       <div class="layout-title">订单统计</div>
       <el-row>
@@ -240,11 +241,12 @@
           </div>
         </el-col>
       </el-row>
-    </div>
-  </div>
+    </div>-->
+  </div> 
 </template>
 
 <script>
+  import { getRole } from '@/utils/auth'
   import {str2Date} from '@/utils/date';
   import img_home_order from '@/assets/images/home_order.png';
   import img_home_today_amount from '@/assets/images/home_today_amount.png';
@@ -298,6 +300,21 @@
             }
           }]
         },
+        statisticalData: {
+          todayOrderCount : 0, // 今日订单总数
+          todaySellTotalAmount : 0, // 今日销售总额
+          yesterdaySellTotalAmount: 0, // 昨日销售总额
+          prePaymentOrderCount : 0, // 待付款订单
+          preShipOrderCount : 0, // 待发货订单
+          shippedOrderCount : 0, // 已发货订单
+          preReceiveOrderCount : 0, // 待确认收货订单
+          returnApplyOrderCount : 0, // 待处理退货订单
+          refundOrderCount : 0, // 待处理退款订单
+          todayNewMemberCount : 0, // 今日新增
+          yesterdayNewMemberCount : 0, // 昨日新增
+          thisMonthNewMemberCount : 0, // 本月新增
+          memberTotalCount : 0 // 会员总数
+        },
         orderCountDate: '',
         chartSettings: {
           xAxisType: 'time',
@@ -312,12 +329,15 @@
         dataEmpty: false,
         img_home_order,
         img_home_today_amount,
-        img_home_yesterday_amount
+        img_home_yesterday_amount,
+        role: ''
       }
     },
     created(){
       this.initOrderCountDate();
       this.getData();
+      this.getHomeData();
+      this.role = getRole();
     },
     methods:{
       handleDateChange(){
@@ -331,6 +351,14 @@
         const end = new Date();
         end.setTime(start.getTime() + 1000 * 60 * 60 * 24 * 7);
         this.orderCountDate=[start,end];
+      },
+      getHomeData() {
+        this.$http.post("home/statisticalData", {}).then(resp => {
+          this.statisticalData = resp.info;
+        })
+        .catch(error => {
+            console.log(error);
+        });
       },
       getData(){
         setTimeout(() => {

@@ -73,6 +73,18 @@ export default {
         if (valid) {
           console.log(this.form)
           console.log(this.radio)
+          this.$http
+            .post('member/memberBalance', {
+              id: this.user.id,
+              balance:
+                this.radio == '1' ? this.form.balance : `-${this.form.balance}`
+            })
+            .then(data => {
+              this.$emit('reload')
+            })
+            .catch(error => {
+              console.log(error)
+            })
           this.emitInput(false)
         } else {
           return false

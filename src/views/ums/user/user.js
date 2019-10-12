@@ -27,50 +27,53 @@ export default {
         content: null,
         orderIds: []
       },
-      isFreezen: true,
       tableData: [
-        {
-          id: 1,
-          date: '2016-05-02',
-          name: '王小虎',
-          level: '普通会员',
-          status: '正常',
-          balance: 20
-        },
-        {
-          id: 2,
-          date: '2016-05-04',
-          name: '王小虎',
-          level: '白金会员',
-          status: '正常',
-          balance: 20
-        },
-        {
-          id: 3,
-          date: '2016-05-01',
-          name: '王小虎',
-          level: '普通会员',
-          status: '正常',
-          balance: 20,
-          hasChildren: true
-        },
-        {
-          id: 4,
-          date: '2016-05-03',
-          name: '王小虎',
-          level: '黄金会员',
-          status: '正常',
-          balance: 20
-        }
+        // {
+        //   id: 1,
+        //   date: '2016-05-02',
+        //   name: '王小虎',
+        //   level: '普通会员',
+        //   status: '正常',
+        //   balance: 20
+        // },
+        // {
+        //   id: 2,
+        //   date: '2016-05-04',
+        //   name: '王小虎',
+        //   level: '白金会员',
+        //   status: '正常',
+        //   balance: 20
+        // },
+        // {
+        //   id: 3,
+        //   date: '2016-05-01',
+        //   name: '王小虎',
+        //   level: '普通会员',
+        //   status: '正常',
+        //   balance: 20,
+        //   hasChildren: true
+        // },
+        // {
+        //   id: 4,
+        //   date: '2016-05-03',
+        //   name: '王小虎',
+        //   level: '黄金会员',
+        //   status: '正常',
+        //   balance: 20
+        // }
       ],
       statusOptions: [
         {
-          label: '正常',
-          value: 1
+          value: '全部',
+          label: '全部'
         },
         {
-          label: '冻结',
-          value: 0
+          value: '冻结',
+          label: '冻结'
+        },
+        {
+          value: '正常',
+          label: '正常'
         }
       ],
       balanceDialogVisible: false,
@@ -79,6 +82,7 @@ export default {
   },
   created() {
     this.getList()
+    this.getUserByStatus()
   },
   filters: {
     formatCreateTime(time) {
@@ -128,7 +132,10 @@ export default {
       this.$router.push({ path: '/ums/userInfo', query: { id: row.id } })
     },
     handleUserBill(index, row) {
-      this.$router.push({ path: '/ums/userBill', query: { id: row.id } })
+      this.$router.push({
+        path: '/ums/userBill',
+        query: { id: row.id, name: row.userName }
+      })
     },
     handleUserEdit(index, row) {
       this.$router.push({ path: '/ums/edit', query: { id: row.id } })
@@ -149,25 +156,37 @@ export default {
     },
     handleLevelDialog(index, row) {
       this.userProps = row
+      console.log(row)
       this.levelDialogVisible = true
     },
     handleFrozen(index, row) {
-      let tipCon1 = this.isFreezen
-        ? '此操作将解冻该会员，是否继续'
-        : '此操作将冻结该会员, 是否继续?'
-      let tipCon2 = this.isFreezen ? '解冻成功!' : '冻结成功!'
-      let tipCon3 = this.isFreezen ? '已取消解冻' : '已取消冻结'
+      let tipCon1 =
+        row.status == '1'
+          ? '此操作将冻结该会员, 是否继续?'
+          : '此操作将解冻该会员，是否继续?'
+      let tipCon2 = row.status == '1' ? '冻结成功!' : '解冻成功!'
+      let tipCon3 = row.status == '1' ? '已取消冻结' : '已取消解冻'
       this.$confirm(tipCon1, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       })
         .then(() => {
-          this.isFreezen = !this.isFreezen
-          this.$message({
-            type: 'success',
-            message: tipCon2
-          })
+          this.$http
+            .post('member/freezeThaw', {
+              id: row.id,
+              status: row.status == '1' ? 0 : 1
+            })
+            .then(data => {
+              this.$message({
+                type: 'success',
+                message: tipCon2
+              })
+              this.reload()
+            })
+            .catch(error => {
+              console.log(error)
+            })
         })
         .catch(() => {
           this.$message({
@@ -177,26 +196,60 @@ export default {
         })
     },
     load(tree, treeNode, resolve) {
-      setTimeout(() => {
-        resolve([
-          {
-            id: 31,
-            date: '2016-05-01',
-            name: '王小虎',
-            level: '普通会员',
-            status: '正常',
-            balance: 20
-          },
-          {
-            id: 32,
-            date: '2016-05-01',
-            name: '王小虎',
-            level: '普通会员',
-            status: '冻结',
-            balance: 20
-          }
-        ])
-      }, 1000)
+      console.log(tree)
+      console.log(treeNode)
+
+      this.$http
+        .post('member/queryParentList', {
+          parentId: tree.id,
+          pageNum: 1,
+          pageSize: 10
+        })
+        .then(data => {
+          console.log([...data.info])
+          resolve([...data.info])
+          //   resolve([
+          //     {
+          //       id: 31,
+          //       date: '2016-05-01',
+          //       name: '王小虎',
+          //       level: '普通会员',
+          //       status: '正常',
+          //       balance: 20
+          //     },
+          //     {
+          //       id: 32,
+          //       date: '2016-05-01',
+          //       name: '王小虎',
+          //       level: '普通会员',
+          //       status: '冻结',
+          //       balance: 20
+          //     }
+          //   ])
+        })
+        .catch(error => {
+          console.log(error)
+        })
+      // setTimeout(() => {
+      //   resolve([
+      //     {
+      //       id: 31,
+      //       date: '2016-05-01',
+      //       name: '王小虎',
+      //       level: '普通会员',
+      //       status: '正常',
+      //       balance: 20
+      //     },
+      //     {
+      //       id: 32,
+      //       date: '2016-05-01',
+      //       name: '王小虎',
+      //       level: '普通会员',
+      //       status: '冻结',
+      //       balance: 20
+      //     }
+      //   ])
+      // }, 1000)
     },
     handleSizeChange(val) {
       this.listQuery.pageNum = 1
@@ -209,25 +262,27 @@ export default {
     },
     getList() {
       this.listLoading = true
-      // fetchList(this.listQuery).then(data => {
-      //     this.listLoading = false;
-      //     this.list = data.info;
-      //     this.total = data.totalnum;
-      // });
-
       this.$http
-        .post('sup/supList?format=json', this.listQuery)
+        .post('member/queryParentList', {})
         .then(data => {
-          this.listLoading = false
-          this.list = data.info
-          this.total = data.totalnum
-          console.log(this.$store.getters.roles[0])
-          // if (!data.result) {
-          //     this.bettings = data.info;
-          // } else {
-          //     Toast.fail(data.msg);
-          // }
+          this.tableData = data.info
+          setTimeout(() => {
+            this.listLoading = false
+          }, 1)
         })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    reload() {
+      this.getList()
+    },
+    getUserByStatus() {
+      this.$http
+        .post('memberLevel/list', {
+          defaultStatus: 0
+        })
+        .then(data => {})
         .catch(error => {
           console.log(error)
         })

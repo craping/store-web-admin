@@ -1,7 +1,8 @@
 import axios from 'axios'
+import sync from '@/utils/sync'
 import { Message, MessageBox } from 'element-ui'
 import store from '@/store'
-import { getToken } from '@/utils/auth'
+import { getToken, getRole } from '@/utils/auth'
 
 // 创建axios实例
 const service = axios.create({
@@ -14,11 +15,11 @@ service.interceptors.request.use(config => {
   if (!config.params || !config.params.format){
     config.params = { ...config.params, format: 'json' };
   }
-    
+  
+  console.log("roles:" + getRole())
   console.log("token:" + getToken())
   config.data.token = getToken();
-  //config.data.role = store.getters.roles;
-  console.log(store.getters.roles)
+  config.data.role = getRole();
   return config
 }, error => {
   // Do something with request error
@@ -35,14 +36,16 @@ service.interceptors.response.use(
     const res = response.data
     if (res.errcode) {
       Message({
-        message: res.msg,
+        message: '错误码:' + res.errcode + '，' + res.msg,
         type: 'error',
         duration: 3 * 1000
       })
 
+      sync.disconnect()
+
       // 401:未登录;
-      if (res.errcode === 401 || res.errcode === 403) {
-        MessageBox.confirm('你已被登出，可以取消继续留在该页面，或者重新登录', '确定登出', {
+      if (res.errcode === 101 || res.errcode === 999) {
+        MessageBox.confirm('ErrCode:' + res.errcode + '；你已被登出，可以取消继续留在该页面，或者重新登录', '确定登出', {
           confirmButtonText: '重新登录',
           cancelButtonText: '取消',
           type: 'warning'

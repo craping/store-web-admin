@@ -33,7 +33,11 @@
           <el-input v-model.number="ruleForm.superiorId"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')">立即添加</el-button>
+          <el-button
+            type="primary"
+            @click="submitForm('ruleForm')"
+            v-loading.fullscreen.lock="fullscreenLoading"
+          >立即添加</el-button>
           <el-button @click="resetForm('ruleForm')">重置</el-button>
         </el-form-item>
       </el-form>
@@ -86,6 +90,7 @@ export default {
         telphone: '',
         superiorId: ''
       },
+      fullscreenLoading: false,
 
       rules: {
         name: [
@@ -111,7 +116,29 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          alert('submit!')
+          const { ruleForm } = this
+          const params = {
+            userName: ruleForm.telphone,
+            password: ruleForm.pass,
+            nickName: ruleForm.name,
+            parentId: ruleForm.superiorId
+          }
+          this.fullscreenLoading = true
+          this.$http
+            .post('member/addMember', params)
+            .then(data => {
+              this.fullscreenLoading = false
+              this.$message({
+                message: '会员添加成功',
+                type: 'success',
+                onClose: () => {
+                  this.resetForm('ruleForm')
+                }
+              })
+            })
+            .catch(err => {
+              this.fullscreenLoading = false
+            })
         } else {
           console.log('error submit!!')
           return false

@@ -41,6 +41,11 @@
             <el-input size="small" v-model="scope.row.deliverySn"></el-input>
           </template>
         </el-table-column>
+        <el-table-column label="物流运费" width="180" align="center">
+          <template slot-scope="scope">
+            <el-input size="small" v-model="scope.row.freightAmount"></el-input>
+          </template>
+        </el-table-column>
       </el-table>
       <div style="margin-top: 15px;text-align: center">
         <el-button @click="cancel">取消</el-button>

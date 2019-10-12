@@ -109,7 +109,7 @@
   import {fetchList,deleteReason,updateStatus,addReason,getReasonDetail,updateReason} from '@/api/returnReason';
   const defaultListQuery = {
     pageNum: 1,
-    pageSize: 5
+    pageSize: 10
   };
   const defaultReturnReason = {
     name:null,
@@ -198,9 +198,10 @@
       handleStatusChange(index,row){
         let ids=[];
         ids.push(row.id);
-        let param = new URLSearchParams();
-        param.append("status",row.status);
-        param.append("ids",ids);
+        let param = {
+          status:row.status,
+          ids:ids
+        }
         updateStatus(param).then(data=>{
           this.$message({
             message: '状态修改成功',
@@ -248,8 +249,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          let params = new URLSearchParams();
-          params.append("ids",ids);
+          let params = {ids:ids};
           deleteReason(params).then(data=>{
             this.$message({
               message: '删除成功！',

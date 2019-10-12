@@ -26,7 +26,7 @@
         :span-method="objectSpanMethod"
         style="width: 100%"
         @selection-change="handleSelectionChange"
-        v-loading="listLoading"
+        :v-loading="listLoading"
         border
       >
         <el-table-column type="selection" width="60" align="center"></el-table-column>
@@ -35,7 +35,7 @@
         </el-table-column>-->
         <el-table-column label="商品图片" width="120" align="center">
           <template slot-scope="scope">
-            <img style="height: 80px" :src="scope.row.pic" />
+            <img style="height: 80px" :src="scope.row.pic">
           </template>
         </el-table-column>
         <el-table-column label="商品名称" align="center" prop="productName"></el-table-column>
@@ -96,27 +96,27 @@
   </div>
 </template>
 <script>
-import { fetchList, remove } from "@/api/agentLevel";
-import Big from "big.js";
+import { fetchList, remove } from '@/api/agentLevel'
+import Big from 'big.js'
 
 const defaultListQuery = {
   name: null,
   pageNum: 1,
   pageSize: 10
-};
+}
 
 export default {
-  name: "levelList",
+  name: 'levelList',
   data() {
     return {
       operates: [
         {
-          label: "显示品牌",
-          value: "showBrand"
+          label: '显示品牌',
+          value: 'showBrand'
         },
         {
-          label: "隐藏品牌",
-          value: "hideBrand"
+          label: '隐藏品牌',
+          value: 'hideBrand'
         }
       ],
       operateType: null,
@@ -129,7 +129,7 @@ export default {
         product: [],
         sku: []
       }
-    };
+    }
   },
   computed: {
     commission() {
@@ -138,18 +138,18 @@ export default {
           ? new Big(row.commission).toFixed(2)
           : row.cost
           ? new Big(row.price - row.cost).mul(row.rebate).toFixed(2)
-          : "";
-      };
+          : ''
+      }
     }
   },
   created() {
-    this.getList();
+    this.getList()
   },
   methods: {
     getList() {
-      this.listLoading = true;
-      this.$http.post("ams/commission/list", this.listQuery).then(data => {
-        this.listLoading = false;
+      this.listLoading = true
+      this.$http.post('ams/commission/list', this.listQuery).then(data => {
+        this.listLoading = false
         /* let map = {};
         data.info.forEach(e => {
           const p = map[e.productId];
@@ -213,163 +213,163 @@ export default {
           }
         });
         this.list = Object.values(map); */
-        this.list = data.info;
-        this.getSpanArr(data.info);
-        this.total = data.totalnum;
-        this.totalPage = data.totalPage;
-        this.pageSize = data.pageSize;
-      });
+        this.list = data.info
+        this.getSpanArr(data.info)
+        this.total = data.totalnum
+        this.totalPage = data.totalPage
+        this.pageSize = data.pageSize
+      })
     },
     getSpanArr(data) {
-      let productPos;
-      let skuPost;
+      let productPos
+      let skuPost
       this.spanArr = {
         product: [],
         sku: []
-      };
+      }
       for (var i = 0; i < data.length; i++) {
         if (i === 0) {
-          this.spanArr.product.push(1);
-          this.spanArr.sku.push(1);
-          productPos = 0;
-          skuPost = 0;
+          this.spanArr.product.push(1)
+          this.spanArr.sku.push(1)
+          productPos = 0
+          skuPost = 0
         } else {
           // 判断当前元素与上一个元素是否相同
           if (data[i].productId === data[i - 1].productId) {
-            this.spanArr.product[productPos] += 1;
-            this.spanArr.product.push(0);
+            this.spanArr.product[productPos] += 1
+            this.spanArr.product.push(0)
           } else {
-            this.spanArr.product.push(1);
-            productPos = i;
+            this.spanArr.product.push(1)
+            productPos = i
           }
 
           if (data[i].skuId === data[i - 1].skuId) {
-            this.spanArr.sku[skuPost] += 1;
-            this.spanArr.sku.push(0);
+            this.spanArr.sku[skuPost] += 1
+            this.spanArr.sku.push(0)
           } else {
-            this.spanArr.sku.push(1);
-            skuPost = i;
+            this.spanArr.sku.push(1)
+            skuPost = i
           }
         }
       }
     },
     objectSpanMethod({ row, column, rowIndex, columnIndex }) {
       if (columnIndex <= 2) {
-        const _row = this.spanArr.product[rowIndex];
-        const _col = _row > 0 ? 1 : 0;
+        const _row = this.spanArr.product[rowIndex]
+        const _col = _row > 0 ? 1 : 0
         return {
           rowspan: _row,
           colspan: _col
-        };
+        }
       }
 
       if (columnIndex <= 3) {
-        const _row = this.spanArr.sku[rowIndex];
-        const _col = _row > 0 ? 1 : 0;
+        const _row = this.spanArr.sku[rowIndex]
+        const _col = _row > 0 ? 1 : 0
         return {
           rowspan: _row,
           colspan: _col
-        };
+        }
       }
     },
     handleSelectionChange(val) {
-      this.multipleSelection = val;
+      this.multipleSelection = val
     },
     handleUpdate(index, row) {
-      const me = this;
-      this.$prompt("请输入佣金值", row.level + "-佣金设置", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+      const me = this
+      this.$prompt('请输入佣金值', row.level + '-佣金设置', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
         inputValue: me.commission(row),
         inputValidator: function(val) {
-          let com;
+          let com
           try {
-            com = new Big(val);
+            com = new Big(val)
           } catch (e) {
-            return "佣金格式错误";
+            return '佣金格式错误'
           }
           if (com.cmp(new Big(row.price - row.cost)) == 1)
-            return "佣金值不可大于利润";
-          return true;
+            return '佣金值不可大于利润'
+          return true
         },
-        inputErrorMessage: "佣金格式错误"
+        inputErrorMessage: '佣金格式错误'
       }).then(({ value }) => {
         const commission = {
           id: row.commissionId ? row.commissionId : null,
           skuId: row.skuId,
           levelId: row.levelId,
           commission: value
-        };
-        console.log(commission);
-        this.$http.post("ams/commission/set", commission).then(data => {
+        }
+        console.log(commission)
+        this.$http.post('ams/commission/set', commission).then(data => {
           this.$message({
             message: '修改成功',
             type: 'success',
             duration: 1000
-          });
-          me.getList();
+          })
+          me.getList()
         })
-      });
+      })
     },
     handleSizeChange(val) {
-      this.listQuery.pageNum = 1;
-      this.listQuery.pageSize = val;
-      this.getList();
+      this.listQuery.pageNum = 1
+      this.listQuery.pageSize = val
+      this.getList()
     },
     handleCurrentChange(val) {
-      this.listQuery.pageNum = val;
-      this.getList();
+      this.listQuery.pageNum = val
+      this.getList()
     },
     searchLevelList() {
-      this.listQuery.pageNum = 1;
-      this.getList();
+      this.listQuery.pageNum = 1
+      this.getList()
     },
     handleResetSearch() {
-      this.listQuery = Object.assign({}, defaultListQuery);
+      this.listQuery = Object.assign({}, defaultListQuery)
     },
     handleBatchOperate() {
       if (this.multipleSelection < 1) {
         this.$message({
-          message: "请选择一条记录",
-          type: "warning",
+          message: '请选择一条记录',
+          type: 'warning',
           duration: 1000
-        });
-        return;
+        })
+        return
       }
-      let showStatus = 0;
-      if (this.operateType === "showBrand") {
-        showStatus = 1;
-      } else if (this.operateType === "hideBrand") {
-        showStatus = 0;
+      let showStatus = 0
+      if (this.operateType === 'showBrand') {
+        showStatus = 1
+      } else if (this.operateType === 'hideBrand') {
+        showStatus = 0
       } else {
         this.$message({
-          message: "请选择批量操作类型",
-          type: "warning",
+          message: '请选择批量操作类型',
+          type: 'warning',
           duration: 1000
-        });
-        return;
+        })
+        return
       }
-      let ids = [];
+      let ids = []
       for (let i = 0; i < this.multipleSelection.length; i++) {
-        ids.push(this.multipleSelection[i].id);
+        ids.push(this.multipleSelection[i].id)
       }
-      let data = new URLSearchParams();
-      data.append("ids", ids);
-      data.append("showStatus", showStatus);
+      let data = new URLSearchParams()
+      data.append('ids', ids)
+      data.append('showStatus', showStatus)
       updateShowStatus(data).then(data => {
-        this.getList();
+        this.getList()
         this.$message({
-          message: "修改成功",
-          type: "success",
+          message: '修改成功',
+          type: 'success',
           duration: 1000
-        });
-      });
+        })
+      })
     },
     addLevel() {
-      this.$router.push({ path: "/ams/addLevel" });
+      this.$router.push({ path: '/ams/addLevel' })
     }
   }
-};
+}
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 </style>

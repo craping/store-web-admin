@@ -9,10 +9,8 @@
     >
       <el-form ref="form" :model="form" label-width="80px">
         <el-form-item label="代理等级">
-          <el-select v-model="form.level" :placeholder="user.level">
-            <el-option label="普通会员" value="0"></el-option>
-            <el-option label="白金会员" value="1"></el-option>
-            <el-option label="黄金会员" value="2"></el-option>
+          <el-select v-model="form.level" :placeholder="vipName[user.memberLevelId]">
+            <el-option v-for="(item,index) in vipName" :label="item" :value="index" :key="item"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -49,7 +47,19 @@ export default {
       form: {
         level: ''
       },
-      formLabelWidth: '120px'
+      formLabelWidth: '120px',
+      vipName: [
+        '普通会员',
+        '白金会员',
+        '黄金会员',
+        '钻石会员',
+        '金钻会员',
+        '至尊会员',
+        '至尊会员2',
+        '至尊会员3',
+        '至尊会员4',
+        '至尊会员5'
+      ]
     }
   },
   methods: {
@@ -60,8 +70,20 @@ export default {
       this.emitInput(false)
     },
     confirm() {
-      console.log(this.form)
       this.emitInput(false)
+
+      this.$http
+        .post('member/levelSet', {
+          id: this.user.id,
+          levelId: this.form.level
+        })
+        .then(data => {
+          this.$emit('reload')
+          this.form.level = ''
+        })
+        .catch(error => {
+          console.log(error)
+        })
     }
   }
 }

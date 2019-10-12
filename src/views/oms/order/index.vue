@@ -62,6 +62,17 @@
               </el-option>
             </el-select>
           </el-form-item>
+
+          <el-form-item label="供应商：">
+            <el-select v-model="listQuery.supId" filterable class="input-width" placeholder="全部" clearable>
+              <el-option v-for="item in suppliers"
+                :key="item.id"
+                :label="item.nickname"
+                :value="item.id">
+              </el-option>
+            </el-select>
+          </el-form-item>
+
         </el-form>
       </div>
     </el-card>
@@ -85,7 +96,7 @@
         <el-table-column label="提交时间" width="180" align="center">
           <template slot-scope="scope">{{scope.row.createTime | formatCreateTime}}</template>
         </el-table-column>
-        <el-table-column label="用户账号" align="center">
+        <el-table-column label="用户账号" width="200" align="center">
           <template slot-scope="scope">{{scope.row.memberUsername}}</template>
         </el-table-column>
         <el-table-column label="订单金额" width="120" align="center">
@@ -100,7 +111,7 @@
         <el-table-column label="订单状态" width="120" align="center">
           <template slot-scope="scope">{{scope.row.status | formatStatus}}</template>
         </el-table-column>
-        <el-table-column label="操作" width="200" align="center">
+        <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -179,7 +190,7 @@
   </div>
 </template>
 <script>
-  import {fetchList,closeOrder,deleteOrder} from '@/api/order'
+  import {fetchList,closeOrder,deleteOrder,getSupList} from '@/api/order'
   import {formatDate} from '@/utils/date';
   import LogisticsDialog from '@/views/oms/order/components/logisticsDialog';
   const defaultListQuery = {
@@ -191,6 +202,7 @@
     orderType: null,
     sourceType: null,
     createTime: null,
+    supId: null
   };
   export default {
     name: "orderList",
@@ -203,72 +215,39 @@
         total: null,
         operateType: null,
         multipleSelection: [],
+        suppliers: [],
         closeOrder:{
           dialogVisible:false,
           content:null,
           orderIds:[]
         },
         statusOptions: [
-          {
-            label: '待付款',
-            value: 0
-          },
-          {
-            label: '待发货',
-            value: 1
-          },
-          {
-            label: '已发货',
-            value: 2
-          },
-          {
-            label: '已完成',
-            value: 3
-          },
-          {
-            label: '已关闭',
-            value: 4
-          }
+          { label: '待付款', value: 0 },
+          { label: '待发货', value: 1 },
+          { label: '已发货', value: 2 },
+          { label: '已收货', value: 3 },
+          { label: '已关闭', value: 4 },
+          { label: '已完成', value: 5 }
         ],
         orderTypeOptions: [
-          {
-            label: '正常订单',
-            value: 0
-          },
-          {
-            label: '秒杀订单',
-            value: 1
-          }
+          { label: '正常订单', value: 0 },
+          { label: '秒杀订单', value: 1 }
         ],
         sourceTypeOptions: [
-          {
-            label: 'PC订单',
-            value: 0
-          },
-          {
-            label: 'APP订单',
-            value: 1
-          }
+          { label: 'PC订单', value: 0 },
+          { label: 'APP订单', value: 1 }
         ],
         operateOptions: [
-          {
-            label: "批量发货",
-            value: 1
-          },
-          {
-            label: "关闭订单",
-            value: 2
-          },
-          {
-            label: "删除订单",
-            value: 3
-          }
+          { label: "批量发货", value: 1 },
+          { label: "关闭订单", value: 2 },
+          { label: "删除订单", value: 3 }
         ],
         logisticsDialogVisible:false
       }
     },
     created() {
       this.getList();
+      this.initSupList();
     },
     filters: {
       formatCreateTime(time) {
@@ -397,9 +376,10 @@
           });
           return;
         }
-        let params = new URLSearchParams();
-        params.append('ids', this.closeOrder.orderIds);
-        params.append('note', this.closeOrder.content);
+        let params = {
+          ids:this.closeOrder.orderIds,
+          note:this.closeOrder.content
+        }
         closeOrder(params).then(data=>{
           this.closeOrder.orderIds=[];
           this.closeOrder.dialogVisible=false;
@@ -419,14 +399,20 @@
           this.total = data.totalnum;
         });
       },
+      initSupList() {
+        getSupList().then(data => {
+          this.suppliers = data.info;
+        });
+      },
       deleteOrder(ids){
         this.$confirm('是否要进行该删除操作?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          let params = new URLSearchParams();
-          params.append("ids",ids);
+          let params = {
+            ids:ids
+          }
           deleteOrder(params).then(data=>{
             this.$message({
               message: '删除成功！',
@@ -446,8 +432,9 @@
           receiverPhone:order.receiverPhone,
           receiverPostCode:order.receiverPostCode,
           address:address,
-          deliveryCompany:null,
-          deliverySn:null
+          deliveryCompany:order.deliveryCompany,
+          deliverySn:order.deliverySn,
+          deliveryFare:order.freightAmount
         };
         return listItem;
       }

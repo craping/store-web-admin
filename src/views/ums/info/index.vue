@@ -1,9 +1,53 @@
 <template>
   <div class="info-container">
     <div class="userInfo">
-      <div class="info-item" v-for="(item,keyV,index) in infoData" :key="keyV">
-        <div class="left">{{titleData[index]}}</div>
-        <div class="right">{{item}}</div>
+      <div class="info-item">
+        <div class="left">会员名称</div>
+        <div class="right">{{infoData.nickname}}</div>
+      </div>
+      <div class="info-item">
+        <div class="left">会员账号</div>
+        <div class="right">{{infoData.username}}</div>
+      </div>
+      <div class="info-item">
+        <div class="left">会员手机</div>
+        <div class="right">{{infoData.phone}}</div>
+      </div>
+      <div class="info-item">
+        <div class="left">会员等级</div>
+        <div class="right">{{infoData.member_level_id}}</div>
+      </div>
+      <div class="info-item">
+        <div class="left">创建时间</div>
+        <div class="right">{{infoData.create_time | formatCreateTime}}</div>
+      </div>
+      <div class="info-item">
+        <div class="left">余额</div>
+        <div class="right">{{infoData.balance}}元</div>
+      </div>
+      <div class="info-item">
+        <div class="left">提现</div>
+        <div class="right">{{infoData.cashout}}元</div>
+      </div>
+      <div class="info-item">
+        <div class="left">未到账收益</div>
+        <div class="right">{{infoData.unreceived_income}}元</div>
+      </div>
+      <div class="info-item">
+        <div class="left">直接成员</div>
+        <div class="right">{{infoData.direct_teams}}人</div>
+      </div>
+      <div class="info-item">
+        <div class="left">全部成员</div>
+        <div class="right">{{infoData.teams}}人</div>
+      </div>
+      <div class="info-item">
+        <div class="left">订单数</div>
+        <div class="right">{{infoData.orders}}人</div>
+      </div>
+      <div class="info-item">
+        <div class="left">用户状态</div>
+        <div class="right">{{infoData.STATUS == '1' ? '正常': '冻结'}}</div>
       </div>
     </div>
     <div class="dataList">
@@ -33,6 +77,7 @@
 </template>
 <script>
 import LogisticsDialog from '@/views/oms/order/components/logisticsDialog'
+import { formatDate } from '@/utils/date'
 export default {
   data() {
     return {
@@ -62,55 +107,38 @@ export default {
           recharge: '77'
         }
       ],
-      titleData: [
-        '会员名称',
-        '会员账号',
-        '会员手机',
-        '会员等级',
-        '创建时间',
-        '会员余额(RMB)',
-        '团队人数',
-        '团队订单数',
-        '团队销量(RMB)'
-      ],
-      infoData: {
-        name: 'xxx',
-        userName: 'ppp',
-        phone: '12345678912',
-        level: '普通用户',
-        createTime: '2019-09-09 18:30:20',
-        balance: '100',
-        teams: 10,
-        orders: 100,
-        sales: '1000'
-      }
+      infoData: {}
     }
+  },
+  filters: {
+    formatCreateTime(time) {
+      let date = new Date(time)
+      return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
+    }
+  },
+  created() {
+    this.getList()
   },
   methods: {
     handleSizeChange(val) {
       this.pageNum = 1
       this.pageSize = val
-      this.getList()
+      // this.getList()
     },
     handleCurrentChange(val) {
       this.pageNum = val
-      this.getList()
+      // this.getList()
     },
     getList() {
       this.listLoading = true
-
+      const params = {
+        id: this.$route.query.id
+      }
       this.$http
-        .post('sup/supList?format=json', this.listQuery)
+        .post('member/queryDetails', params)
         .then(data => {
           this.listLoading = false
-          this.list = data.info
-          this.total = data.totalnum
-          console.log(this.$store.getters.roles[0])
-          // if (!data.result) {
-          //     this.bettings = data.info;
-          // } else {
-          //     Toast.fail(data.msg);
-          // }
+          this.infoData = data.info[1]
         })
         .catch(error => {
           console.log(error)

@@ -54,15 +54,21 @@
       border
       lazy
       :load="load"
+      v-loading="listLoading"
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
       <el-table-column prop="id" label="编号" width="80"></el-table-column>
-      <el-table-column prop="name" label="姓名" width="100"></el-table-column>
-      <el-table-column prop="date" label="创建日期" width="100"></el-table-column>
-      <el-table-column prop="level" label="等级" width="180"></el-table-column>
-      <el-table-column prop="status" label="状态" width="150"></el-table-column>
+      <el-table-column prop="userName" label="账号" width="120"></el-table-column>
+      <el-table-column prop="teams" label="团队人数" width="100"></el-table-column>
+      <el-table-column prop="memberLevelId" label="等级" width="180"></el-table-column>
+      <el-table-column label="状态" width="150">
+        <template slot-scope="scope">
+          <p>{{scope.row.status == '1' ? '正常' : '冻结'}}</p>
+        </template>
+      </el-table-column>
       <el-table-column prop="balance" label="充值余额" width="150"></el-table-column>
-      <el-table-column label="操作" width="600" align="center">
+      <el-table-column prop="unreceivedIncome" label="未到账收益" width="150"></el-table-column>
+      <el-table-column label="操作" width="400" align="center">
         <template slot-scope="scope">
           <p>
             <el-button size="mini" @click="handleUserEdit(scope.$index, scope.row)">编辑</el-button>
@@ -70,12 +76,14 @@
               size="mini"
               type="danger"
               @click="handleFrozen(scope.$index, scope.row)"
-            >{{isFreezen ? '解冻' : '冻结'}}</el-button>
+            >{{scope.row.status == '1' ? '冻结' : '解冻'}}</el-button>
             <el-button
               size="mini"
               type="primary"
               @click="handleUserBill(scope.$index, scope.row)"
             >用户账单</el-button>
+          </p>
+          <p>
             <el-button size="mini" type="info" @click="handleViewInfo(scope.$index, scope.row)">查看详情</el-button>
             <el-button
               size="mini"
@@ -103,8 +111,8 @@
         :total="total"
       ></el-pagination>
     </div>
-    <balance-dialog :user="this.userProps" v-model="balanceDialogVisible"></balance-dialog>
-    <level-dialog :user="this.userProps" v-model="levelDialogVisible"></level-dialog>
+    <balance-dialog :user="this.userProps" @reload="reload" v-model="balanceDialogVisible"></balance-dialog>
+    <level-dialog :user="this.userProps" @reload="reload" v-model="levelDialogVisible"></level-dialog>
   </div>
 </template>
 <script src="./user.js"></script>

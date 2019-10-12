@@ -1,31 +1,28 @@
 import request from '@/utils/request'
 
-export function login(username, password, role) {
+export function login(username, password) {
   return request({
-    url: '/umscm/login',
+    url: '/admin/login',
     method: 'post',
     data: {
       username,
       password,
-      role
     }
   })
 }
 
 export function getInfo() {
   return request({
-    url: '/umscm/info',
+    url: '/admin/info',
     method: 'post',
     data: {}
   })
 }
 
-export function logout(token) {
+export function logout(token, role) {
   return request({
-    url: '/umscm/logout',
+    url: '/admin/logout',
     method: 'post',
-    data: {
-      token
-    }
+    data: {}
   })
 }

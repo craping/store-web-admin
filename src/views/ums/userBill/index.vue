@@ -10,8 +10,8 @@
           value-format="yyyy-MM-dd"
         ></el-date-picker>
         <el-button @click="filterSearch">搜索</el-button>
-        <div class="filter-item">
-          <p>收入：￥{{income}}</p>
+        <!-- <div class="filter-item">
+          <p>剩余余额：￥{{income}}</p>
           <el-progress
             :text-inside="true"
             :stroke-width="18"
@@ -20,14 +20,14 @@
           ></el-progress>
         </div>
         <div class="filter-item">
-          <p>支出：-￥{{outcome}}</p>
+          <p>总操作金额：-￥{{outcome}}</p>
           <el-progress
             :text-inside="true"
             :stroke-width="18"
             :percentage="outcomeper"
             status="exception"
           ></el-progress>
-        </div>
+        </div>-->
       </div>
     </div>
     <div class="dataList">
@@ -35,11 +35,16 @@
         <i class="el-icon-tickets"></i>
         <span>账单记录</span>
       </el-card>
-      <el-table :data="tableData" style="width: 100%">
-        <el-table-column prop="name" label="姓名" style="width:25%"></el-table-column>
-        <el-table-column prop="date" label="日期" style="width:25%"></el-table-column>
-        <el-table-column prop="matter" label="事项" style="width:25%"></el-table-column>
-        <el-table-column prop="recharge" label="额度(RMB)" style="width:25%"></el-table-column>
+      <el-table :data="tableData" style="width: 100%" v-loading="listLoading">
+        <el-table-column label="账户" style="width:25%">{{$route.query.name}}</el-table-column>
+        <el-table-column label="日期" style="width:30%">
+          <template slot-scope="scope">
+            <p>{{scope.row.createTime | formatTime}}</p>
+          </template>
+        </el-table-column>
+        <el-table-column prop="remark" label="事项" style="width:25%"></el-table-column>
+        <el-table-column prop="amount" label="操作金额(RMB)" style="width:25%"></el-table-column>
+        <el-table-column prop="afterAmount" label="当前账户余额(RMB)" style="width:25%"></el-table-column>
       </el-table>
     </div>
     <div class="pagination-container">
@@ -57,43 +62,18 @@
   </div>
 </template>
 <script>
-import LogisticsDialog from '@/views/oms/order/components/logisticsDialog'
+import { formatDate } from '@/utils/date'
 export default {
   data() {
     return {
       pageNum: 1,
       pageSize: 10,
       total: 100,
-      listLoading: false,
+      listLoading: true,
       value11: '',
-      income: 200,
-      outcome: 300,
-      tableData: [
-        {
-          date: '2016-05-02',
-          name: '王小虎',
-          matter: '购买衣服',
-          recharge: '-50'
-        },
-        {
-          date: '2016-05-04',
-          name: '王小虎',
-          matter: '分销收益',
-          recharge: '100'
-        },
-        {
-          date: '2016-05-01',
-          name: '王小虎',
-          matter: '购买衣服',
-          recharge: '-88'
-        },
-        {
-          date: '2016-05-03',
-          name: '王小虎',
-          matter: '分销收益',
-          recharge: '77'
-        }
-      ],
+      income: '',
+      outcome: '',
+      tableData: [],
       titleData: [
         '会员名称',
         '会员账号',
@@ -122,6 +102,18 @@ export default {
       return str
     }
   },
+  filters: {
+    formatTime(time) {
+      if (time == null || time === '') {
+        return 'N/A'
+      }
+      let date = new Date(time)
+      return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
+    }
+  },
+  created() {
+    this.getList()
+  },
   methods: {
     handleSizeChange(val) {
       this.pageNum = 1
@@ -136,17 +128,14 @@ export default {
       this.listLoading = true
 
       this.$http
-        .post('sup/supList?format=json', this.listQuery)
+        .post('member/memberBill', {
+          id: this.$route.query.id,
+          pageNum: 1,
+          pageSize: 10
+        })
         .then(data => {
+          this.tableData = data.info
           this.listLoading = false
-          this.list = data.info
-          this.total = data.totalnum
-          console.log(this.$store.getters.roles[0])
-          // if (!data.result) {
-          //     this.bettings = data.info;
-          // } else {
-          //     Toast.fail(data.msg);
-          // }
         })
         .catch(error => {
           console.log(error)
