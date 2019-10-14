@@ -98,52 +98,69 @@
         <el-row>
           <el-col class="form-border form-left-bg font-small" :span="6" style="height:52px;line-height:32px">确认退款金额
           </el-col>
-          <el-col class="form-border font-small" style="height:52px" :span="18">
-            ￥<el-input size="small" v-model="updateStatusParam.returnAmount" :disabled="orderReturnApply.status!==0" 
+          <el-col class="form-border font-small" style="height:52px" :span="18" v-if="this.role=='admin'">
+            ￥<el-input size="small" v-model="orderReturnApply.returnAmount" :disabled="orderReturnApply.status!==0" 
               style="width:200px;margin-left: 10px"></el-input>
           </el-col>
+          <el-col class="form-border font-small" style="height:52px" :span="18" v-if="this.role=='sup'">
+            ￥{{orderReturnApply.returnAmount}}
+          </el-col>
         </el-row>
-        <el-row>
-          <el-col class="form-border form-left-bg font-small" :span="6" style="height:52px;line-height:32px">订单运费金额
+        <el-row v-if="this.role=='admin'">
+          <el-col class="form-border form-left-bg font-small" :span="6" style="height:52px;line-height:32px">
+            订单运费金额
           </el-col>
           <el-col class="form-border font-small" style="height:52px" :span="18">
             ￥<el-input size="small" v-model="updateStatusParam.freightAmount" :disabled="orderReturnApply.status!==0" 
               style="width:200px;margin-left: 10px"></el-input>
           </el-col>
         </el-row>
-        <div v-show="orderReturnApply.status!==3">
-        <el-row>
-          <el-col class="form-border form-left-bg font-small" :span="6" style="height:52px;line-height:32px">选择收货点
-          </el-col>
-          <el-col class="form-border font-small" style="height:52px" :span="18">
-            <el-select size="small"
-                       style="width:200px"
-                       :disabled="orderReturnApply.status!==0"
-                       v-model="updateStatusParam.companyAddressId">
-              <el-option v-for="address in companyAddressList"
-                         :key="address.id"
-                         :value="address.id"
-                         :label="address.addressName">
-              </el-option>
-            </el-select>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col class="form-border form-left-bg font-small" :span="6">收货人姓名</el-col>
-          <el-col class="form-border font-small" :span="18">{{currentAddress.name}}</el-col>
-        </el-row>
-        <el-row>
-          <el-col class="form-border form-left-bg font-small" :span="6">所在区域</el-col>
-          <el-col class="form-border font-small" :span="18">{{currentAddress | formatRegion}}</el-col>
-        </el-row>
-        <el-row>
-          <el-col class="form-border form-left-bg font-small" :span="6">详细地址</el-col>
-          <el-col class="form-border font-small" :span="18">{{currentAddress.detailAddress}}</el-col>
-        </el-row>
-        <el-row>
-          <el-col class="form-border form-left-bg font-small" :span="6">联系电话</el-col>
-          <el-col class="form-border font-small" :span="18">{{currentAddress.phone}}</el-col>
-        </el-row>
+        <div v-if="orderReturnApply.status===0">
+          
+          <div v-if="companyAddressList==null || companyAddressList.length <= 0">
+            <el-row>
+              <el-col class="form-border form-left-bg font-small" :span="6" style="height:52px;line-height:32px">
+                选择收货点
+              </el-col>
+              <el-col class="form-border font-small" style="height:52px" :span="18">
+                <el-button icon="el-icon-plus" size="small" @click="handleAddAddress()">添加地址</el-button>
+              </el-col>
+            </el-row>
+          </div>
+          <div v-else>
+            <el-row>
+              <el-col class="form-border form-left-bg font-small" :span="6" style="height:52px;line-height:32px">
+                选择收货点
+              </el-col>
+              <el-col class="form-border font-small" style="height:52px" :span="18">
+                <el-select size="small" style="width:200px" :disabled="orderReturnApply.status!==0"
+                          v-model="updateStatusParam.companyAddressId">
+                  <el-option v-for="address in companyAddressList"
+                            :key="address.id"
+                            :value="address.id"
+                            :label="address.addressName">
+                  </el-option>
+                </el-select>
+                <el-button icon="el-icon-plus" size="small" @click="handleAddAddress()">添加地址</el-button>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col class="form-border form-left-bg font-small" :span="6">收货人姓名</el-col>
+              <el-col class="form-border font-small" :span="18">{{currentAddress.name}}</el-col>
+            </el-row>
+            <el-row>
+              <el-col class="form-border form-left-bg font-small" :span="6">所在区域</el-col>
+              <el-col class="form-border font-small" :span="18">{{currentAddress | formatRegion}}</el-col>
+            </el-row>
+            <el-row>
+              <el-col class="form-border form-left-bg font-small" :span="6">详细地址</el-col>
+              <el-col class="form-border font-small" :span="18">{{currentAddress.detailAddress}}</el-col>
+            </el-row>
+            <el-row>
+              <el-col class="form-border form-left-bg font-small" :span="6">联系电话</el-col>
+              <el-col class="form-border font-small" :span="18">{{currentAddress.phone}}</el-col>
+            </el-row>
+          </div>
         </div>
       </div>
       <div class="form-container-border" v-show="orderReturnApply.status!==0">
@@ -204,6 +221,7 @@
   import {getApplyDetail,updateApplyStatus} from '@/api/returnApply';
   import {fetchList} from '@/api/companyAddress';
   import {formatDate} from '@/utils/date';
+  import { getToken, getRole } from '@/utils/auth'
 
   const defaultUpdateStatusParam = {
     companyAddressId: null,
@@ -213,7 +231,8 @@
     receiveNote: null,
     returnAmount: 0,
     freightAmount: 0,
-    status: 0
+    status: 0,
+
   };
   const defaultOrderReturnApply = {
     id: null,
@@ -259,7 +278,8 @@
         productList: null,
         proofPics: null,
         updateStatusParam: Object.assign({}, defaultUpdateStatusParam),
-        companyAddressList: null
+        companyAddressList: null,
+        role: getRole()
       }
     },
     created() {
@@ -277,7 +297,7 @@
       currentAddress() {
         console.log("currentAddress()");
         let id = this.updateStatusParam.companyAddressId;
-        if(this.companyAddressList==null)return {};
+        if(this.companyAddressList==null) return {}
         for (let i = 0; i < this.companyAddressList.length; i++) {
           let address = this.companyAddressList[i];
           if (address.id === id) {
@@ -285,7 +305,7 @@
           }
         }
         return null;
-      }
+      },
     },
     filters: {
       formatStatus(status) {
@@ -316,6 +336,9 @@
       }
     },
     methods: {
+      handleAddAddress(){
+        this.$router.push('/oms/addCompanyAddress');
+      },
       handleViewOrder(){
         this.$router.push({path:'/oms/orderDetail',query:{id:this.orderReturnApply.orderId}});
       },
@@ -329,7 +352,7 @@
             this.proofPics = this.orderReturnApply.proofPics.split(",")
           }
           //退货中和完成
-          if(this.orderReturnApply.status===1||this.orderReturnApply.status===2){
+          if(this.orderReturnApply.status===1||this.orderReturnApply.status===2||this.orderReturnApply.status===0){
             this.updateStatusParam.returnAmount=this.orderReturnApply.returnAmount;
             this.updateStatusParam.freightAmount=this.orderReturnApply.freightAmount;
             this.updateStatusParam.companyAddressId=this.orderReturnApply.companyAddressId;
@@ -339,12 +362,11 @@
       },
       getCompanyAddressList() {
         fetchList().then(data => {
-          console.log("getCompanyAddressList()")
           this.companyAddressList = data.info;
           for (let i = 0; i < this.companyAddressList.length; i++) {
-            if (this.companyAddressList[i].receiveStatus === 1&&this.orderReturnApply.status===0) {
+            //if (this.companyAddressList[i].receiveStatus === 1&&this.orderReturnApply.status===0) {
               this.updateStatusParam.companyAddressId = this.companyAddressList[i].id;
-            }
+            //}
           }
         });
       },
