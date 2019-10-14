@@ -9,9 +9,7 @@
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
         <router-link class="inlineBlock" to="/">
-          <el-dropdown-item>
-            首页
-          </el-dropdown-item>
+          <el-dropdown-item>首页</el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>
           <span @click="logout" style="display:block;">退出</span>
@@ -23,6 +21,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import sync from '@/utils/sync'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 
@@ -32,10 +31,7 @@ export default {
     Hamburger
   },
   computed: {
-    ...mapGetters([
-      'sidebar',
-      'avatar'
-    ])
+    ...mapGetters(['sidebar', 'avatar'])
   },
   methods: {
     toggleSideBar() {
@@ -44,6 +40,7 @@ export default {
     logout() {
       this.$store.dispatch('LogOut').then(() => {
         location.reload() // 为了重新实例化vue-router对象 避免bug
+        sync.disconnect()
       })
     }
   }

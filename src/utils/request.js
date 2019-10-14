@@ -1,4 +1,5 @@
 import axios from 'axios'
+import sync from '@/utils/sync'
 import { Message, MessageBox } from 'element-ui'
 import store from '@/store'
 import { getToken, getRole } from '@/utils/auth'
@@ -39,6 +40,8 @@ service.interceptors.response.use(
         type: 'error',
         duration: 3 * 1000
       })
+
+      sync.disconnect()
 
       // 401:未登录;
       if (res.errcode === 101 || res.errcode === 999) {

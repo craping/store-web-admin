@@ -19,48 +19,55 @@ import Layout from '../views/layout/Layout'
   }
  **/
 export const constantRouterMap = [
-  {path: '/login', component: () => import('@/views/login/index'), hidden: true},
-  {path: '/404', component: () => import('@/views/404'), hidden: true},
+  {
+    path: '/login',
+    component: () => import('@/views/login/index'),
+    hidden: true
+  },
+  { path: '/404', component: () => import('@/views/404'), hidden: true },
   {
     path: '',
     component: Layout,
     redirect: '/home',
     role: 'common',
-    children: [{
-      path: 'home',
-      name: 'home',
-      role: 'common',
-      component: () => import('@/views/home/index'),
-      meta: {title: '首页', icon: 'home'}
-    }]
+    children: [
+      {
+        path: 'home',
+        name: 'home',
+        role: 'common',
+        component: () => import('@/views/home/index'),
+        meta: { title: '首页', icon: 'home' }
+      }
+    ]
   },
   {
     path: '/pms',
     component: Layout,
     redirect: '/pms/product',
     name: 'pms',
-    meta: {title: '商品', icon: 'product'},
+    meta: { title: '商品', icon: 'product' },
     role: 'admin',
-    children: [{
-      path: 'product',
-      name: 'product',
-      role: 'admin',
-      component: () => import('@/views/pms/product/index'),
-      meta: {title: '商品列表', icon: 'product-list'}
-    },
+    children: [
+      {
+        path: 'product',
+        name: 'product',
+        role: 'admin',
+        component: () => import('@/views/pms/product/index'),
+        meta: { title: '商品列表', icon: 'product-list' }
+      },
       {
         path: 'addProduct',
         name: 'addProduct',
         role: 'admin',
         component: () => import('@/views/pms/product/add'),
-        meta: {title: '添加商品', icon: 'product-add'}
+        meta: { title: '添加商品', icon: 'product-add' }
       },
       {
         path: 'updateProduct',
         name: 'updateProduct',
         role: 'admin',
         component: () => import('@/views/pms/product/update'),
-        meta: {title: '修改商品', icon: 'product-add'},
+        meta: { title: '修改商品', icon: 'product-add' },
         hidden: true
       },
       {
@@ -68,7 +75,7 @@ export const constantRouterMap = [
         name: 'productRecycle',
         role: 'admin',
         component: () => import('@/views/pms/product/index'),
-        meta: {title: '商品回收站', icon: 'product-recycle'},
+        meta: { title: '商品回收站', icon: 'product-recycle' },
         hidden: true
       },
       {
@@ -76,7 +83,7 @@ export const constantRouterMap = [
         name: 'productComment',
         role: 'admin',
         component: () => import('@/views/pms/product/index'),
-        meta: {title: '商品评价', icon: 'product-comment'},
+        meta: { title: '商品评价', icon: 'product-comment' },
         hidden: true
       },
       {
@@ -84,14 +91,14 @@ export const constantRouterMap = [
         name: 'productCate',
         role: 'admin',
         component: () => import('@/views/pms/productCate/index'),
-        meta: {title: '商品类目', icon: 'product-cate'}
+        meta: { title: '商品类目', icon: 'product-cate' }
       },
       {
         path: 'addProductCate',
         name: 'addProductCate',
         role: 'admin',
         component: () => import('@/views/pms/productCate/add'),
-        meta: {title: '添加商品类目'},
+        meta: { title: '添加商品类目' },
         hidden: true
       },
       {
@@ -99,7 +106,7 @@ export const constantRouterMap = [
         name: 'updateProductCate',
         role: 'admin',
         component: () => import('@/views/pms/productCate/update'),
-        meta: {title: '修改商品类目'},
+        meta: { title: '修改商品类目' },
         hidden: true
       },
       {
@@ -107,14 +114,14 @@ export const constantRouterMap = [
         name: 'productAttr',
         role: 'admin',
         component: () => import('@/views/pms/productAttr/index'),
-        meta: {title: '规格类型', icon: 'product-attr'}
+        meta: { title: '规格类型', icon: 'product-attr' }
       },
       {
         path: 'productAttrList',
         name: 'productAttrList',
         role: 'admin',
         component: () => import('@/views/pms/productAttr/productAttrList'),
-        meta: {title: '商品属性列表'},
+        meta: { title: '商品属性列表' },
         hidden: true
       },
       {
@@ -122,7 +129,7 @@ export const constantRouterMap = [
         name: 'addProductAttr',
         role: 'admin',
         component: () => import('@/views/pms/productAttr/addProductAttr'),
-        meta: {title: '添加商品属性'},
+        meta: { title: '添加商品属性' },
         hidden: true
       },
       {
@@ -130,7 +137,7 @@ export const constantRouterMap = [
         name: 'updateProductAttr',
         role: 'admin',
         component: () => import('@/views/pms/productAttr/updateProductAttr'),
-        meta: {title: '修改商品属性'},
+        meta: { title: '修改商品属性' },
         hidden: true
       },
       {
@@ -138,14 +145,14 @@ export const constantRouterMap = [
         name: 'brand',
         role: 'admin',
         component: () => import('@/views/pms/brand/index'),
-        meta: {title: '品牌管理', icon: 'product-brand'}
+        meta: { title: '品牌管理', icon: 'product-brand' }
       },
       {
         path: 'addBrand',
         name: 'addBrand',
         role: 'admin',
         component: () => import('@/views/pms/brand/add'),
-        meta: {title: '添加品牌'},
+        meta: { title: '添加品牌' },
         hidden: true
       },
       {
@@ -153,7 +160,7 @@ export const constantRouterMap = [
         name: 'updateBrand',
         role: 'admin',
         component: () => import('@/views/pms/brand/update'),
-        meta: {title: '编辑品牌'},
+        meta: { title: '编辑品牌' },
         hidden: true
       }
     ]
@@ -163,7 +170,7 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/oms/order',
     name: 'oms',
-    meta: {title: '订单', icon: 'order'},
+    meta: { title: '订单', icon: 'order' },
     role: 'common',
     children: [
       {
@@ -171,59 +178,59 @@ export const constantRouterMap = [
         name: 'order',
         role: 'common',
         component: () => import('@/views/oms/order/index'),
-        meta: {title: '订单列表', icon: 'product-list'}
+        meta: { title: '订单列表', icon: 'product-list' }
       },
       {
         path: 'orderDetail',
         name: 'orderDetail',
         role: 'common',
         component: () => import('@/views/oms/order/orderDetail'),
-        meta: {title: '订单详情'},
-        hidden:true
+        meta: { title: '订单详情' },
+        hidden: true
       },
       {
         path: 'deliverOrderList',
         name: 'deliverOrderList',
         role: 'common',
         component: () => import('@/views/oms/order/deliverOrderList'),
-        meta: {title: '发货列表'},
-        hidden:true
+        meta: { title: '发货列表' },
+        hidden: true
       },
       {
         path: 'orderSetting',
         name: 'orderSetting',
         role: 'admin',
         component: () => import('@/views/oms/order/setting'),
-        meta: {title: '订单设置', icon: 'order-setting'}
+        meta: { title: '订单设置', icon: 'order-setting' }
       },
       {
         path: 'returnApply',
         name: 'returnApply',
         role: 'common',
         component: () => import('@/views/oms/apply/index'),
-        meta: {title: '退货申请处理', icon: 'order-return'}
+        meta: { title: '退货申请处理', icon: 'order-return' }
       },
       {
         path: 'returnReason',
         name: 'returnReason',
         role: 'admin',
         component: () => import('@/views/oms/apply/reason'),
-        meta: {title: '退货原因设置', icon: 'order-return-reason'}
+        meta: { title: '退货原因设置', icon: 'order-return-reason' }
       },
       {
         path: 'returnApplyDetail',
         name: 'returnApplyDetail',
         role: 'admin',
         component: () => import('@/views/oms/apply/applyDetail'),
-        meta: {title: '退货原因详情'},
-        hidden:true
+        meta: { title: '退货原因详情' },
+        hidden: true
       },
       {
         path: 'companyAddress',
         name: 'companyAddress',
         role: 'sup',
         component: () => import('@/views/oms/companyAddress/address'),
-        meta: {title: '仓库地址管理', icon: 'address'}
+        meta: { title: '仓库地址管理', icon: 'address' }
       },
       {
         path: 'addCompanyAddress',
@@ -238,7 +245,7 @@ export const constantRouterMap = [
         name: 'updateAddress',
         role: 'sup',
         component: () => import('@/views/oms/companyAddress/update'),
-        meta: {title: '新增仓库地址'},
+        meta: {title: '修改仓库地址'},
         hidden:true
       }
     ]
@@ -247,42 +254,47 @@ export const constantRouterMap = [
     path: '/ams',
     name: 'ams',
     component: Layout,
-    meta: {title: '分销', icon: 'tree'},
+    meta: { title: '分销', icon: 'tree' },
     role: 'admin',
-    children:[{
-      path: 'level',
-      name: 'level',
-      role: 'admin',
-      component: () => import('@/views/ams/level/index'),
-      meta: {title: '等级管理', icon: 'level'}
-    },{
-      path: 'addLevel',
-      name: 'addLevel',
-      role: 'admin',
-      component: () => import('@/views/ams/level/add'),
-      meta: {title: '添加等级', icon: 'level'},
-      hidden: true
-    },{
-      path: 'updateLevel',
-      name: 'updateLevel',
-      role: 'admin',
-      component: () => import('@/views/ams/level/update'),
-      meta: {title: '编辑等级', icon: 'level'},
-      hidden: true
-    },{
-      path: 'commission',
-      name: 'commission',
-      role: 'admin',
-      component: () => import('@/views/ams/commission/index'),
-      meta: {title: '佣金管理', icon: 'price'}
-    }]
+    children: [
+      {
+        path: 'level',
+        name: 'level',
+        role: 'admin',
+        component: () => import('@/views/ams/level/index'),
+        meta: { title: '等级管理', icon: 'level' }
+      },
+      {
+        path: 'addLevel',
+        name: 'addLevel',
+        role: 'admin',
+        component: () => import('@/views/ams/level/add'),
+        meta: { title: '添加等级', icon: 'level' },
+        hidden: true
+      },
+      {
+        path: 'updateLevel',
+        name: 'updateLevel',
+        role: 'admin',
+        component: () => import('@/views/ams/level/update'),
+        meta: { title: '编辑等级', icon: 'level' },
+        hidden: true
+      },
+      {
+        path: 'commission',
+        name: 'commission',
+        role: 'admin',
+        component: () => import('@/views/ams/commission/index'),
+        meta: { title: '佣金管理', icon: 'price' }
+      }
+    ]
   },
   {
-    path:'/sms',
+    path: '/sms',
     component: Layout,
     redirect: '/sms/coupon',
     name: 'sms',
-    meta: {title: '营销', icon: 'sms'},
+    meta: { title: '营销', icon: 'sms' },
     role: 'admin',
     children: [
       /* {
@@ -368,32 +380,32 @@ export const constantRouterMap = [
         name: 'homeAdvertise',
         role: 'admin',
         component: () => import('@/views/sms/advertise/index'),
-        meta: {title: '广告列表', icon: 'sms-ad'}
+        meta: { title: '广告列表', icon: 'sms-ad' }
       },
       {
         path: 'addAdvertise',
         name: 'addHomeAdvertise',
         role: 'admin',
         component: () => import('@/views/sms/advertise/add'),
-        meta: {title: '添加广告'},
-        hidden:true
+        meta: { title: '添加广告' },
+        hidden: true
       },
       {
         path: 'updateAdvertise',
         name: 'updateHomeAdvertise',
         role: 'admin',
         component: () => import('@/views/sms/advertise/update'),
-        meta: {title: '编辑广告'},
-        hidden:true
+        meta: { title: '编辑广告' },
+        hidden: true
       }
     ]
   },
   {
-    path:'/sup',
+    path: '/sup',
     component: Layout,
     redirect: '/sup/sups',
     name: 'sup',
-    meta: {title: '供应商', icon: 'courier'},
+    meta: { title: '供应商', icon: 'courier' },
     role: 'admin',
     children: [
       {
@@ -401,23 +413,119 @@ export const constantRouterMap = [
         name: 'sups',
         role: 'admin',
         component: () => import('@/views/sup/sups'),
-        meta: {title: '供应商列表', icon: 'teamwork'}
+        meta: { title: '供应商列表', icon: 'teamwork' }
       },
       {
         path: 'addSup',
         name: 'addSup',
         role: 'admin',
         component: () => import('@/views/sup/add'),
-        meta: {title: '添加供应商', icon: 'add-user'}
+        meta: { title: '添加供应商', icon: 'add-user' }
       }
     ]
   },
-  {path: '*', redirect: '/404', hidden: true}
+  {
+    path: '/ums',
+    component: Layout,
+    redirect: '/ums/user',
+    name: 'users',
+    meta: { title: '会员管理', icon: 'user' },
+    role: 'admin',
+    children: [
+      {
+        path: 'user',
+        name: 'user',
+        role: 'admin',
+        component: () => import('@/views/ums/user'),
+        meta: { title: '会员列表', icon: 'user' }
+      },
+      {
+        path: 'userInfo',
+        name: 'userInfo',
+        role: 'admin',
+        component: () => import('@/views/ums/info'),
+        meta: { title: '会员详情' },
+        hidden: true
+      },
+      {
+        path: 'userBill',
+        name: 'userBill',
+        role: 'admin',
+        component: () => import('@/views/ums/userBill'),
+        meta: { title: '用户账单' },
+        hidden: true
+      },
+      {
+        path: 'edit',
+        name: 'edit',
+        role: 'admin',
+        component: () => import('@/views/ums/edit'),
+        meta: { title: '用户编辑' },
+        hidden: true
+      },
+      {
+        path: 'addUser',
+        name: 'addUser',
+        role: 'admin',
+        component: () => import('@/views/ums/addUser'),
+        meta: { title: '添加会员', icon: 'add-user' }
+      },
+      {
+        path: 'message',
+        name: 'message',
+        role: 'admin',
+        component: () => import('@/views/ums/message'),
+        meta: { title: '系统消息', icon: 'product' }
+      }
+    ]
+  },
+  {
+    path: '/fms',
+    component: Layout,
+    redirect: '/fms/withdraw',
+    name: 'withdraw',
+    meta: { title: '财务管理', icon: 'user' },
+    role: 'admin',
+    children: [
+      {
+        path: 'withdraw',
+        name: 'withdraw',
+        role: 'admin',
+        component: () => import('@/views/fms/withdraw'),
+        meta: { title: '提现列表', icon: 'user' }
+      },
+      {
+        path: 'withdrawInfo',
+        name: 'withdrawInfo',
+        role: 'admin',
+        component: () => import('@/views/fms/info/info'),
+        meta: { title: '提现详情', icon: 'user' },
+        hidden: true
+      }
+    ]
+  },
+  {
+    path: '/scm',
+    component: Layout,
+    redirect: '/scm/config',
+    name: 'config',
+    meta: { title: '系统配置管理', icon: 'user' },
+    role: 'admin',
+    children: [
+      {
+        path: 'config',
+        name: 'config',
+        role: 'admin',
+        component: () => import('@/views/scm/config'),
+        meta: { title: '系统配置管理', icon: 'user' }
+      }
+    ]
+  },
+  { path: '*', redirect: '/404', hidden: true }
 ]
 
 export default new Router({
   // mode: 'history', //后端支持可开
-  scrollBehavior: () => ({y: 0}),
+  scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })
-
