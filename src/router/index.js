@@ -492,7 +492,7 @@ export const constantRouterMap = [
         name: 'withdraw',
         role: 'admin',
         component: () => import('@/views/fms/withdraw'),
-        meta: { title: '提现列表', icon: 'user' }
+        meta: { title: '提现列表', icon: 'withdraw' }
       },
       {
         path: 'withdrawInfo',
@@ -509,7 +509,7 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/scm/config',
     name: 'config',
-    meta: { title: '系统配置管理', icon: 'user' },
+    meta: { title: '系统配置管理', icon: 'management' },
     role: 'admin',
     children: [
       {
@@ -517,7 +517,30 @@ export const constantRouterMap = [
         name: 'config',
         role: 'admin',
         component: () => import('@/views/scm/config'),
-        meta: { title: '系统配置管理', icon: 'user' }
+        meta: { title: '系统配置管理', icon: 'order-setting' }
+      },
+      {
+        path: 'payChannel',
+        name: 'payChannel',
+        role: 'admin',
+        component: () => import('@/views/oms/pay/channel'),
+        meta: { title: '支付渠道列表', icon: 'money-bag' }
+      },
+      {
+        path: 'addChannel',
+        name: 'addChannel',
+        role: 'admin',
+        component: () => import('@/views/oms/pay/add'),
+        meta: { title: '添加支付渠道'},
+        hidden: true
+      },
+      {
+        path: 'updateChannel',
+        name: 'updateChannel',
+        role: 'admin',
+        component: () => import('@/views/oms/pay/update'),
+        meta: { title: '修改支付渠道'},
+        hidden: true
       }
     ]
   },
