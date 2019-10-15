@@ -475,14 +475,14 @@ export const constantRouterMap = [
         name: 'message',
         role: 'admin',
         component: () => import('@/views/ums/message'),
-        meta: { title: '系统消息', icon: 'product' }
+        meta: { title: '系统消息', icon: 'sysmessage' }
       },
       {
         path: 'messagelist',
         name: 'messagelist',
         role: 'admin',
         component: () => import('@/views/ums/message/list'),
-        meta: { title: '消息列表', icon: 'product' }
+        meta: { title: '消息列表', icon: 'messagelist' }
       }
     ]
   },
