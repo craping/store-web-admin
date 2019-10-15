@@ -64,41 +64,40 @@
       :data="tableData"
       style="width: 100%"
       row-key="id"
-      border
       lazy
       v-loading="listLoading"
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
-      <el-table-column prop="agentId" label="用户名" width="80"></el-table-column>
-      <el-table-column prop="recordNo" label="订单号" width="150"></el-table-column>
-      <el-table-column prop="amount" label="金额" width="50"></el-table-column>
-      <el-table-column prop="fees" label="手续费(元)" width="100"></el-table-column>
-      <el-table-column label="申请时间" width="100">
+      <el-table-column prop="agentId" label="用户名" width="200" align="center"></el-table-column>
+      <el-table-column prop="recordNo" label="订单号" width="200" align="center"></el-table-column>
+      <el-table-column prop="amount" label="金额" width="100" align="center"></el-table-column>
+      <el-table-column prop="fees" label="手续费(元)" width="100" align="center"></el-table-column>
+      <el-table-column label="申请时间" width="200" align="center">
         <template slot-scope="scope">
           <p>{{scope.row.createTime | formatTime}}</p>
         </template>
       </el-table-column>
-      <el-table-column label="订单状态" width="100">
+      <el-table-column label="订单状态" width="100" align="center">
         <template slot-scope="scope">
           <p>{{statusArr[scope.row.status+1]}}</p>
         </template>
       </el-table-column>
-      <el-table-column label="锁定状态" width="100">
+      <el-table-column label="锁定状态" width="100" align="center">
         <template slot-scope="scope">
           <p>{{lockArr[scope.row.lockStatus]}}</p>
         </template>
       </el-table-column>
-      <el-table-column label="审核状态" width="100">
+      <el-table-column label="审核状态" width="100" align="center">
         <template slot-scope="scope">
           <p>{{verifyArr[scope.row.checkStatus]}}</p>
         </template>
       </el-table-column>
-      <el-table-column label="汇款状态" width="100">
+      <el-table-column label="汇款状态" width="100" align="center">
         <template slot-scope="scope">
           <p>{{progressArr[scope.row.remitStatus]}}</p>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="400" align="center">
+      <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <p>
             <el-button

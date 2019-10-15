@@ -2,35 +2,34 @@
   <div class="app-container">
     <div class="total-layout">
       <el-row :gutter="20">
-        <el-col :span="8">
+        <el-col :span="6">
           <div class="total-frame">
             <img :src="img_home_order" class="total-icon">
             <div class="total-title">今日订单总数</div>
             <div class="total-value">{{statisticalData.todayOrderCount}}</div>
           </div>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="6">
           <div class="total-frame">
             <img :src="img_home_today_amount" class="total-icon">
             <div class="total-title">今日销售总额</div>
             <div class="total-value">￥{{statisticalData.todaySellTotalAmount}}</div>
           </div>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="6">
           <div class="total-frame">
             <img :src="img_home_yesterday_amount" class="total-icon">
             <div class="total-title">昨日销售总额</div>
             <div class="total-value">￥{{statisticalData.yesterdaySellTotalAmount}}</div>
           </div>
         </el-col>
-        <!--<el-col :span="6">-->
-          <!--<div class="total-frame">-->
-            <!--<svg-icon icon-class="total-week" class="total-icon">-->
-            <!--</svg-icon>-->
-            <!--<div class="total-title">近7天销售总额</div>-->
-            <!--<div class="total-value">￥50000.00</div>-->
-          <!--</div>-->
-        <!--</el-col>-->
+        <el-col :span="6">
+          <div class="total-frame">
+            <svg-icon icon-class="withdraw" class="total-icon"></svg-icon>
+            <div class="total-title">提现订单数</div>
+            <div class="total-value">{{statisticalData.withdrawCount}}</div>
+          </div>
+        </el-col>
       </el-row>
     </div>
     <!-- <el-card class="mine-layout">
