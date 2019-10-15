@@ -54,7 +54,7 @@
         @current-change="handleCurrentChange"
         layout="total, sizes,prev, pager, next,jumper"
         :current-page.sync="pageNum"
-        :page-size="pageSize"
+        :page-size.sync="pageSize"
         :page-sizes="[5,10,15]"
         :total="total"
       ></el-pagination>
@@ -68,7 +68,7 @@ export default {
     return {
       pageNum: 1,
       pageSize: 10,
-      total: 100,
+      total: null,
       listLoading: true,
       value11: '',
       income: '',
@@ -115,13 +115,10 @@ export default {
     this.getList()
   },
   methods: {
-    handleSizeChange(val) {
-      this.pageNum = 1
-      this.pageSize = val
+    handleSizeChange() {
       this.getList()
     },
-    handleCurrentChange(val) {
-      this.pageNum = val
+    handleCurrentChange() {
       this.getList()
     },
     getList() {
@@ -135,6 +132,7 @@ export default {
         })
         .then(data => {
           this.tableData = data.info
+          this.total = data.totalnum
           this.listLoading = false
         })
         .catch(error => {

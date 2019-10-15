@@ -27,41 +27,8 @@ export default {
         content: null,
         orderIds: []
       },
-      tableData: [
-        // {
-        //   id: 1,
-        //   date: '2016-05-02',
-        //   name: '王小虎',
-        //   level: '普通会员',
-        //   status: '正常',
-        //   balance: 20
-        // },
-        // {
-        //   id: 2,
-        //   date: '2016-05-04',
-        //   name: '王小虎',
-        //   level: '白金会员',
-        //   status: '正常',
-        //   balance: 20
-        // },
-        // {
-        //   id: 3,
-        //   date: '2016-05-01',
-        //   name: '王小虎',
-        //   level: '普通会员',
-        //   status: '正常',
-        //   balance: 20,
-        //   hasChildren: true
-        // },
-        // {
-        //   id: 4,
-        //   date: '2016-05-03',
-        //   name: '王小虎',
-        //   level: '黄金会员',
-        //   status: '正常',
-        //   balance: 20
-        // }
-      ],
+      tableData: [],
+      levelList: [],
       statusOptions: [
         {
           value: '全部',
@@ -81,7 +48,6 @@ export default {
     }
   },
   created() {
-    this.getList()
     this.getUserByStatus()
   },
   filters: {
@@ -230,34 +196,11 @@ export default {
         .catch(error => {
           console.log(error)
         })
-      // setTimeout(() => {
-      //   resolve([
-      //     {
-      //       id: 31,
-      //       date: '2016-05-01',
-      //       name: '王小虎',
-      //       level: '普通会员',
-      //       status: '正常',
-      //       balance: 20
-      //     },
-      //     {
-      //       id: 32,
-      //       date: '2016-05-01',
-      //       name: '王小虎',
-      //       level: '普通会员',
-      //       status: '冻结',
-      //       balance: 20
-      //     }
-      //   ])
-      // }, 1000)
     },
-    handleSizeChange(val) {
-      this.listQuery.pageNum = 1
-      this.listQuery.pageSize = val
+    handleSizeChange() {
       this.getList()
     },
-    handleCurrentChange(val) {
-      this.listQuery.pageNum = val
+    handleCurrentChange() {
       this.getList()
     },
     getList() {
@@ -266,6 +209,7 @@ export default {
         .post('member/queryParentList', {})
         .then(data => {
           this.tableData = data.info
+          this.total = data.totalnum
           setTimeout(() => {
             this.listLoading = false
           }, 1)
@@ -279,10 +223,13 @@ export default {
     },
     getUserByStatus() {
       this.$http
-        .post('memberLevel/list', {
-          defaultStatus: 0
+        .post('ams/level/list', {})
+        .then(data => {
+          data.info.forEach(item => {
+            this.levelList[item.id] = item.name
+          })
+          this.getList()
         })
-        .then(data => {})
         .catch(error => {
           console.log(error)
         })

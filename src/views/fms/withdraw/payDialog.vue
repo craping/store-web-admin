@@ -14,13 +14,13 @@
             <div class="grid-content bg-purple">用户名</div>
           </el-col>
           <el-col :xs="4" :sm="6" :md="8" :lg="9" :xl="11">
-            <div class="grid-content bg-purple-light">111</div>
+            <div class="grid-content bg-purple-light">{{userData.agentId}}</div>
           </el-col>
           <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
             <div class="grid-content bg-purple">持卡人</div>
           </el-col>
           <el-col :xs="4" :sm="6" :md="8" :lg="9" :xl="11">
-            <div class="grid-content bg-purple-light">詹姆斯</div>
+            <div class="grid-content bg-purple-light">{{userData.agentId}}(没有)</div>
           </el-col>
         </el-row>
         <el-row :gutter="10">
@@ -28,13 +28,13 @@
             <div class="grid-content bg-purple">到账金额</div>
           </el-col>
           <el-col :xs="4" :sm="6" :md="8" :lg="9" :xl="11">
-            <div class="grid-content bg-purple-light">100</div>
+            <div class="grid-content bg-purple-light">{{userData.amount}}元</div>
           </el-col>
           <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
             <div class="grid-content bg-purple">提现金额</div>
           </el-col>
           <el-col :xs="4" :sm="6" :md="8" :lg="9" :xl="11">
-            <div class="grid-content bg-purple-light">100</div>
+            <div class="grid-content bg-purple-light">{{userData.amount}}元</div>
           </el-col>
         </el-row>
         <el-row :gutter="10">
@@ -42,13 +42,13 @@
             <div class="grid-content bg-purple">开户行</div>
           </el-col>
           <el-col :xs="4" :sm="6" :md="8" :lg="9" :xl="11">
-            <div class="grid-content bg-purple-light">中国银行</div>
+            <div class="grid-content bg-purple-light">中国银行(没有)</div>
           </el-col>
           <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
             <div class="grid-content bg-purple">卡号</div>
           </el-col>
           <el-col :xs="4" :sm="6" :md="8" :lg="9" :xl="11">
-            <div class="grid-content bg-purple-light">1234567891234567</div>
+            <div class="grid-content bg-purple-light">1234567891234567(没有)</div>
           </el-col>
         </el-row>
         <el-row :gutter="10">
@@ -56,27 +56,27 @@
             <div class="grid-content bg-purple">申请时间</div>
           </el-col>
           <el-col :xs="4" :sm="6" :md="8" :lg="9" :xl="11">
-            <div class="grid-content bg-purple-light">2019-8-8</div>
+            <div class="grid-content bg-purple-light">{{userData.createTime}}</div>
           </el-col>
           <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
             <div class="grid-content bg-purple">手续费</div>
           </el-col>
           <el-col :xs="4" :sm="6" :md="8" :lg="9" :xl="11">
-            <div class="grid-content bg-purple-light">0</div>
+            <div class="grid-content bg-purple-light">{{userData.fees}}元</div>
           </el-col>
         </el-row>
         <el-row :gutter="10">
           <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
-            <div class="grid-content bg-purple">处理状态</div>
+            <div class="grid-content bg-purple">提现状态</div>
           </el-col>
           <el-col :xs="4" :sm="6" :md="8" :lg="9" :xl="11">
-            <div class="grid-content bg-purple-light">已通过</div>
+            <div class="grid-content bg-purple-light">{{userData.status}}</div>
           </el-col>
           <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
             <div class="grid-content bg-purple">锁定状态</div>
           </el-col>
           <el-col :xs="4" :sm="6" :md="8" :lg="9" :xl="11">
-            <div class="grid-content bg-purple-light">未锁定</div>
+            <div class="grid-content bg-purple-light">{{userData.lockStatus}}</div>
           </el-col>
         </el-row>
         <el-row :gutter="10">
@@ -84,13 +84,13 @@
             <div class="grid-content bg-purple">审核状态</div>
           </el-col>
           <el-col :xs="4" :sm="6" :md="8" :lg="9" :xl="11">
-            <div class="grid-content bg-purple-light">已通过</div>
+            <div class="grid-content bg-purple-light">{{userData.checkStatus}}</div>
           </el-col>
           <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
-            <div class="grid-content bg-purple">打款状态</div>
+            <div class="grid-content bg-purple">汇款状态</div>
           </el-col>
           <el-col :xs="4" :sm="6" :md="8" :lg="9" :xl="11">
-            <div class="grid-content bg-purple-light">已处理</div>
+            <div class="grid-content bg-purple-light">{{userData.remitStatus}}</div>
           </el-col>
         </el-row>
         <el-row :gutter="10">
@@ -98,7 +98,7 @@
             <div class="grid-content bg-purple">订单流水号</div>
           </el-col>
           <el-col :xs="4" :sm="6" :md="8" :lg="9" :xl="11">
-            <div class="grid-content bg-purple-light">123456</div>
+            <div class="grid-content bg-purple-light">{{userData.recordNo}}</div>
           </el-col>
           <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
             <div class="grid-content bg-purple">拒绝理由</div>
@@ -121,7 +121,7 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button type="success" @click="autoPayment">自动汇款</el-button>
-        <el-button type="primary" @click="handlePayment">手动汇款</el-button>
+        <el-button type="primary" @click="handlePayment">确认汇款</el-button>
         <el-button type="danger" @click="refuseApply">拒绝申请</el-button>
       </div>
     </el-dialog>
@@ -132,7 +132,7 @@ export default {
   name: 'balanceDialog',
   props: {
     value: Boolean,
-    user: {
+    userProps: {
       type: Object,
       default: () => {}
     }
@@ -145,6 +145,9 @@ export default {
       set(visible) {
         this.value = visible
       }
+    },
+    userData() {
+      return this.userProps
     }
   },
   data() {
@@ -177,6 +180,12 @@ export default {
       })
     },
     autoPayment() {
+      const params = {
+        id: this.userData.id,
+        status: 0,
+        remitStatus: this.userData.remitStatus,
+        payType: 3
+      }
       this.$confirm('确认使用天机付代付？请确认余额可供本次支付', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -184,10 +193,7 @@ export default {
       })
         .then(() => {
           //先调用接口
-          this.$message({
-            type: 'success',
-            message: '支付成功!'
-          })
+          this.payOperation(params)
         })
         .catch(() => {
           this.$message({
@@ -197,6 +203,12 @@ export default {
         })
     },
     handlePayment() {
+      const params = {
+        id: this.userData.id,
+        status: 0,
+        remitStatus: this.userData.remitStatus,
+        payType: 2
+      }
       this.$confirm('确定您已手动完成打款操作？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -204,10 +216,7 @@ export default {
       })
         .then(() => {
           //先调用接口
-          this.$message({
-            type: 'success',
-            message: '支付成功!'
-          })
+          this.payOperation(params)
         })
         .catch(() => {
           this.$message({
@@ -231,16 +240,37 @@ export default {
       })
         .then(() => {
           //先调用接口
-          this.$message({
-            type: 'success',
-            message: '操作成功!'
-          })
+          this.confuseApply(this.userData.id)
         })
         .catch(() => {
           this.$message({
             type: 'info',
             message: '取消操作'
           })
+        })
+    },
+    payOperation(params) {
+      this.$http
+        .post('withdraw/remittance', params)
+        .then(data => {
+          this.$emit('getList')
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    confuseApply(id) {
+      const params = {
+        id,
+        checkStatus: 0
+      }
+      this.$http
+        .post('withdraw/audit', params)
+        .then(data => {
+          this.$emit('getList')
+        })
+        .catch(error => {
+          console.log(error)
         })
     }
   }

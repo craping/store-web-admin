@@ -60,7 +60,11 @@
       <el-table-column prop="id" label="编号" width="80"></el-table-column>
       <el-table-column prop="userName" label="账号" width="120"></el-table-column>
       <el-table-column prop="teams" label="团队人数" width="100"></el-table-column>
-      <el-table-column prop="memberLevelId" label="等级" width="180"></el-table-column>
+      <el-table-column label="等级" width="180">
+        <template slot-scope="scope">
+          <p>{{levelList[scope.row.memberLevelId]}}</p>
+        </template>
+      </el-table-column>
       <el-table-column label="状态" width="150">
         <template slot-scope="scope">
           <p>{{scope.row.status == '1' ? '正常' : '冻结'}}</p>
@@ -106,7 +110,7 @@
         @current-change="handleCurrentChange"
         layout="total, sizes,prev, pager, next,jumper"
         :current-page.sync="listQuery.pageNum"
-        :page-size="listQuery.pageSize"
+        :page-size.sync="listQuery.pageSize"
         :page-sizes="[5,10,15]"
         :total="total"
       ></el-pagination>

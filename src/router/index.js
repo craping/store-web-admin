@@ -468,6 +468,13 @@ export const constantRouterMap = [
         role: 'admin',
         component: () => import('@/views/ums/message'),
         meta: { title: '系统消息', icon: 'product' }
+      },
+      {
+        path: 'messagelist',
+        name: 'messagelist',
+        role: 'admin',
+        component: () => import('@/views/ums/message/list'),
+        meta: { title: '消息列表', icon: 'product' }
       }
     ]
   },
