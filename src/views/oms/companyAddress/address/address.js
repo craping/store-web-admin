@@ -28,7 +28,7 @@ export default {
             });
         },
         handleUpdate(index, row) {
-            this.$router.push({path:'/pms/updateProductCate',query:{id:row.id}});
+            this.$router.push({path:'/oms/updateAddress',query:{id:row.id}});
         },
         handleSendStatusChange(index, row) {
             let data = {

@@ -1,14 +1,14 @@
-import { regionData,CodeToText } from 'element-china-area-data';
+import { regionData,CodeToText,TextToCode } from 'element-china-area-data';
 const defaultAddress = {
-    address_name: "深圳发货点",
-    send_status: 0,
-    receive_status: 0,
-    name: "深圳市雅诗兰黛科技有限公司",
-    phone: "18688988888",
+    addressName: "",
+    sendStatus: 0,
+    receiveStatus: 0,
+    name: "",
+    phone: "",
     province: "",
     city: "",
     region: "",
-    detail_address: ""
+    detailAddress: ""
 };
 export default {
     name: 'addressAdd',
@@ -29,10 +29,10 @@ export default {
         return {
             address: Object.assign({}, defaultAddress),
             rules: {
-                address_name: [{ required: true, trigger: 'blur', message: '请输入地址名称' }],
+                addressName: [{ required: true, trigger: 'blur', message: '请输入地址名称' }],
                 name: [{ required: true, trigger: 'blur', message: '请输入收发货人姓名' }],
                 phone: [{ required: true, trigger: 'blur', message: '请输入收发货人电话' }],
-                detail_address: [{ required: true, trigger: 'blur', message: '请输入详细地址' }],
+                detailAddress: [{ required: true, trigger: 'blur', message: '请输入详细地址' }],
                 selectedOptions: [{required: true, trigger: 'change', validator: validateRegionData}],
             },
             options: regionData,
@@ -41,14 +41,21 @@ export default {
     },
     created() {
         if (this.isEdit) {
-            getCoupon(this.$route.query.id).then(data => {
-                this.coupon = data.info;
+            let data = { id: this.$route.query.id }
+            this.$http.post("companyAddress/detail", data).then(data => {
+                this.address = data.info;
+                let code = TextToCode[this.address.province][this.address.city][this.address.region].code;
+                let provide = code.substring(0,2) + "0000";
+                let city = code.substring(0,4) + "00";
+                this.selectedOptions = [provide, city, code];
+            }).catch(error => {
+                console.log(error);
             });
         }
     },
     methods: {
         handleChange (value) {
-            console.log(value);
+            console.log(this.selectedOptions);
         },
         onSubmit(formName) {
             if (this.selectedOptions.length == 1) {
@@ -69,14 +76,15 @@ export default {
                         type: 'warning'
                     }).then(() => {
                         if (this.isEdit) {
-                            updateCoupon(this.$route.query.id, this.coupon).then(data => {
-                                this.$refs[formName].resetFields();
+                            this.$http.post("companyAddress/update/companyAddress", this.address).then(data => {
                                 this.$message({
-                                    message: '修改成功',
+                                    message: '提交成功',
                                     type: 'success',
                                     duration: 1000
                                 });
                                 this.$router.back();
+                            }).catch(error => {
+                                console.log(error);
                             });
                         } else {
                             this.$http.post("companyAddress/insert", this.address).then(data => {

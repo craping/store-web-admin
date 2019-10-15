@@ -237,8 +237,16 @@ export const constantRouterMap = [
         name: 'addCompanyAddress',
         role: 'sup',
         component: () => import('@/views/oms/companyAddress/add'),
-        meta: { title: '新增仓库地址' },
-        hidden: true
+        meta: {title: '新增仓库地址'},
+        hidden:true
+      },
+      {
+        path: 'updateAddress',
+        name: 'updateAddress',
+        role: 'sup',
+        component: () => import('@/views/oms/companyAddress/update'),
+        meta: {title: '修改仓库地址'},
+        hidden:true
       }
     ]
   },
