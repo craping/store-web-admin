@@ -66,33 +66,36 @@
       row-key="id"
       border
       lazy
-      :load="load"
+      v-loading="listLoading"
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
-      <el-table-column prop="name" label="用户名" width="80"></el-table-column>
-      <el-table-column prop="withdraw" label="金额" width="50"></el-table-column>
-      <el-table-column prop="balance" label="余额" width="50"></el-table-column>
-      <el-table-column prop="cardNo" label="银行卡号" width="160"></el-table-column>
-      <el-table-column prop="date" label="申请时间" width="100"></el-table-column>
-      <el-table-column prop="level" label="等级" width="100"></el-table-column>
+      <el-table-column prop="agentId" label="用户名" width="80"></el-table-column>
+      <el-table-column prop="recordNo" label="订单号" width="150"></el-table-column>
+      <el-table-column prop="amount" label="金额" width="50"></el-table-column>
+      <el-table-column prop="fees" label="手续费(元)" width="100"></el-table-column>
+      <el-table-column label="申请时间" width="100">
+        <template slot-scope="scope">
+          <p>{{scope.row.createTime | formatTime}}</p>
+        </template>
+      </el-table-column>
       <el-table-column label="订单状态" width="100">
         <template slot-scope="scope">
-          <p>{{statusArr[scope.row.status]}}</p>
+          <p>{{statusArr[scope.row.status+1]}}</p>
         </template>
       </el-table-column>
       <el-table-column label="锁定状态" width="100">
         <template slot-scope="scope">
-          <p>{{lockArr[scope.row.lock]}}</p>
+          <p>{{lockArr[scope.row.lockStatus]}}</p>
         </template>
       </el-table-column>
       <el-table-column label="审核状态" width="100">
         <template slot-scope="scope">
-          <p>{{verifyArr[scope.row.verify]}}</p>
+          <p>{{verifyArr[scope.row.checkStatus]}}</p>
         </template>
       </el-table-column>
-      <el-table-column label="打款状态" width="100">
+      <el-table-column label="汇款状态" width="100">
         <template slot-scope="scope">
-          <p>{{progressArr[scope.row.progress]}}</p>
+          <p>{{progressArr[scope.row.remitStatus]}}</p>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="400" align="center">
@@ -102,12 +105,12 @@
               size="mini"
               type="danger"
               @click="handleFrozen(scope.$index, scope.row)"
-            >{{scope.row.lock == '0' ? '解锁' : '锁定'}}</el-button>
+            >{{scope.row.lockStatus == '0' ? '锁定' : '解锁'}}</el-button>
             <el-button
               size="mini"
               type="danger"
               @click="handlePayDialog(scope.$index, scope.row)"
-              v-show="scope.row.lock == '0'"
+              v-show="scope.row.lockStatus == '1'"
             >支付</el-button>
             <el-button size="mini" type="info" @click="handleViewInfo(scope.$index, scope.row)">查看详情</el-button>
           </p>
@@ -121,21 +124,21 @@
         @current-change="handleCurrentChange"
         layout="total, sizes,prev, pager, next,jumper"
         :current-page.sync="listQuery.pageNum"
-        :page-size="listQuery.pageSize"
+        :page-size.sync="listQuery.pageSize"
         :page-sizes="[5,10,15]"
         :total="total"
       ></el-pagination>
     </div>
-    <pay-dialog :userId="this.userId" v-model="payDialogVisible"></pay-dialog>
+    <pay-dialog :userProps="userProps" @getList="getList" v-model="payDialogVisible"></pay-dialog>
   </div>
 </template>
 <script>
 import { fetchList, closeOrder, deleteOrder } from '@/api/order'
-import { formatTimestamp } from '@/utils/date'
+import { formatDate } from '@/utils/date'
 import payDialog from '@/views/fms/withdraw/payDialog'
 const defaultListQuery = {
-  page: 1,
-  num: 10,
+  pageNum: 1,
+  pageSize: 10,
   nickname: null,
   apply_time: null,
   status: null,
@@ -160,39 +163,11 @@ export default {
         content: null,
         orderIds: []
       },
-      userId: '',
-      statusArr: ['待处理', '已处理'],
-      lockArr: ['锁定', '未锁定'],
-      verifyArr: ['审核中', '已通过'],
-      progressArr: ['未处理', '已处理'],
-      tableData: [
-        {
-          id: 1,
-          name: '王小虎',
-          withdraw: 100,
-          balance: 20,
-          cardNo: '1000000000000000',
-          date: '2016-05-02',
-          level: '普通会员',
-          status: '0',
-          lock: '0',
-          verify: '0',
-          progress: '0'
-        },
-        {
-          id: 2,
-          name: '王小虎',
-          withdraw: 100,
-          balance: 20,
-          cardNo: '1000000000000000',
-          date: '2016-05-02',
-          level: '普通会员',
-          status: '1',
-          lock: '1',
-          verify: '1',
-          progress: '1'
-        }
-      ],
+      statusArr: ['提现失败', '处理中', '提现成功'], //-1:提现失败，0:处理中，1:提现成功
+      lockArr: ['未锁定', '已锁定'],
+      verifyArr: ['未审核', '已审核'],
+      progressArr: ['未汇款', '已汇款'],
+      tableData: [],
       statusOptions: [
         {
           label: '全部状态',
@@ -213,6 +188,15 @@ export default {
       ],
       payDialogVisible: false,
       payDialogVisible: false
+    }
+  },
+  filters: {
+    formatTime(time) {
+      if (time == null || time === '') {
+        return 'N/A'
+      }
+      let date = new Date(time)
+      return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
     }
   },
   created() {
@@ -237,63 +221,55 @@ export default {
       this.payDialogVisible = true
     },
     handleFrozen(index, row) {
-      if (row.lock == '0') {
-        this.tableData[index].lock = '1'
-      } else {
-        this.tableData[index].lock = '0'
-      }
+      let tipCon1 =
+        row.lockStatus == '0'
+          ? '此操作将锁定该订单, 是否继续?'
+          : '此操作将解锁该会员，是否继续?'
+      let tipCon2 = row.lockStatus == '0' ? '锁定成功!' : '解锁成功!'
+      let tipCon3 = row.lockStatus == '1' ? '已取消锁定' : '已取消解锁'
+      this.$confirm(tipCon1, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.$http
+            .post('withdraw/withdrawalLock', {
+              id: row.id,
+              lockStatus: row.lockStatus == '1' ? 0 : 1
+            })
+            .then(data => {
+              this.$message({
+                type: 'success',
+                message: tipCon2
+              })
+              this.getList()
+            })
+            .catch(error => {
+              console.log(error)
+            })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: tipCon3
+          })
+        })
     },
-    load(tree, treeNode, resolve) {
-      setTimeout(() => {
-        resolve([
-          {
-            id: 31,
-            date: '2016-05-01',
-            name: '王小虎',
-            level: '普通会员',
-            status: '正常',
-            balance: 20
-          },
-          {
-            id: 32,
-            date: '2016-05-01',
-            name: '王小虎',
-            level: '普通会员',
-            status: '冻结',
-            balance: 20
-          }
-        ])
-      }, 1000)
-    },
-    handleSizeChange(val) {
-      this.listQuery.pageNum = 1
-      this.listQuery.pageSize = val
+    handleSizeChange() {
       this.getList()
     },
-    handleCurrentChange(val) {
-      this.listQuery.pageNum = val
+    handleCurrentChange() {
       this.getList()
     },
     getList() {
       this.listLoading = true
-      // fetchList(this.listQuery).then(data => {
-      //     this.listLoading = false;
-      //     this.list = data.info;
-      //     this.total = data.totalnum;
-      // });
-
       this.$http
-        .post('sup/supList?format=json', this.listQuery)
+        .post('withdraw/queryWithdrawList', {})
         .then(data => {
           this.listLoading = false
-          this.list = data.info
+          this.tableData = data.info
           this.total = data.totalnum
-          console.log(this.$store.getters.roles[0])
-          // if (!data.result) {
-          //     this.bettings = data.info;
-          // } else {
-          //     Toast.fail(data.msg);
-          // }
         })
         .catch(error => {
           console.log(error)

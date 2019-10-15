@@ -107,6 +107,32 @@
     </el-card>
   </div>
 </template>
+<script>
+export default {
+  data() {
+    return {
+      listData: {}
+    }
+  },
+  created() {
+    this.getList()
+  },
+  methods: {
+    getList() {
+      console.log('idid', this.$route.query.id)
+      this.$http
+        .post('withdraw/queryDetails', {
+          id: this.$route.query.id
+        })
+        .then(data => {})
+        .catch(error => {
+          console.log(error)
+        })
+    }
+  }
+}
+</script>
+
 <style lang="scss" scoped>
 .info-container {
   .el-col {
