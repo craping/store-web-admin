@@ -24,7 +24,7 @@
           </div>
         </el-col>
         <el-col :span="6">
-          <div class="total-frame">
+          <div class="total-frame" @click="handelForward('/fms/withdraw')" style="cursor: pointer;">
             <svg-icon icon-class="withdraw" class="total-icon"></svg-icon>
             <div class="total-title">提现订单数</div>
             <div class="total-value">{{statisticalData.withdrawCount}}</div>
@@ -312,7 +312,8 @@
           todayNewMemberCount : 0, // 今日新增
           yesterdayNewMemberCount : 0, // 昨日新增
           thisMonthNewMemberCount : 0, // 本月新增
-          memberTotalCount : 0 // 会员总数
+          memberTotalCount : 0, // 会员总数
+          refundOrderCount : 0 // 提现订单数
         },
         orderCountDate: '',
         chartSettings: {
@@ -339,6 +340,9 @@
       this.role = getRole();
     },
     methods:{
+      handelForward(path) {
+        this.$router.push(path);
+      },
       handleDateChange(){
         this.getData();
       },
