@@ -23,6 +23,14 @@ export function updateStatus(params) {
   })
 }
 
+export function updateFareStatus(params) {
+  return request({
+    url:'/returnReason/update/updateFareStatus',
+    method:'post',
+    data:params
+  })
+}
+
 export function addReason(data) {
   return request({
     url:'/returnReason/create',

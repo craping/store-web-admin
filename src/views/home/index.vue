@@ -1,5 +1,16 @@
 <template>
   <div class="app-container">
+    <el-card class="operate-container" shadow="never">
+      <i class="el-icon-tickets"></i>
+      <span>数据统计</span>
+      <el-button size="mini" type="primary" 
+        :loading="loading"
+        icon="el-icon-refresh" 
+        class="btn-add" 
+        @click="getHomeData()">
+        刷新数据
+      </el-button>
+    </el-card>
     <div class="total-layout">
       <el-row :gutter="20">
         <el-col :span="6">
@@ -24,7 +35,7 @@
           </div>
         </el-col>
         <el-col :span="6">
-          <div class="total-frame" @click="handelForward('/fms/withdraw')" style="cursor: pointer;">
+          <div class="total-frame" @click="handelForward('/fms/withdraw')" style="cursor: pointer;" v-if="role=='admin'">
             <svg-icon icon-class="withdraw" class="total-icon"></svg-icon>
             <div class="total-title">提现订单数</div>
             <div class="total-value">{{statisticalData.withdrawCount}}</div>
@@ -356,11 +367,14 @@
         this.orderCountDate=[start,end];
       },
       getHomeData() {
+        this.loading = true;
         this.$http.post("home/statisticalData", {}).then(resp => {
           this.statisticalData = resp.info;
+          this.loading = false;
         })
         .catch(error => {
-            console.log(error);
+          this.loading = false;
+          console.log(error);
         });
       },
       getData(){
