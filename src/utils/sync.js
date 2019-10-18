@@ -1,6 +1,7 @@
 import axios from 'axios'
-import store from '@/store';
+import store from '@/store'
 import request from '@/utils/request'
+import { Notification } from 'element-ui';
 
 const Sync = {
     source: null,
@@ -18,7 +19,7 @@ const Sync = {
         request
         .post("api/sync", {}, {
             cancelToken: this.source.token,
-            timeout: 35000,
+            timeout: 350000,
             params: {
                 format: "sync"
             }
@@ -50,10 +51,94 @@ const Sync = {
             this.source.cancel();
     },
     invokes:{
+        ORDER:{
+            NEW(data){
+                const msg = '新订单['+ data +']';
+                Notification.info({
+                    title: '新订单',
+                    message: msg
+                });
+            }, 
+            PAY(data){
+                const msg = '订单['+ data +']已支付';
+                Notification.info({
+                    title: '订单支付',
+                    message: msg
+                });
+            }, 
+            SHIP(data){
+                const msg = '订单['+ data +']已发货';
+                Notification.info({
+                    title: '订单发货',
+                    message: msg
+                });
+            }, 
+            RECEIVE(data){
+                const msg = '订单['+ data +']已确认收货';
+                Notification.info({
+                    title: '订单收货',
+                    message: msg
+                });
+            }, 
+            CLOSE(data){
+                const msg = '订单['+ data +']已关闭';
+                Notification.info({
+                    title: '订单关闭',
+                    message: msg
+                });
+            }, 
+            FINISH(data){
+                const msg = '订单['+ data +']已完成';
+                Notification.info({
+                    title: '订单完成',
+                    message: msg
+                });
+            },
+        },
+        RETURNAPPLY:{
+            NEW(data){
+                const msg = '订单['+ data +']已发起售后';
+                Notification.info({
+                    title: '新售后订单',
+                    message: msg
+                });
+            }, 
+            SHIP(data){
+                const msg = '售后订单['+ data +']用户已发货';
+                Notification.info({
+                    title: '售后订单发货',
+                    message: msg
+                });
+            }, 
+            REFUSE(data){
+                const msg = '售后订单['+ data +']已拒绝';
+                Notification.info({
+                    title: '售后订单拒绝',
+                    message: msg
+                });
+            }, 
+            CANCEL(data){
+                const msg = '售后订单['+ data +']已拒绝';
+                Notification.info({
+                    title: '售后订单拒绝',
+                    message: msg
+                });
+            }, 
+            FINISH(data){
+                const msg = '售后订单['+ data +']已完成';
+                Notification.info({
+                    title: '售后订单完成',
+                    message: msg
+                });
+            },
+        },
         USER:{
             SAFE(data){
                 console.log("SAFE:"+data)
                 store.commit("user/SET_SAFE", data);
+            },
+            NOTICE(data){
+                console.log("NOTICE:"+data);
             }
         }
     }

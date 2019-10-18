@@ -35,6 +35,16 @@
             </el-switch>
           </template>
         </el-table-column>
+        <el-table-column label="是否扣运费" align="center">
+          <template slot-scope="scope">
+            <el-switch
+              v-model="scope.row.fareStatus"
+              @change="handleFareStatusChange(scope.$index,scope.row)"
+              :active-value="1"
+              :inactive-value="0">
+            </el-switch>
+          </template>
+        </el-table-column>
         <el-table-column label="添加时间" width="180" align="center">
           <template slot-scope="scope">{{scope.row.createTime | formatCreateTime}}</template>
         </el-table-column>
@@ -83,7 +93,7 @@
       </el-pagination>
     </div>
     <el-dialog
-      title="添加退货原因"
+      title="编辑退货原因"
       :visible.sync="dialogVisible" width="30%">
       <el-form :model="returnReason"
                ref="reasonForm" label-width="150px">
@@ -96,6 +106,9 @@
         <el-form-item label="是否启用：">
           <el-switch v-model="returnReason.status" :active-value="1" :inactive-value="0"></el-switch>
         </el-form-item>
+        <el-form-item label="是否扣除运费：">
+          <el-switch v-model="returnReason.fareStatus" :active-value="1" :inactive-value="0"></el-switch>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
@@ -106,7 +119,7 @@
 </template>
 <script>
   import {formatDate} from '@/utils/date';
-  import {fetchList,deleteReason,updateStatus,addReason,getReasonDetail,updateReason} from '@/api/returnReason';
+  import {fetchList,deleteReason,updateStatus,addReason,getReasonDetail,updateReason,updateFareStatus} from '@/api/returnReason';
   const defaultListQuery = {
     pageNum: 1,
     pageSize: 10
@@ -115,6 +128,7 @@
     name:null,
     sort:0,
     status:1,
+    fareStatus:0,
     createTime:null
   };
   export default {
@@ -203,6 +217,20 @@
           ids:ids
         }
         updateStatus(param).then(data=>{
+          this.$message({
+            message: '状态修改成功',
+            type: 'success'
+          });
+        });
+      },
+      handleFareStatusChange(index,row){
+        let ids=[];
+        ids.push(row.id);
+        let param = {
+          fareStatus:row.fareStatus,
+          ids:ids
+        }
+        updateFareStatus(param).then(data=>{
           this.$message({
             message: '状态修改成功',
             type: 'success'

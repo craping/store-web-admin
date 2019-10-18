@@ -66,3 +66,19 @@ export function UUID() {
   });
   return uuid;
 }
+
+export function formatProductAttr(value){
+  if(value==null){
+    return '';
+  }else{
+    let attr = JSON.parse(value);
+    let result='';
+    for(let i=0;i<attr.length;i++){
+      result+=attr[i].key;
+      result+=":";
+      result+=attr[i].value;
+      result+=";";
+    }
+    return result;
+  }
+}

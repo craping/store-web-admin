@@ -5,10 +5,21 @@
 </template>
 
 <script>
+import sync from "@/utils/sync";
   export default {
-    name: 'App'
+    name: 'App',
+    data() {
+      return {};
+    },
+    created() {
+      sync.connect();
+    },
+    mounted() {
+      
+    },
+    methods: {
+    }
   }
 </script>
 
-<style>
-</style>
+<style></style>

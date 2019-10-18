@@ -25,7 +25,7 @@
           </template>
         </el-table-column>
         <el-table-column label="属性" width="180" align="center">
-          <template slot-scope="scope">{{scope.row.productAttr}}</template>
+          <template slot-scope="scope"> {{scope.row.productAttr | formatProductAttr}}</template>
         </el-table-column>
         <el-table-column label="数量" width="100" align="center">
           <template slot-scope="scope">{{scope.row.productCount}}</template>
@@ -106,7 +106,7 @@
             ￥{{orderReturnApply.returnAmount}}
           </el-col>
         </el-row>
-        <el-row v-if="this.role=='admin'">
+        <el-row v-if="this.role==='admin' && reasonDetail.fareStatus===1">
           <el-col class="form-border form-left-bg font-small" :span="6" style="height:52px;line-height:32px">
             订单运费金额
           </el-col>
@@ -221,6 +221,7 @@
   import {getApplyDetail,updateApplyStatus} from '@/api/returnApply';
   import {fetchList} from '@/api/companyAddress';
   import {formatDate} from '@/utils/date';
+  import {formatProductAttr} from '@/utils/index';
   import { getToken, getRole } from '@/utils/auth'
 
   const defaultUpdateStatusParam = {
@@ -260,6 +261,7 @@
     productCount: null,
     productPrice: null,
     productRealPrice: null,
+    reasonId: null,
     reason: null,
     description: null,
     proofPics: null,
@@ -279,7 +281,8 @@
         proofPics: null,
         updateStatusParam: Object.assign({}, defaultUpdateStatusParam),
         companyAddressList: null,
-        role: getRole()
+        role: getRole(),
+        reasonDetail: {}
       }
     },
     created() {
@@ -326,6 +329,9 @@
         let date = new Date(time);
         return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
       },
+      formatProductAttr(value) {
+        return formatProductAttr(value);
+      },
       formatRegion(address) {
         let str = address.province;
         if (address.city != null) {
@@ -341,6 +347,14 @@
       },
       handleViewOrder(){
         this.$router.push({path:'/oms/orderDetail',query:{id:this.orderReturnApply.orderId}});
+      },
+      getReasonDetail(id){
+        let data = { id: id }
+        this.$http.post("returnReason/getItem", data).then(data => {
+            this.reasonDetail = data.info;
+        }).catch(error => {
+            console.log(error);
+        });
       },
       getDetail() {
         getApplyDetail(this.id).then(data => {
@@ -358,6 +372,7 @@
             this.updateStatusParam.companyAddressId=this.orderReturnApply.companyAddressId;
           }
           this.getCompanyAddressList();
+          this.getReasonDetail(this.orderReturnApply.reasonId);
         });
       },
       getCompanyAddressList() {

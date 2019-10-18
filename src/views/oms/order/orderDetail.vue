@@ -349,6 +349,7 @@
   import {getOrderDetail,updateReceiverInfo,updateMoneyInfo,closeOrder,updateOrderNote,deleteOrder} from '@/api/order';
   import LogisticsDialog from '@/views/oms/order/components/logisticsDialog';
   import {formatDate} from '@/utils/date';
+  import {formatProductAttr} from '@/utils/index';
   import VDistpicker from 'v-distpicker';
   const defaultReceiverInfo = {
     orderId:null,
@@ -451,6 +452,9 @@
           return '待付款';
         }
       },
+      formatProductAttr(value) {
+        return formatProductAttr(value);
+      },
       formatPayStatus(value) {
         if (value === 0) {
           return '未支付';
@@ -465,21 +469,6 @@
           return '未发货';
         } else {
           return '已发货';
-        }
-      },
-      formatProductAttr(value){
-        if(value==null){
-          return '';
-        }else{
-          let attr = JSON.parse(value);
-          let result='';
-          for(let i=0;i<attr.length;i++){
-            result+=attr[i].key;
-            result+=":";
-            result+=attr[i].value;
-            result+=";";
-          }
-          return result;
         }
       }
     },

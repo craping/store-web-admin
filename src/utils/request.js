@@ -8,12 +8,22 @@ import { getToken, getRole } from '@/utils/auth'
 const service = axios.create({
   baseURL: process.env.BASE_API, // url = base url + request url
   headers: { 'Content-Type': 'application/json;charset=utf-8' },
-  timeout: 15000 // 请求超时时间
+  timeout: 40000 // 请求超时时间
 })
 // request拦截器
 service.interceptors.request.use(config => {
-  if (!config.params || !config.params.format){
-    config.params = { ...config.params, format: 'json' };
+  if (!config.params) {
+    config.params = { format: 'json', token: getToken() }
+  } else {
+    config.params = { ...{ format: 'json', token: getToken() }, ...config.params }
+  }
+
+  if (config.headers['Content-Type'].includes('application/json')) {
+    if (!config.data) {
+      config.data = { format: 'json', token: getToken() }
+    } else {
+      config.data = { ...{ format: 'json', token: getToken() }, ...config.data }
+    }
   }
   
   console.log("roles:" + getRole())
@@ -57,7 +67,8 @@ service.interceptors.response.use(
       }
       return Promise.reject(new Error(res.msg || 'Error'))
     } else {
-      return res.data
+      if (res.hasOwnProperty('result')) return res.data
+      else return res
     }
   },
   error => {
