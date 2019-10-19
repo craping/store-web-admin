@@ -80,7 +80,7 @@
           <el-radio-button :label="4">满减价格</el-radio-button>
         </el-radio-group>
       </el-form-item>
-      <el-form-item v-show="value.promotionType===1">
+      <el-form-item v-show="value.promotionType===1 && false">
         <div>
           开始时间：
           <el-date-picker
@@ -107,13 +107,13 @@
         </div>
 
       </el-form-item>
-      <el-form-item v-show="value.promotionType===2">
+      <el-form-item v-show="value.promotionType===2 && false">
         <div v-for="(item, index) in value.memberPriceList" :class="{littleMargin:index!==0}" :key="index">
           {{item.memberLevelName}}：
           <el-input v-model="item.memberPrice" style="width: 200px"></el-input>
         </div>
       </el-form-item>
-      <el-form-item v-show="value.promotionType===3">
+      <el-form-item v-show="value.promotionType===3 && false">
         <el-table :data="value.productLadderList"
                   style="width: 80%" border>
           <el-table-column
@@ -142,7 +142,7 @@
           </el-table-column>
         </el-table>
       </el-form-item>
-      <el-form-item v-show="value.promotionType===4">
+      <el-form-item v-show="value.promotionType===4 && false">
         <el-table :data="value.productFullReductionList"
                   style="width: 80%" border>
           <el-table-column

@@ -426,8 +426,12 @@
             let price=this.value.skuStockList[0].price;
             let cost=this.value.skuStockList[0].cost;
             for(let i=0;i<this.value.skuStockList.length;i++){
-              this.value.skuStockList[i].price=price;
-              this.value.skuStockList[i].cost=cost;
+              let sku = this.value.skuStockList[i];
+              sku.price=price;
+              sku.cost=cost;
+              this.value.skuStockList.splice(i, 1, sku);
+              // this.value.skuStockList[i].price=price;
+              // this.value.skuStockList[i].cost=cost;
             }
           }
         });

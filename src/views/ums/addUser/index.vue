@@ -95,14 +95,14 @@ export default {
       rules: {
         name: [
           { required: true, message: '请输入活动名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { min: 3, max: 50, message: '长度在 3 到 50 个字符', trigger: 'blur' }
         ],
         level: [
           { required: true, message: '请选择会员等级', trigger: 'change' }
         ],
         account: [
           { required: true, message: '请输入会员账号', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { min: 3, max: 50, message: '长度在 3 到 50 个字符', trigger: 'blur' }
         ],
         pass: [{ required: true, validator: validatePass, trigger: 'blur' }],
         checkPass: [
