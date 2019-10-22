@@ -15,6 +15,16 @@
       <el-table-column>
         <template slot-scope="scope">
           <el-button type="danger" @click="onClick(scope.$index, scope.row)">删除</el-button>
+          <el-button
+            type="danger"
+            v-show="scope.row.state == 1"
+            @click="checkOrUpdateInfo(scope.row,'check')"
+          >查看详情</el-button>
+          <el-button
+            type="danger"
+            v-show="scope.row.state == 0"
+            @click="checkOrUpdateInfo(scope.row,'update')"
+          >更新</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -112,6 +122,16 @@ export default {
         .catch(err => {
           this.fullscreenLoading = false
         })
+    },
+    checkOrUpdateInfo(item, type) {
+      this.$store.commit('SET_MESSAGEi_INFP', item)
+      this.$router.push({
+        name: 'message',
+        query: {
+          id: item.id,
+          type
+        }
+      })
     }
   }
 }

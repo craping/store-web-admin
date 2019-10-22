@@ -80,6 +80,10 @@ export default {
                 this.radio == '1' ? this.form.balance : `-${this.form.balance}`
             })
             .then(data => {
+              this.$message({
+                message: this.radio == '1' ? '充值成功' : '扣减成功',
+                type: 'success'
+              })
               this.$emit('reload')
             })
             .catch(error => {

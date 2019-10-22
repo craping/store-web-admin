@@ -203,6 +203,10 @@ export default {
         })
     },
     handlePayment() {
+      //       id:id [是否必要：true]
+      // remitAmount:汇款金额 [是否必要：true]
+      // agentId:代理id [是否必要：true]
+
       const params = {
         id: this.userData.id,
         status: 0,
