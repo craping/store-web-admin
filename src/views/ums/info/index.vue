@@ -50,7 +50,7 @@
         <div class="right">{{infoData.STATUS == '1' ? '正常': '冻结'}}</div>
       </div>
     </div>
-    <div class="dataList">
+    <!-- <div class="dataList">
       <el-card class="operate-container" shadow="never">
         <i class="el-icon-tickets"></i>
         <span>充值记录</span>
@@ -60,8 +60,8 @@
         <el-table-column prop="date" label="充值日期" style="width:33.333%"></el-table-column>
         <el-table-column prop="recharge" label="充值额度(RMB)" style="width:33.333%"></el-table-column>
       </el-table>
-    </div>
-    <div class="pagination-container">
+    </div>-->
+    <!-- <div class="pagination-container">
       <el-pagination
         background
         @size-change="handleSizeChange"
@@ -72,7 +72,7 @@
         :page-sizes="[5,10,15]"
         :total="total"
       ></el-pagination>
-    </div>
+    </div>-->
   </div>
 </template>
 <script>

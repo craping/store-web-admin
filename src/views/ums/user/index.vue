@@ -57,22 +57,22 @@
       v-loading="listLoading"
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
-      <el-table-column prop="id" label="编号" width="80"></el-table-column>
-      <el-table-column prop="userName" label="账号" width="120"></el-table-column>
-      <el-table-column prop="teams" label="团队人数" width="100"></el-table-column>
-      <el-table-column label="等级" width="180">
+      <el-table-column prop="id" label="编号" min-width="80"></el-table-column>
+      <el-table-column prop="userName" label="账号" min-width="120"></el-table-column>
+      <el-table-column prop="teams" label="团队人数" min-width="100"></el-table-column>
+      <el-table-column label="等级" min-width="180">
         <template slot-scope="scope">
           <p>{{levelList[scope.row.memberLevelId]}}</p>
         </template>
       </el-table-column>
-      <el-table-column label="状态" width="150">
+      <el-table-column label="状态" min-width="150">
         <template slot-scope="scope">
           <p>{{scope.row.status == '1' ? '正常' : '冻结'}}</p>
         </template>
       </el-table-column>
-      <el-table-column prop="balance" label="充值余额" width="150"></el-table-column>
-      <el-table-column prop="unreceivedIncome" label="未到账收益" width="150"></el-table-column>
-      <el-table-column label="操作" width="400" align="center">
+      <el-table-column prop="balance" label="充值余额" min-width="150"></el-table-column>
+      <el-table-column prop="unreceivedIncome" label="未到账收益" min-width="150"></el-table-column>
+      <el-table-column label="操作" min-width="400" align="center">
         <template slot-scope="scope">
           <p>
             <el-button size="mini" @click="handleUserEdit(scope.$index, scope.row)">编辑</el-button>

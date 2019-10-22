@@ -13,8 +13,13 @@
         </el-form-item>
         <el-form-item label="会员等级" prop="level">
           <el-select v-model="ruleForm.level" placeholder="请选择会员等级">
-            <el-option label="普通" value="普通"></el-option>
-            <el-option label="白金" value="白金"></el-option>
+            <el-option
+              v-for="item in levelList"
+              :key="item.label"
+              :label="item.value"
+              :value="item.label"
+            ></el-option>
+            <!-- <el-option label="白金" value="白金"></el-option> -->
           </el-select>
         </el-form-item>
         <el-form-item label="会员账号" prop="account">
@@ -45,6 +50,7 @@
   </div>
 </template>
 <script>
+import md5 from 'js-md5'
 export default {
   data() {
     var validatePass = (rule, value, callback) => {
@@ -91,6 +97,7 @@ export default {
         superiorId: ''
       },
       fullscreenLoading: false,
+      levelList: [],
 
       rules: {
         name: [
@@ -112,6 +119,9 @@ export default {
       }
     }
   },
+  created() {
+    this.getUserByStatus()
+  },
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
@@ -119,7 +129,7 @@ export default {
           const { ruleForm } = this
           const params = {
             userName: ruleForm.telphone,
-            password: ruleForm.pass,
+            password: md5(ruleForm.pass),
             nickName: ruleForm.name,
             parentId: ruleForm.superiorId
           }
@@ -147,6 +157,19 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
+    },
+    getUserByStatus() {
+      this.$http
+        .post('ams/level/list', {})
+        .then(data => {
+          data.info.forEach(item => {
+            this.levelList.push({ value: item.name, label: item.id })
+          })
+          console.log('this.levelList', this.levelList)
+        })
+        .catch(error => {
+          console.log(error)
+        })
     }
   }
 }
