@@ -2,6 +2,9 @@ import axios from 'axios'
 import store from '@/store'
 import request from '@/utils/request'
 import { Notification } from 'element-ui';
+import { getToken } from '@/utils/auth'
+import Push from 'push.js'
+
 
 const Sync = {
     source: null,
@@ -9,22 +12,23 @@ const Sync = {
     connect(){
         this.isDisconnect = false;
         this.sync();
+        Push.Permission.request();
     },
     sync() {
         if(this.isDisconnect)
             return;
         const CancelToken = axios.CancelToken;
         this.source = CancelToken.source();
+        if (getToken() == "" || getToken() == undefined)
+            return;
 
-        request
-        .post("api/sync", {}, {
+        request.post("api/sync", {}, {
             cancelToken: this.source.token,
             timeout: 350000,
             params: {
                 format: "sync"
             }
-        })
-        .then(events => {
+        }).then(events => {
             events.forEach(msg => {
                 console.log(msg);
                 const data = msg.data;
@@ -53,10 +57,18 @@ const Sync = {
     invokes:{
         ORDER:{
             NEW(data){
-                const msg = '新订单['+ data +']';
-                Notification.info({
-                    title: '新订单',
-                    message: msg
+                // const msg = '新订单['+ data +']';
+                // Notification.info({
+                //     title: '新订单',
+                //     message: msg
+                // });
+                Push.create("Hello world!", {
+                    // body 选项是通知的内容
+                    body: "How's it hangin'?",
+                    // icon 选项是通知的图片
+                    icon: './icon.png',
+                    // timeout 选项是通知停留时间
+                    timeout: 4000
                 });
             }, 
             PAY(data){
