@@ -19,6 +19,7 @@
             :label="item.label"
             :value="item.value"
           ></el-option>
+          <el-button size="medium" @click="getMore()">更多...</el-button>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -45,7 +46,9 @@ export default {
       userData: [],
       isShowBtn: true,
       btnContent: '发布消息',
-      isDisabled: false
+      isDisabled: false,
+      pageSize: 10,
+      pageNum: 1
     }
   },
   computed: {
@@ -86,11 +89,31 @@ export default {
     },
     getList() {
       this.$http
-        .post('member/queryParentList', {})
+        .post('member/getsUserIds', {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize
+        })
         .then(data => {
           this.userData = data.info.map(item => {
             return { value: item.id, label: item.userName }
           })
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    getMore() {
+      this.pageNum += 1
+      this.$http
+        .post('member/getsUserIds', {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize
+        })
+        .then(data => {
+          const temArr = data.info.map(item => {
+            return { value: item.id, label: item.userName }
+          })
+          this.userData = [...this.userData, ...temArr]
         })
         .catch(error => {
           console.log(error)
@@ -117,5 +140,10 @@ export default {
 <style lang="scss" scoped>
 .message-container {
   padding: 20px;
+}
+.el-scrollbar {
+  .el-button--medium {
+    width: 100%;
+  }
 }
 </style>

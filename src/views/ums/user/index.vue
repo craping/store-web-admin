@@ -15,11 +15,18 @@
       </div>
       <div style="margin-top: 15px">
         <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
-          <el-form-item label="会员名称：">
-            <el-input v-model="listQuery.nickname" class="input-width" placeholder="会员名称"></el-input>
+          <el-form-item label="会员账号：">
+            <el-input v-model="listQuery.nickname" class="input-width" placeholder="会员账号"></el-input>
           </el-form-item>
           <el-form-item label="会员等级：">
-            <el-input v-model="listQuery.com_name" class="input-width" placeholder="会员等级"></el-input>
+            <el-select v-model="listQuery.level" placeholder="会员等级">
+              <el-option
+                v-for="item in levelListselect"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="创建时间：">
             <el-date-picker
@@ -58,20 +65,25 @@
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
       <el-table-column prop="id" label="编号" min-width="80"></el-table-column>
+      <el-table-column label="创建时间" min-width="120">
+        <template slot-scope="scope">
+          <p>{{scope.row.createTime |formatCreateTime}}</p>
+        </template>
+      </el-table-column>
       <el-table-column prop="userName" label="账号" min-width="120"></el-table-column>
-      <el-table-column prop="teams" label="团队人数" min-width="100"></el-table-column>
-      <el-table-column label="等级" min-width="180">
+      <el-table-column prop="teams" label="团队人数" min-width="80"></el-table-column>
+      <el-table-column label="等级" min-width="80">
         <template slot-scope="scope">
           <p>{{levelList[scope.row.memberLevelId]}}</p>
         </template>
       </el-table-column>
-      <el-table-column label="状态" min-width="150">
+      <el-table-column label="状态" min-width="100">
         <template slot-scope="scope">
           <p>{{scope.row.status == '1' ? '正常' : '冻结'}}</p>
         </template>
       </el-table-column>
-      <el-table-column prop="balance" label="充值余额" min-width="150"></el-table-column>
-      <el-table-column prop="unreceivedIncome" label="未到账收益" min-width="150"></el-table-column>
+      <el-table-column prop="balance" label="充值余额" min-width="100"></el-table-column>
+      <el-table-column prop="unreceivedIncome" label="未到账收益" min-width="100"></el-table-column>
       <el-table-column label="操作" min-width="400" align="center">
         <template slot-scope="scope">
           <p>
