@@ -103,7 +103,10 @@
           <template slot-scope="scope">￥{{scope.row.totalAmount}}</template>
         </el-table-column>
         <el-table-column label="支付方式" width="120" align="center">
-          <template slot-scope="scope">{{scope.row.payType | formatPayType}}</template>
+          <template slot-scope="scope">
+            {{scope.row.payType | formatPayType}}
+            {{scope.row.payChannel | formatPayChannel}}
+          </template>
         </el-table-column>
         <el-table-column label="订单来源" width="120" align="center">
           <template slot-scope="scope">{{scope.row.sourceType | formatSourceType}}</template>
@@ -254,11 +257,24 @@
         let date = new Date(time);
         return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
       },
+      formatPayChannel(value){
+        if (value === "WXPAYS") {
+          return '(收款码)';
+        } else if (value === "ALIPAYPAYS") {
+          return '(收款码)';
+        } else {
+          return '';
+        }
+      },
       formatPayType(value) {
         if (value === 1) {
-          return '支付宝';
-        } else if (value === 2) {
           return '微信';
+        } else if (value === 2) {
+          return '支付宝';
+        } else if (value === 3) {
+          return '银联';
+        } else if (value === 4) {
+          return '钱包余额';
         } else {
           return '未支付';
         }
@@ -434,7 +450,7 @@
           address:address,
           deliveryCompany:order.deliveryCompany,
           deliverySn:order.deliverySn,
-          deliveryFare:order.freightAmount
+          freightAmount:order.freightAmount
         };
         return listItem;
       }

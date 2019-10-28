@@ -32,8 +32,9 @@ export function updateProductAttr(id,data) {
 }
 export function getProductAttr(id) {
   return request({
-    url:'productAttribute'+id,
-    method:'get'
+    url:'productAttribute/info',
+    method:'post',
+    data:{id:id}
   })
 }
 

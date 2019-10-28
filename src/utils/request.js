@@ -26,8 +26,6 @@ service.interceptors.request.use(config => {
     }
   }
   
-  console.log("roles:" + getRole())
-  console.log("token:" + getToken())
   config.data.token = getToken();
   config.data.role = getRole();
   return config
