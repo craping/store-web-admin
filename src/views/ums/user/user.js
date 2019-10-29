@@ -3,8 +3,8 @@ import { formatTimestamp } from '@/utils/date'
 import balanceDialog from '@/views/ums/user/balanceDialog'
 import levelDialog from '@/views/ums/user/levelDialog'
 const defaultListQuery = {
-  page: 1,
-  num: 10,
+  pageNum: 1,
+  pageSize: 10,
   nickname: null,
   level: null,
   create_time: null,
@@ -32,10 +32,6 @@ export default {
       levelListselect: [],
       statusOptions: [
         {
-          value: '',
-          label: '全部'
-        },
-        {
           value: '0',
           label: '冻结'
         },
@@ -45,7 +41,9 @@ export default {
         }
       ],
       balanceDialogVisible: false,
-      levelDialogVisible: false
+      levelDialogVisible: false,
+      breadCrumbList: [{ userName: '会员列表', name: 'users', id: '' }],
+      parentId: ''
     }
   },
   created() {
@@ -54,6 +52,18 @@ export default {
   filters: {
     formatCreateTime(time) {
       return formatTimestamp(time)
+    }
+  },
+  watch: {
+    $route() {
+      this.parentId = this.$route.query.id
+      const NowIdIndex = this.breadCrumbList.findIndex(
+        item => item.id == this.parentId
+      )
+      if (NowIdIndex > -1 && NowIdIndex < this.breadCrumbList.length - 1) {
+        this.breadCrumbList = this.breadCrumbList.slice(0, NowIdIndex + 1)
+      }
+      this.getList()
     }
   },
   methods: {
@@ -69,10 +79,8 @@ export default {
         level: listQuery.level,
         startTime: listQuery.create_time,
         status: listQuery.status,
-        userName: listQuery.nickname,
-        pageNum: listQuery.pageNum
+        userName: listQuery.nickname
       }
-      console.log(' this.listQuery', params)
       this.getList(params)
     },
     handleSelectionChange(val) {
@@ -148,18 +156,25 @@ export default {
         })
     },
     load(tree, treeNode, resolve) {
-      this.$http
-        .post('member/queryParentList', {
-          parentId: tree.id,
-          pageNum: 1,
-          pageSize: 10
+      this.parentId = tree.id
+      const NowIdIndex = this.breadCrumbList.findIndex(
+        item => item.id == tree.id
+      )
+      if (NowIdIndex < 0) {
+        this.breadCrumbList.push({
+          userName: tree.userName,
+          name: 'users',
+          id: tree.id
         })
-        .then(data => {
-          resolve([...data.info])
-        })
-        .catch(error => {
-          console.log(error)
-        })
+      }
+
+      this.$router.push({
+        name: 'users',
+        query: {
+          id: tree.id
+        }
+      })
+      this.getList()
     },
     handleSizeChange() {
       this.getList()
@@ -168,6 +183,14 @@ export default {
       this.getList()
     },
     getList(params = {}) {
+      if (this.parentId) {
+        params = { ...params, parentId: this.parentId }
+      }
+      params = {
+        ...params,
+        pageNum: this.listQuery.pageNum,
+        pageSize: this.listQuery.pageSize
+      }
       this.listLoading = true
       this.$http
         .post('member/queryParentList', params)

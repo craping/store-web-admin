@@ -51,8 +51,16 @@
       </div>
     </el-card>
     <el-card class="operate-container" shadow="never">
-      <i class="el-icon-tickets"></i>
-      <span>会员列表</span>
+      <el-breadcrumb separator-class="el-icon-arrow-right" v-if="breadCrumbList.length > 1">
+        <el-breadcrumb-item
+          v-for="item in breadCrumbList"
+          :key="item.id"
+          :to="{ name: 'users',query:{id:item.id} }"
+        >{{item.userName}}</el-breadcrumb-item>
+      </el-breadcrumb>
+      <el-breadcrumb separator-class="el-icon-arrow-right" v-else>
+        <el-breadcrumb-item>{{breadCrumbList[0].userName}}</el-breadcrumb-item>
+      </el-breadcrumb>
     </el-card>
     <el-table
       :data="tableData"

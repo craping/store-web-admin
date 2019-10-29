@@ -1,5 +1,5 @@
 <template>
-  <div class="message-container">
+  <div class="message-container" v-if="isShow">
     <el-form ref="form" :model="form" label-width="80px">
       <el-form-item label="消息名称">
         <el-input v-model="form.name" placeholder="请输入消息名称"></el-input>
@@ -12,28 +12,23 @@
         <el-radio v-model="form.radio" :disabled="isDisabled" label="1">发布</el-radio>
       </el-form-item>
       <el-form-item label="选择用户">
-        <el-select v-model="value1" :disabled="isDisabled" multiple placeholder="请选择">
-          <el-option
-            v-for="item in userData"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-          <el-button size="medium" @click="getMore()">更多...</el-button>
-        </el-select>
+        <el-button size="medium" @click="showDialog">{{isShowBtn ? '选择用户': '查看用户'}}</el-button>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" v-show="isShowBtn" @click="onSubmit">{{btnContent}}</el-button>
       </el-form-item>
     </el-form>
+    <select-user-dialog @getSelectedUser="getSelectedUser" v-model="selectDialogVisible"></select-user-dialog>
   </div>
 </template>
 <script>
 import Tinymce from '@/components/Tinymce'
 import { mapState } from 'vuex'
+import selectUserDialog from '@/views/ums/message/selectUserDialog'
 export default {
   components: {
-    Tinymce
+    Tinymce,
+    selectUserDialog
   },
   data() {
     return {
@@ -43,12 +38,11 @@ export default {
         radio: '0'
       },
       value1: [],
-      userData: [],
       isShowBtn: true,
+      isShow: true,
       btnContent: '发布消息',
       isDisabled: false,
-      pageSize: 10,
-      pageNum: 1
+      selectDialogVisible: false
     }
   },
   computed: {
@@ -60,7 +54,18 @@ export default {
     if (this.$route.query.id) {
       this.initMessage(this.messageInfo)
     }
-    this.getList()
+  },
+  watch: {
+    $route() {
+      if (!this.$route.query.id) {
+        this.$store.commit('SET_MESSAGEi_INFP', {})
+        this.isShow = false
+        this.$nextTick(() => {
+          this.isShow = true
+          this.init()
+        })
+      }
+    }
   },
   methods: {
     onSubmit() {
@@ -87,45 +92,30 @@ export default {
           this.fullscreenLoading = false
         })
     },
-    getList() {
-      this.$http
-        .post('member/getsUserIds', {
-          pageNum: this.pageNum,
-          pageSize: this.pageSize
-        })
-        .then(data => {
-          this.userData = data.info.map(item => {
-            return { value: item.id, label: item.userName }
-          })
-        })
-        .catch(error => {
-          console.log(error)
-        })
+
+    getSelectedUser(temArr) {
+      this.value1 = temArr
     },
-    getMore() {
-      this.pageNum += 1
-      this.$http
-        .post('member/getsUserIds', {
-          pageNum: this.pageNum,
-          pageSize: this.pageSize
-        })
-        .then(data => {
-          const temArr = data.info.map(item => {
-            return { value: item.id, label: item.userName }
-          })
-          this.userData = [...this.userData, ...temArr]
-        })
-        .catch(error => {
-          console.log(error)
-        })
+
+    init() {
+      ;(this.form = {
+        name: '',
+        detailHtml: '',
+        radio: '0'
+      }),
+        (this.value1 = []),
+        (this.isShowBtn = true),
+        (this.isShow = true),
+        (this.btnContent = '发布消息'),
+        (this.isDisabled = false),
+        (this.selectDialogVisible = false)
     },
+
     initMessage(message) {
       const { title, state, content, sendObject } = message
       this.form.name = title
       this.form.detailHtml = content
       this.form.radio = state + ''
-      this.value1 = sendObject.substring(1, sendObject.length - 1).split('|')
-      console.log(this.value1)
       if (state == 1) {
         this.isShowBtn = false
         this.isDisabled = true
@@ -133,6 +123,9 @@ export default {
       if (state == 0) {
         this.btnContent = '更新消息'
       }
+    },
+    showDialog() {
+      this.selectDialogVisible = true
     }
   }
 }
