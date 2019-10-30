@@ -190,29 +190,6 @@ export default {
             this.listQuery.pageNum = val;
             this.getList();
         },
-        handleCloseOrderConfirm() {
-            if (this.closeOrder.content == null || this.closeOrder.content === '') {
-                this.$message({
-                    message: '操作备注不能为空',
-                    type: 'warning',
-                    duration: 1000
-                });
-                return;
-            }
-            let params = new URLSearchParams();
-            params.append('ids', this.closeOrder.orderIds);
-            params.append('note', this.closeOrder.content);
-            closeOrder(params).then(data => {
-                this.closeOrder.orderIds = [];
-                this.closeOrder.dialogVisible = false;
-                this.getList();
-                this.$message({
-                    message: '修改成功',
-                    type: 'success',
-                    duration: 1000
-                });
-            });
-        },
         getList() {
             this.listLoading = true;
             // fetchList(this.listQuery).then(data => {
@@ -235,24 +212,6 @@ export default {
                 console.log(error);
             });
 
-        },
-        deleteOrder(ids) {
-            this.$confirm('是否要进行该删除操作?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                let params = new URLSearchParams();
-                params.append("ids", ids);
-                deleteOrder(params).then(data => {
-                    this.$message({
-                        message: '删除成功！',
-                        type: 'success',
-                        duration: 1000
-                    });
-                    this.getList();
-                });
-            })
         },
         covertOrder(order) {
             let address = order.receiverProvince + order.receiverCity + order.receiverRegion + order.receiverDetailAddress;
