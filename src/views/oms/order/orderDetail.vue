@@ -586,9 +586,10 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-            let params = new URLSearchParams();
-            params.append("ids",[this.closeInfo.id]);
-            params.append("note",this.closeInfo.note);
+            let params = {
+              ids: [this.closeInfo.id],
+              note: this.closeInfo.note
+            }
             closeOrder(params).then(data=>{
               this.closeDialogVisible=false;
               this.$message({

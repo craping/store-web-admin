@@ -16,12 +16,12 @@
         <template slot-scope="scope">
           <el-button type="danger" @click="onClick(scope.$index, scope.row)">删除</el-button>
           <el-button
-            type="danger"
+            type="info"
             v-show="scope.row.state == 1"
             @click="checkOrUpdateInfo(scope.row,'check')"
           >查看详情</el-button>
           <el-button
-            type="danger"
+            type="primary"
             v-show="scope.row.state == 0"
             @click="checkOrUpdateInfo(scope.row,'update')"
           >更新</el-button>

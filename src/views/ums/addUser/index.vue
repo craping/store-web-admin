@@ -31,9 +31,9 @@
         <el-form-item label="确认密码" prop="checkPass">
           <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="手机号码" prop="telphone">
+        <!-- <el-form-item label="手机号码" prop="telphone">
           <el-input v-model.number="ruleForm.telphone"></el-input>
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item label="上级ID" prop="superiorId">
           <el-input v-model.number="ruleForm.superiorId"></el-input>
         </el-form-item>
@@ -93,7 +93,7 @@ export default {
         date1: '',
         pass: '',
         checkPass: '',
-        telphone: '',
+        // telphone: '',
         superiorId: ''
       },
       fullscreenLoading: false,
@@ -108,14 +108,15 @@ export default {
           { required: true, message: '请选择会员等级', trigger: 'change' }
         ],
         account: [
-          { required: true, message: '请输入会员账号', trigger: 'blur' },
-          { min: 3, max: 50, message: '长度在 3 到 50 个字符', trigger: 'blur' }
+          { required: true, validator: checkPhone, trigger: 'blur' }
+          // { required: true, message: '请输入电话号码', trigger: 'blur' },
+          // { min: 3, max: 50, message: '长度在 3 到 50 个字符', trigger: 'blur' }
         ],
         pass: [{ required: true, validator: validatePass, trigger: 'blur' }],
         checkPass: [
           { required: true, validator: validatePass2, trigger: 'blur' }
-        ],
-        telphone: [{ required: true, validator: checkPhone, trigger: 'blur' }]
+        ]
+        // telphone: [{ required: true, validator: checkPhone, trigger: 'blur' }]
       }
     }
   },
@@ -128,10 +129,11 @@ export default {
         if (valid) {
           const { ruleForm } = this
           const params = {
-            userName: ruleForm.telphone,
+            userName: ruleForm.account,
             password: md5(ruleForm.pass),
             nickName: ruleForm.name,
-            parentId: ruleForm.superiorId
+            parentId: ruleForm.superiorId,
+            level: ruleForm.level
           }
           this.fullscreenLoading = true
           this.$http

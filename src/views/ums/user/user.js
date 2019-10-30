@@ -3,10 +3,10 @@ import { formatTimestamp } from '@/utils/date'
 import balanceDialog from '@/views/ums/user/balanceDialog'
 import levelDialog from '@/views/ums/user/levelDialog'
 const defaultListQuery = {
-  page: 1,
-  num: 10,
+  pageNum: 1,
+  pageSize: 10,
   nickname: null,
-  com_name: null,
+  level: null,
   create_time: null,
   status: null
 }
@@ -29,22 +29,21 @@ export default {
       },
       tableData: [],
       levelList: [],
+      levelListselect: [],
       statusOptions: [
         {
-          value: '全部',
-          label: '全部'
-        },
-        {
-          value: '冻结',
+          value: '0',
           label: '冻结'
         },
         {
-          value: '正常',
+          value: '1',
           label: '正常'
         }
       ],
       balanceDialogVisible: false,
-      levelDialogVisible: false
+      levelDialogVisible: false,
+      breadCrumbList: [{ userName: '会员列表', name: 'users', id: '' }],
+      parentId: ''
     }
   },
   created() {
@@ -53,31 +52,18 @@ export default {
   filters: {
     formatCreateTime(time) {
       return formatTimestamp(time)
-    },
-    formatPayType(value) {
-      if (value === 1) {
-        return '支付宝'
-      } else if (value === 2) {
-        return '微信'
-      } else {
-        return '未支付'
+    }
+  },
+  watch: {
+    $route() {
+      this.parentId = this.$route.query.id
+      const NowIdIndex = this.breadCrumbList.findIndex(
+        item => item.id == this.parentId
+      )
+      if (NowIdIndex > -1 && NowIdIndex < this.breadCrumbList.length - 1) {
+        this.breadCrumbList = this.breadCrumbList.slice(0, NowIdIndex + 1)
       }
-    },
-    formatSourceType(value) {
-      if (value === 1) {
-        return 'APP订单'
-      } else {
-        return 'PC订单'
-      }
-    },
-    formatStatus(value) {
-      if (value === 1) {
-        return '正常'
-      } else if (value === 2) {
-        return '已注销'
-      } else if (value === 0) {
-        return '已停用'
-      }
+      this.getList()
     }
   },
   methods: {
@@ -86,7 +72,16 @@ export default {
     },
     handleSearchList() {
       this.listQuery.pageNum = 1
-      this.getList()
+      const { listQuery } = this
+
+      const params = {
+        userName: listQuery.nickname,
+        level: listQuery.level,
+        startTime: listQuery.create_time,
+        status: listQuery.status,
+        userName: listQuery.nickname
+      }
+      this.getList(params)
     },
     handleSelectionChange(val) {
       this.multipleSelection = val
@@ -122,7 +117,6 @@ export default {
     },
     handleLevelDialog(index, row) {
       this.userProps = row
-      console.log(row)
       this.levelDialogVisible = true
     },
     handleFrozen(index, row) {
@@ -162,40 +156,25 @@ export default {
         })
     },
     load(tree, treeNode, resolve) {
-      console.log(tree)
-      console.log(treeNode)
+      this.parentId = tree.id
+      const NowIdIndex = this.breadCrumbList.findIndex(
+        item => item.id == tree.id
+      )
+      if (NowIdIndex < 0) {
+        this.breadCrumbList.push({
+          userName: tree.userName,
+          name: 'users',
+          id: tree.id
+        })
+      }
 
-      this.$http
-        .post('member/queryParentList', {
-          parentId: tree.id,
-          pageNum: 1,
-          pageSize: 10
-        })
-        .then(data => {
-          console.log([...data.info])
-          resolve([...data.info])
-          //   resolve([
-          //     {
-          //       id: 31,
-          //       date: '2016-05-01',
-          //       name: '王小虎',
-          //       level: '普通会员',
-          //       status: '正常',
-          //       balance: 20
-          //     },
-          //     {
-          //       id: 32,
-          //       date: '2016-05-01',
-          //       name: '王小虎',
-          //       level: '普通会员',
-          //       status: '冻结',
-          //       balance: 20
-          //     }
-          //   ])
-        })
-        .catch(error => {
-          console.log(error)
-        })
+      this.$router.push({
+        name: 'users',
+        query: {
+          id: tree.id
+        }
+      })
+      this.getList()
     },
     handleSizeChange() {
       this.getList()
@@ -203,10 +182,18 @@ export default {
     handleCurrentChange() {
       this.getList()
     },
-    getList() {
+    getList(params = {}) {
+      if (this.parentId) {
+        params = { ...params, parentId: this.parentId }
+      }
+      params = {
+        ...params,
+        pageNum: this.listQuery.pageNum,
+        pageSize: this.listQuery.pageSize
+      }
       this.listLoading = true
       this.$http
-        .post('member/queryParentList', {})
+        .post('member/queryParentList', params)
         .then(data => {
           this.tableData = data.info
           this.total = data.totalnum
@@ -227,6 +214,7 @@ export default {
         .then(data => {
           data.info.forEach(item => {
             this.levelList[item.id] = item.name
+            this.levelListselect.push({ value: item.id, label: item.name })
           })
           this.getList()
         })

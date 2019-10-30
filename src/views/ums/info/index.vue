@@ -3,7 +3,7 @@
     <div class="userInfo">
       <div class="info-item">
         <div class="left">会员名称</div>
-        <div class="right">{{infoData.nickname}}</div>
+        <div class="right">{{infoData.nickname || ''}}</div>
       </div>
       <div class="info-item">
         <div class="left">会员账号</div>
@@ -15,7 +15,7 @@
       </div>
       <div class="info-item">
         <div class="left">会员等级</div>
-        <div class="right">{{infoData.member_level_id}}</div>
+        <div class="right">{{levelList[infoData.agent_level_id]}}</div>
       </div>
       <div class="info-item">
         <div class="left">创建时间</div>
@@ -107,7 +107,8 @@ export default {
           recharge: '77'
         }
       ],
-      infoData: {}
+      infoData: {},
+      levelList: []
     }
   },
   filters: {
@@ -117,6 +118,7 @@ export default {
     }
   },
   created() {
+    this.getUserByStatus()
     this.getList()
   },
   methods: {
@@ -138,7 +140,22 @@ export default {
         .post('member/queryDetails', params)
         .then(data => {
           this.listLoading = false
-          this.infoData = data.info[1]
+          this.$nextTick(() => {
+            this.infoData = data.info
+          })
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    getUserByStatus() {
+      this.$http
+        .post('ams/level/list', {})
+        .then(data => {
+          data.info.forEach(item => {
+            this.levelList[item.id] = item.name
+          })
+          this.getList()
         })
         .catch(error => {
           console.log(error)
