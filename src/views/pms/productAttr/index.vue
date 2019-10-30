@@ -166,8 +166,7 @@
       handleConfirm(formName){
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            let data = new URLSearchParams();
-            data.append("name",this.productAttrCate.name);
+            let data = {name:this.productAttrCate.name};
             if(this.dialogTitle==="添加品牌"){
               createProductAttrCate(data).then(data=>{
                 this.$message({
