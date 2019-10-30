@@ -140,7 +140,7 @@ export default {
         .post('config/querySysConfigInfo', {})
         .then(data => {
           const { info } = data
-          this.value = info[0].configValue == 1
+          this.value = info[0].configValue == 'true'
           this.charge = info[1].configValue
           this.veision = info[4].configValue
           this.form.detailHtml = info[2].configValue
