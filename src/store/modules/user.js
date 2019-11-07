@@ -48,7 +48,7 @@ const user = {
             commit('SET_ROLES', roleStr)
             commit('SET_AVATAR', resp.icon)
             commit('SET_NAME', resp.username)
-            sync.connect()
+            //sync.connect()
             resolve(data)
           })
           .catch(error => {

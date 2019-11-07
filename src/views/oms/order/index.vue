@@ -62,7 +62,15 @@
               </el-option>
             </el-select>
           </el-form-item>
-
+          <el-form-item label="订单删除：">
+            <el-select v-model="listQuery.deleteStatus" class="input-width" placeholder="全部" clearable>
+              <el-option v-for="item in deleteStatusOptions"
+                         :key="item.value"
+                         :label="item.label"
+                         :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item label="供应商：">
             <el-select v-model="listQuery.supId" filterable class="input-width" placeholder="全部" clearable>
               <el-option v-for="item in suppliers"
@@ -128,15 +136,15 @@
               size="mini"
               @click="handleDeliveryOrder(scope.$index, scope.row)"
               v-show="scope.row.status===1">订单发货</el-button>
-            <el-button
+            <!--<el-button
               size="mini"
               @click="handleViewLogistics(scope.$index, scope.row)"
-              v-show="scope.row.status===2||scope.row.status===3">订单跟踪</el-button>
+              v-show="scope.row.status===2||scope.row.status===3">订单跟踪</el-button>-->
             <el-button
               size="mini"
               type="danger"
               @click="handleDeleteOrder(scope.$index, scope.row)"
-              v-show="scope.row.status===4">删除订单</el-button>
+              v-show="scope.row.status===4 && scope.row.deleteStatus===0">删除订单</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -205,7 +213,8 @@
     orderType: null,
     sourceType: null,
     createTime: null,
-    supId: null
+    supId: null,
+    deleteStatus: null
   };
   export default {
     name: "orderList",
@@ -235,6 +244,10 @@
         orderTypeOptions: [
           { label: '正常订单', value: 0 },
           { label: '秒杀订单', value: 1 }
+        ],
+        deleteStatusOptions: [
+          { label: '未删除', value: 0 },
+          { label: '已删除', value: 1 }
         ],
         sourceTypeOptions: [
           { label: 'PC订单', value: 0 },
@@ -292,11 +305,11 @@
         } else if (value === 2) {
           return '已发货';
         } else if (value === 3) {
-          return '已完成';
+          return '已收货';
         } else if (value === 4) {
           return '已关闭';
         } else if (value === 5) {
-          return '无效订单';
+          return '已完成';
         } else {
           return '待付款';
         }

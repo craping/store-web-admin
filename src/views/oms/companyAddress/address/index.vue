@@ -50,7 +50,6 @@
         </el-table-column>
       </el-table>
     </div>
-    <logistics-dialog v-model="logisticsDialogVisible"></logistics-dialog>
   </div>
 </template>
 <script src="./address.js"></script>

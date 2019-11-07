@@ -225,6 +225,31 @@ export const constantRouterMap = [
         meta: { title: '退货原因详情' },
         hidden: true
       },
+
+      {
+        path: 'express',
+        name: 'express',
+        role: 'admin',
+        component: () => import('@/views/oms/express'),
+        meta: { title: '物流配置列表', icon: 'express' }
+      },
+      {
+        path: 'addExpress',
+        name: 'addExpress',
+        role: 'admin',
+        component: () => import('@/views/oms/express/add'),
+        meta: { title: '添加物流信息'},
+        hidden: true
+      },
+      {
+        path: 'updateExpress',
+        name: 'updateExpress',
+        role: 'admin',
+        component: () => import('@/views/oms/express/update'),
+        meta: { title: '修改物流信息'},
+        hidden: true
+      },
+
       {
         path: 'companyAddress',
         name: 'companyAddress',
@@ -412,7 +437,7 @@ export const constantRouterMap = [
         path: 'sups',
         name: 'sups',
         role: 'admin',
-        component: () => import('@/views/sup/sups'),
+        component: () => import('@/views/sup'),
         meta: { title: '供应商列表', icon: 'teamwork' }
       },
       {
@@ -420,7 +445,16 @@ export const constantRouterMap = [
         name: 'addSup',
         role: 'admin',
         component: () => import('@/views/sup/add'),
-        meta: { title: '添加供应商', icon: 'add-user' }
+        meta: { title: '添加供应商', icon: 'add-user'},
+        hidden: true
+      },
+      {
+        path: 'editSup',
+        name: 'editSup',
+        role: 'admin',
+        component: () => import('@/views/sup/update'),
+        meta: { title: '编辑供应商' },
+        hidden: true
       }
     ]
   },

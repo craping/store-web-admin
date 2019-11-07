@@ -25,13 +25,12 @@
         </el-table-column>
         <el-table-column label="配送方式" width="160" align="center">
           <template slot-scope="scope">
-            <el-select placeholder="请选择物流公司"
-                       v-model="scope.row.deliveryCompany"
-                       size="small">
+            <el-select v-model="scope.row.deliveryCompany" 
+              filterable class="input-width" placeholder="请选择物流公司" clearable>
               <el-option v-for="item in companyOptions"
-                         :key="item"
-                         :label="item"
-                         :value="item">
+                :key="item.id"
+                :label="item.name"
+                :value="item.name">
               </el-option>
             </el-select>
           </template>
@@ -56,21 +55,28 @@
 </template>
 <script>
   import {deliveryOrder} from '@/api/order'
-  const defaultLogisticsCompanies=["顺丰快递","圆通快递","中通快递","韵达快递"];
   export default {
     name: 'deliverOrderList',
     data() {
       return {
         list:[],
-        companyOptions:defaultLogisticsCompanies
+        companyOptions:[]
       }
     },
     created(){
       this.list= this.$route.query.list;
+      this.loadExpress();
     },
     methods:{
       cancel(){
         this.$router.back();
+      },
+      loadExpress() {
+        this.$http.post("express/list", {status: 1}).then(data => {
+          this.companyOptions = data.info;
+        }).catch(error => {
+          console.log(error);
+        });
       },
       confirm(){
         this.$confirm('是否要进行发货操作?', '提示', {

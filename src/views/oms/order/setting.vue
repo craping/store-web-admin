@@ -1,5 +1,5 @@
 <template> 
-  <el-card class="form-container" shadow="never">
+  <el-card class="form-container" shadow="hover" body-style="padding: 0px">
     <el-form :model="orderSetting"
              ref="orderSettingForm"
              :rules="rules"
@@ -20,19 +20,25 @@
         <el-input v-model="orderSetting.confirmOvertime" class="input-width">
           <template slot="append">小时</template>
         </el-input>
-        <span class="note-margin">未收货，订单自动完成</span>
+        <span class="note-margin">未收货，订单自动确认收货</span>
       </el-form-item>
-      <el-form-item label="订单完成超过：" prop="finishOvertime">
-        <el-input v-model="orderSetting.finishOvertime" class="input-width">
+      <el-form-item label="确认收货后：" prop="confirmAllowReturnNoReasonTime">
+        <el-input v-model="orderSetting.confirmAllowReturnNoReasonTime" class="input-width">
           <template slot="append">小时</template>
         </el-input>
-        <span class="note-margin">自动结束交易，不能申请售后</span>
+        <span class="note-margin">内，不影响二次销售，无理由退换货</span>
       </el-form-item>
-      <el-form-item label="订单完成超过：" prop="commentOvertime">
-        <el-input v-model="orderSetting.commentOvertime" class="input-width">
+      <el-form-item label="确认收货后：" prop="confirmAllowReturnTime">
+        <el-input v-model="orderSetting.confirmAllowReturnTime" class="input-width">
           <template slot="append">小时</template>
         </el-input>
-        <span class="note-margin">自动五星好评</span>
+        <span class="note-margin">内，商品出现质量问题，可退换货</span>
+      </el-form-item>
+      <el-form-item label="确认收货超过：" prop="confirmNotAllowReturnTime">
+        <el-input v-model="orderSetting.confirmNotAllowReturnTime" class="input-width">
+          <template slot="append">小时</template>
+        </el-input>
+        <span class="note-margin">不可退换货</span>
       </el-form-item>
       <el-form-item>
         <el-button
@@ -49,8 +55,9 @@
     flashOrderOvertime: 0,
     normalOrderOvertime: 0,
     confirmOvertime: 0,
-    finishOvertime: 0,
-    commentOvertime: 0
+    confirmAllowReturnNoReasonTime: 0,
+    confirmAllowReturnTime: 0,
+    confirmNotAllowReturnTime: 0
   };
   const checkTime = (rule, value, callback) => {
     if (!value) {
@@ -72,8 +79,9 @@
           flashOrderOvertime:{validator: checkTime, trigger: 'blur' },
           normalOrderOvertime:{validator: checkTime, trigger: 'blur' },
           confirmOvertime: {validator: checkTime, trigger: 'blur' },
-          finishOvertime: {validator: checkTime, trigger: 'blur' },
-          commentOvertime:{validator: checkTime, trigger: 'blur' }
+          confirmAllowReturnNoReasonTime: {validator: checkTime, trigger: 'blur' },
+          confirmAllowReturnTime: {validator: checkTime, trigger: 'blur' },
+          confirmNotAllowReturnTime: {validator: checkTime, trigger: 'blur' }
         }
       }
     },
@@ -120,7 +128,7 @@
   }
 
   .note-margin {
-    margin-left: 15px;
+    margin-left: 5px;
   }
 </style>
 

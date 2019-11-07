@@ -12,7 +12,8 @@
     <el-card shadow="never" style="margin-top: 15px">
       <div class="operate-container">
         <i class="el-icon-warning color-danger" style="margin-left: 20px"></i>
-        <span class="color-danger">当前订单状态：{{order.status | formatStatus}}</span>
+        <span class="color-danger">当前订单状态：{{order.status | formatStatus}}
+            {{order.deleteStatus | formatDeleteStatus}}</span>
         <div class="operate-button-container" v-show="order.status===0">
           <el-button size="mini" @click="showUpdateReceiverDialog">修改收货人信息</el-button>
           <el-button size="mini">修改商品信息</el-button>
@@ -28,11 +29,11 @@
           <el-button size="mini" @click="showMarkOrderDialog">备注订单</el-button>
         </div>
         <div class="operate-button-container" v-show="order.status===2||order.status===3">
-          <el-button size="mini" @click="showLogisticsDialog">订单跟踪</el-button>
+          <!--<el-button size="mini" @click="showLogisticsDialog">订单跟踪</el-button> -->
           <!--<el-button size="mini" @click="showMessageDialog">发送站内信</el-button>-->
           <el-button size="mini" @click="showMarkOrderDialog">备注订单</el-button>
         </div>
-        <div class="operate-button-container" v-show="order.status===4">
+        <div class="operate-button-container" v-show="order.status===4 && order.deleteStatus===0">
           <el-button size="mini" @click="handleDeleteOrder">删除订单</el-button>
           <el-button size="mini" @click="showMarkOrderDialog">备注订单</el-button>
         </div>
@@ -166,17 +167,17 @@
         <el-row>
           <el-col :span="6" class="table-cell-title">活动优惠</el-col>
           <el-col :span="6" class="table-cell-title">折扣金额</el-col>
+          <el-col :span="6" class="table-cell-title">实付金额</el-col>
           <el-col :span="6" class="table-cell-title">订单总金额</el-col>
-          <el-col :span="6" class="table-cell-title">应付款金额</el-col>
         </el-row>
         <el-row>
           <el-col :span="6" class="table-cell">-￥{{order.promotionAmount}}</el-col>
           <el-col :span="6" class="table-cell">-￥{{order.discountAmount}}</el-col>
           <el-col :span="6" class="table-cell">
-            <span class="color-danger">￥{{order.totalAmount+order.freightAmount}}</span>
+            <span class="color-danger">￥{{order.payAmount}}</span>
           </el-col>
           <el-col :span="6" class="table-cell">
-            <span class="color-danger">￥{{order.payAmount+order.freightAmount-order.discountAmount}}</span>
+            <span class="color-danger">￥{{order.totalAmount+order.freightAmount}}</span>
           </el-col>
         </el-row>
       </div>
@@ -360,7 +361,8 @@
     receiverProvince:null,
     receiverCity:null,
     receiverRegion:null,
-    status:null
+    status:null,
+    deleteStatus:null
   };
   export default {
     name: 'orderDetail',
@@ -403,6 +405,13 @@
           return value.substr(0, 8) + '...';
         }else{
           return value;
+        }
+      },
+      formatDeleteStatus(value){
+        if (value === 1){
+          return '，已删除';
+        } else {
+          return ''
         }
       },
       formatPayType(value) {

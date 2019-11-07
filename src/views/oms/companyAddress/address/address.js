@@ -1,5 +1,3 @@
-import { fetchList, closeOrder, deleteOrder } from '@/api/order'
-import { formatTimestamp } from '@/utils/date';
 import LogisticsDialog from '@/views/oms/order/components/logisticsDialog';
 export default {
     name: "orderList",
@@ -7,8 +5,7 @@ export default {
     data() {
         return {
             listLoading: true,
-            list: null,
-            logisticsDialogVisible: false
+            list: null
         }
     },
     created() {

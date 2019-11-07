@@ -86,7 +86,8 @@
           <el-col class="form-border form-left-bg font-small" :span="6" style="height:100px;line-height:80px">凭证图片
           </el-col>
           <el-col class="form-border font-small" :span="18" style="height:100px">
-            <img v-for="item in proofPics" style="width:80px;height:80px" :src="item">
+            <el-image v-for="item in proofPics" :src="item" :preview-src-list="proofPics"
+              style="width:80px;height:80px;padding:10px;"></el-image>
           </el-col>
         </el-row>
       </div>
@@ -99,7 +100,7 @@
           <el-col class="form-border form-left-bg font-small" :span="6" style="height:52px;line-height:32px">确认退款金额
           </el-col>
           <el-col class="form-border font-small" style="height:52px" :span="18" v-if="this.role=='admin'">
-            ￥<el-input size="small" v-model="orderReturnApply.returnAmount" :disabled="orderReturnApply.status!==0" 
+            ￥<el-input size="small" v-model="updateStatusParam.returnAmount" :disabled="orderReturnApply.status!==0" 
               style="width:200px;margin-left: 10px"></el-input>
           </el-col>
           <el-col class="form-border font-small" style="height:52px" :span="18" v-if="this.role=='sup'">
@@ -162,6 +163,24 @@
             </el-row>
           </div>
         </div>
+        <div v-else>
+          <el-row>
+            <el-col class="form-border form-left-bg font-small" :span="6">退货地址信息</el-col>
+            <el-col class="form-border font-small" :span="18">
+              {{getCurrentAddress(orderReturnApply.companyAddressId)}}
+              </el-col>
+          </el-row>
+        </div>
+        <div v-if="orderReturnApply.status===5">
+          <el-row>
+            <el-col class="form-border form-left-bg font-small" :span="6">退货物流名称</el-col>
+            <el-col class="form-border font-small" :span="18">{{orderReturnApply.deliveryCompany}}</el-col>
+          </el-row>
+          <el-row>
+              <el-col class="form-border form-left-bg font-small" :span="6">退货物流单号</el-col>
+              <el-col class="form-border font-small" :span="18">{{orderReturnApply.deliverySn}}</el-col>
+          </el-row>
+        </div>
       </div>
       <div class="form-container-border" v-show="orderReturnApply.status!==0">
         <el-row>
@@ -211,7 +230,7 @@
         <el-button type="primary" size="small" @click="handleUpdateStatus(1)">确认退货</el-button>
         <el-button type="danger" size="small" @click="handleUpdateStatus(3)">拒绝退货</el-button>
       </div>
-      <div style="margin-top:15px;text-align: center" v-show="orderReturnApply.status===1">
+      <div style="margin-top:15px;text-align: center" v-show="orderReturnApply.status===5">
         <el-button type="primary" size="small" @click="handleUpdateStatus(2)">确认收货</el-button>
       </div>
     </el-card>
@@ -233,7 +252,6 @@
     returnAmount: 0,
     freightAmount: 0,
     status: 0,
-
   };
   const defaultOrderReturnApply = {
     id: null,
@@ -278,7 +296,7 @@
         id: null,
         orderReturnApply: Object.assign({},defaultOrderReturnApply),
         productList: null,
-        proofPics: null,
+        proofPics: [],
         updateStatusParam: Object.assign({}, defaultUpdateStatusParam),
         companyAddressList: null,
         role: getRole(),
@@ -318,6 +336,8 @@
           return "退货中";
         } else if (status === 2) {
           return "已完成";
+        } else if (status === 5) {
+          return "买家已发货";
         } else {
           return "已拒绝";
         }
@@ -342,6 +362,19 @@
       }
     },
     methods: {
+      getCurrentAddress(id){
+        console.log(id);
+        if(this.companyAddressList==null) return {}
+        for (let i = 0; i < this.companyAddressList.length; i++) {
+          let address = this.companyAddressList[i];
+          if (address.id === id) {
+            console.log(address);
+            return address.province+","+address.city+","+address.region+"   "+address.detailAddress+
+            "    -    "+address.name+","+address.phone;
+          }
+        }
+        return null;
+      },
       handleAddAddress(){
         this.$router.push('/oms/addCompanyAddress');
       },
@@ -363,10 +396,16 @@
           this.productList = [];
           this.productList.push(this.orderReturnApply);
           if (this.orderReturnApply.proofPics != null) {
-            this.proofPics = this.orderReturnApply.proofPics.split(",")
+            var urls = JSON.parse(this.orderReturnApply.proofPics);
+            for (var i = 0; i < urls.length; i++) { 
+              this.proofPics.push(urls[i].url);
+            }
           }
+
+          //console.log(":::" + this.orderReturnApply.freightAmount);
           //退货中和完成
-          if(this.orderReturnApply.status===1||this.orderReturnApply.status===2||this.orderReturnApply.status===0){
+          if(this.orderReturnApply.status===1||this.orderReturnApply.status===2
+            ||this.orderReturnApply.status===0||this.orderReturnApply.status===5){
             this.updateStatusParam.returnAmount=this.orderReturnApply.returnAmount;
             this.updateStatusParam.freightAmount=this.orderReturnApply.freightAmount;
             this.updateStatusParam.companyAddressId=this.orderReturnApply.companyAddressId;
