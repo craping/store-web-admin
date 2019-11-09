@@ -9,7 +9,7 @@ export function fetchList(params) {
 
 export function getSupList() {
   return request({
-    url:'/admin/querySupList',
+    url:'/sup/querySupList',
     method:'post',
     data:{}
   })

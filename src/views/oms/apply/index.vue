@@ -65,12 +65,15 @@
                 :data="list"
                 style="width: 100%;"
                 @selection-change="handleSelectionChange"
-                v-loading="listLoading" border>
+                v-loading="listLoading">
         <el-table-column type="selection" width="60" align="center"></el-table-column>
         <el-table-column label="服务单号" width="180" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
-        <el-table-column label="申请时间" width="180" align="center">
+        <el-table-column label="订单编号" width="200" align="center">
+          <template slot-scope="scope">{{scope.row.orderSn}}</template>
+        </el-table-column>
+        <el-table-column label="申请时间" width="200" align="center">
           <template slot-scope="scope">{{scope.row.createTime | formatTime}}</template>
         </el-table-column>
         <el-table-column label="用户账号" width="220" align="center">
@@ -82,7 +85,7 @@
         <el-table-column label="申请状态" width="180" align="center">
           <template slot-scope="scope">{{scope.row.status | formatStatus}}</template>
         </el-table-column>
-        <el-table-column label="处理时间" width="180" align="center">
+        <el-table-column label="处理时间" width="200" align="center">
           <template slot-scope="scope">{{scope.row.handleTime | formatTime}}</template>
         </el-table-column>
         <el-table-column label="操作" align="center">
@@ -142,22 +145,12 @@
     handleTime: null
   };
   const defaultStatusOptions=[
-    {
-      label: '待处理',
-      value: 0
-    },
-    {
-      label: '退货中',
-      value: 1
-    },
-    {
-      label: '已完成',
-      value: 2
-    },
-    {
-      label: '已拒绝',
-      value: 3
-    }
+    { label: '待处理', value: 0 },
+    { label: '退货中', value: 1 },
+    { label: '已完成', value: 2 },
+    { label: '已拒绝', value: 3 },
+    { label: '已取消', value: 4 },
+    { label: '买家已发货', value: 5 }
   ];
   export default {
     name:'returnApplyList',
@@ -171,10 +164,7 @@
         multipleSelection:[],
         operateType:1,
         operateOptions: [
-          {
-            label: "批量删除",
-            value: 1
-          }
+          { label: "批量删除", value: 1 }
         ],
       }
     },

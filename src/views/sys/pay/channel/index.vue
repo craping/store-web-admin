@@ -23,15 +23,6 @@
           <el-form-item label="输入搜索：">
             <el-input v-model="listQuery.keyword" class="input-width" placeholder="渠道名称/简称"></el-input>
           </el-form-item>
-          <el-form-item label="渠道类型：">
-            <el-select v-model="listQuery.type" class="input-width" placeholder="全部" clearable>
-              <el-option v-for="item in typeOptions"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value">
-              </el-option>
-            </el-select>
-          </el-form-item>
           <el-form-item label="启用状态：">
             <el-select v-model="listQuery.status" class="input-width" placeholder="全部" clearable>
               <el-option v-for="item in statusOptions"
@@ -50,15 +41,19 @@
       <el-button size="mini" class="btn-add" @click="handleAddChannel()">添加渠道配置</el-button>
     </el-card>
     <div class="table-container">
-      <el-table ref="addressTable"  :data="list" style="width: 100%" v-loading="listLoading">
+      <el-table ref="orderTable" :data="list" style="width: 100%;" @selection-change="handleSelectionChange" v-loading="listLoading">
+        <el-table-column type="selection" width="60" align="center"></el-table-column>
         <el-table-column label="渠道名称" width="248" align="center">
-          <template slot-scope="scope">{{scope.row.name}}</template>
+          <template slot-scope="scope">{{scope.row.channel_name}}</template>
         </el-table-column>
         <el-table-column label="渠道简称" width="248" align="center">
-          <template slot-scope="scope">{{scope.row.abbr}}</template>
+          <template slot-scope="scope">{{scope.row.channel_short_name}}</template>
         </el-table-column>
-        <el-table-column label="渠道类型" width="248" align="center">
-          <template slot-scope="scope">{{scope.row.type | formatType}}</template>
+        <el-table-column label="商户号" width="248" align="center">
+          <template slot-scope="scope">{{scope.row.mer_no}}</template>
+        </el-table-column>
+        <el-table-column label="商户名称" width="248" align="center">
+          <template slot-scope="scope">{{scope.row.mer_name}}</template>
         </el-table-column>
         <el-table-column label="启用状态" width="248" align="center">
           <template slot-scope="scope">
@@ -75,7 +70,38 @@
         </el-table-column>
       </el-table>
     </div>
-    <logistics-dialog v-model="logisticsDialogVisible"></logistics-dialog>
+    <div class="batch-operate-container">
+      <el-select
+        size="small"
+        v-model="operateType" placeholder="批量操作">
+        <el-option
+          v-for="item in operateOptions"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
+      <el-button
+        style="margin-left: 20px"
+        class="search-button"
+        @click="handleBatchOperate()"
+        type="primary"
+        size="small">
+        确定
+      </el-button>
+    </div>
+    <div class="pagination-container">
+      <el-pagination
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        layout="total, sizes,prev, pager, next,jumper"
+        :current-page.sync="listQuery.pageNum"
+        :page-size="listQuery.pageSize"
+        :page-sizes="[5,10,15]"
+        :total="total">
+      </el-pagination>
+    </div>
   </div>
 </template>
 <script src="./channel.js"></script>

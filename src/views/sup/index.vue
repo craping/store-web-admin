@@ -43,10 +43,11 @@
     <el-card class="operate-container" shadow="never">
       <i class="el-icon-tickets"></i>
       <span>数据列表</span>
+      <el-button size="mini" class="btn-add" @click="handleAddSup()">添加供应商</el-button>
     </el-card>
     <div class="table-container">
-      <el-table ref="orderTable" :data="list" style="width: 100%;" @selection-change="handleSelectionChange" v-loading="listLoading" border>
-        <el-table-column type="selection" width="60" align="center"></el-table-column>
+      <el-table ref="orderTable" :data="list" style="width: 100%;" @selection-change="handleSelectionChange" v-loading="listLoading">
+        <el-table-column type="selection" width="50" align="center"></el-table-column>
         <el-table-column label="编号" width="80" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
@@ -76,10 +77,10 @@
         </el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
-            <el-button size="mini" @click="handleViewOrder(scope.$index, scope.row)" >查看详情</el-button>
-            <el-button size="mini" type="success" @click="handleCloseOrder(scope.$index, scope.row)" v-show="scope.row.status===0">开启用户</el-button>
-            <el-button size="mini" type="info" @click="handleDeliveryOrder(scope.$index, scope.row)" v-show="scope.row.status===1">停用用户</el-button>
-            <el-button size="mini" type="danger" @click="handleDeliveryOrder(scope.$index, scope.row)" v-show="scope.row.status===1">注销用户</el-button>
+            <el-button @click="handleView(scope.$index, scope.row)" icon="el-icon-view" circle size="mini"></el-button>
+            <el-button type="primary" @click="handleView(scope.$index, scope.row)" icon="el-icon-edit" circle size="mini"></el-button>
+            <el-button type="success" @click="handleUpdateStatus(scope.$index, scope.row, 1)" v-show="scope.row.status===0" icon="el-icon-open" circle size="mini"></el-button>
+            <el-button type="danger" @click="handleUpdateStatus(scope.$index, scope.row, 0)" v-show="scope.row.status===1" icon="el-icon-turn-off" circle size="mini"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -116,23 +117,6 @@
         :total="total">
       </el-pagination>
     </div>
-    <el-dialog
-      title="关闭订单"
-      :visible.sync="closeOrder.dialogVisible" width="30%">
-      <span style="vertical-align: top">操作备注：</span>
-      <el-input
-        style="width: 80%"
-        type="textarea"
-        :rows="5"
-        placeholder="请输入内容"
-        v-model="closeOrder.content">
-      </el-input>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="closeOrder.dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleCloseOrderConfirm">确 定</el-button>
-      </span>
-    </el-dialog>
-    <logistics-dialog v-model="logisticsDialogVisible"></logistics-dialog>
   </div>
 </template>
 <script src="./sups.js"></script>

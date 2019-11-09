@@ -14,7 +14,7 @@
                 :data="list"
                 style="width: 100%;"
                 @selection-change="handleSelectionChange"
-                v-loading="listLoading" border>
+                v-loading="listLoading">
         <el-table-column type="selection" width="60" align="center"></el-table-column>
         <el-table-column label="编号" width="80" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
@@ -22,10 +22,10 @@
         <el-table-column label="原因类型" align="center">
           <template slot-scope="scope">{{scope.row.name}}</template>
         </el-table-column>
-        <el-table-column label="排序" width="100" align="center">
+        <el-table-column label="排序" width="150" align="center">
           <template slot-scope="scope">{{scope.row.sort }}</template>
         </el-table-column>
-        <el-table-column label="是否可用" align="center">
+        <el-table-column label="是否可用" width="150" align="center">
           <template slot-scope="scope">
             <el-switch
               v-model="scope.row.status"
@@ -35,7 +35,7 @@
             </el-switch>
           </template>
         </el-table-column>
-        <el-table-column label="是否扣运费" align="center">
+        <el-table-column label="是否扣运费" width="150" align="center">
           <template slot-scope="scope">
             <el-switch
               v-model="scope.row.fareStatus"
@@ -48,7 +48,7 @@
         <el-table-column label="添加时间" width="180" align="center">
           <template slot-scope="scope">{{scope.row.createTime | formatCreateTime}}</template>
         </el-table-column>
-        <el-table-column label="操作" width="160" align="center">
+        <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button
               size="mini"

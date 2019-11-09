@@ -1,8 +1,14 @@
 const defaultChannel = {
-    name: "",
-    abbr: "",
-    type: 1,
-    status: 0
+    channelName: "",
+    channelShortName: "",
+    merNo: null,
+    merName: null,
+    payKey: null,
+    signKey: null,
+    platPublicKey: null,
+    platPrivateKey: null,
+    channelPublicKey: null,
+    status: 1
 };
 export default {
     name: 'channelAdd',
@@ -16,9 +22,11 @@ export default {
         return {
             channel: Object.assign({}, defaultChannel),
             rules: {
-                name: [{ required: true, trigger: 'blur', message: '请输入渠道名称' }],
-                abbr: [{ required: true, trigger: 'blur', message: '请输入渠道简称：WX***' }],
-                type: [{ required: true, trigger: 'change', message: '请选择渠道类型',  }]
+                channelName: [{ required: true, trigger: 'blur', message: '请输入渠道名称' }],
+                merNo: [{ required: true, trigger: 'blur', message: '请输入商户号' }],
+                merName: [{ required: true, trigger: 'change', message: '请输入商户名称',  }],
+                payKey: [{ required: true, trigger: 'change', message: '请输入商户名称',  }],
+                signKey: [{ required: true, trigger: 'change', message: '请输入商户名称',  }]
             },
             selectedOptions: []
         }
