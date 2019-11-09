@@ -564,14 +564,14 @@ export const constantRouterMap = [
         path: 'payChannel',
         name: 'payChannel',
         role: 'admin',
-        component: () => import('@/views/oms/pay/channel'),
+        component: () => import('@/views/sys/pay/channel'),
         meta: { title: '支付渠道列表', icon: 'money-bag' }
       },
       {
         path: 'addChannel',
         name: 'addChannel',
         role: 'admin',
-        component: () => import('@/views/oms/pay/add'),
+        component: () => import('@/views/sys/pay/add'),
         meta: { title: '添加支付渠道'},
         hidden: true
       },
@@ -579,7 +579,7 @@ export const constantRouterMap = [
         path: 'updateChannel',
         name: 'updateChannel',
         role: 'admin',
-        component: () => import('@/views/oms/pay/update'),
+        component: () => import('@/views/sys/pay/update'),
         meta: { title: '修改支付渠道'},
         hidden: true
       }

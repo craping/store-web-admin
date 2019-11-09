@@ -47,7 +47,7 @@
     </el-card>
     <div class="table-container">
       <el-table ref="orderTable" :data="list" style="width: 100%;" @selection-change="handleSelectionChange" v-loading="listLoading">
-        <el-table-column type="selection" width="60" align="center"></el-table-column>
+        <el-table-column type="selection" width="50" align="center"></el-table-column>
         <el-table-column label="编号" width="80" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
