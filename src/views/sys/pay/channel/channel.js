@@ -33,6 +33,9 @@ export default {
     },
     filters: { },
     methods: {
+        viewDeatil(index, row) {
+            this.$router.push({path:'/scm/channelDetail',query:{id:row.id}});
+        },
         handleSelectionChange(val) {
             this.multipleSelection = val;
         },

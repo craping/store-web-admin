@@ -13,9 +13,6 @@
     <el-form-item label="商户名称：" prop="merName">
       <el-input v-model="channel.merName" class="input-width" placeholder="请输入商户名称"></el-input>
     </el-form-item>
-    <el-form-item label="APPID：" prop="appId">
-      <el-input v-model="channel.appId" class="input-width" placeholder="请输入appId"></el-input>
-    </el-form-item>
     <el-form-item label="交易秘钥：" prop="payKey">
       <el-input v-model="channel.payKey" class="input-width" placeholder="请输入交易秘钥"></el-input>
     </el-form-item>

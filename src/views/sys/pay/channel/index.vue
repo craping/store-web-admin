@@ -64,6 +64,7 @@
         </el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
+            <el-button @click="viewDeatil(scope.$index, scope.row)" icon="el-icon-s-tools" circle size="mini"></el-button>
             <el-button type="primary" @click="handleUpdate(scope.$index, scope.row)" icon="el-icon-edit" circle size="mini"></el-button>
             <el-button type="danger" @click="deleteChannel(scope.$index, scope.row)" icon="el-icon-delete" circle size="mini"></el-button>
           </template>

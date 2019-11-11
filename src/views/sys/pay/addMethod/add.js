@@ -3,7 +3,6 @@ const defaultChannel = {
     channelShortName: "",
     merNo: null,
     merName: null,
-    appId: null,
     payKey: null,
     signKey: null,
     platPublicKey: null,
@@ -24,11 +23,10 @@ export default {
             channel: Object.assign({}, defaultChannel),
             rules: {
                 channelName: [{ required: true, trigger: 'blur', message: '请输入渠道名称' }],
-                channelShortName: [{ required: true, trigger: 'blur', message: '请输入渠道简称' }],
                 merNo: [{ required: true, trigger: 'blur', message: '请输入商户号' }],
-                merName: [{ required: true, trigger: 'blur', message: '请输入商户名称',  }],
-                payKey: [{ required: true, trigger: 'blur', message: '请输入交易秘钥',  }],
-                signKey: [{ required: true, trigger: 'blur', message: '请输入签名秘钥',  }]
+                merName: [{ required: true, trigger: 'change', message: '请输入商户名称',  }],
+                payKey: [{ required: true, trigger: 'change', message: '请输入交易秘钥',  }],
+                signKey: [{ required: true, trigger: 'change', message: '请输入签名秘钥',  }]
             },
             selectedOptions: []
         }

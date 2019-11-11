@@ -1,18 +1,22 @@
-const defaultChannel = {
-    channelName: "",
-    channelShortName: "",
-    merNo: null,
-    merName: null,
-    appId: null,
-    payKey: null,
-    signKey: null,
-    platPublicKey: null,
-    platPrivateKey: null,
-    channelPublicKey: null,
+const defaultGateway = {
+    channelId: null,
+    type: "WXPAY",
+    requestUrl: "",
+    queryUrl: null,
+    withdrawUrl: null,
+    withdrawQueryUrl: null,
+    notifyUrl: null,
+    pageNotifyUrl: null,
+    reconUrl: null,
+    refundUrl: null,
+    refundQueryUrl: null,
+    bakTemp1: null,
+    bakTemp2: null,
+    bakTemp3: null,
     status: 1
 };
 export default {
-    name: 'channelAdd',
+    name: 'gatewayAdd',
     props: {
         isEdit: {
             type: Boolean,
@@ -21,14 +25,15 @@ export default {
     },
     data() {
         return {
-            channel: Object.assign({}, defaultChannel),
+            channelId: null,
+            gateway: Object.assign({}, defaultGateway),
             rules: {
-                channelName: [{ required: true, trigger: 'blur', message: '请输入渠道名称' }],
-                channelShortName: [{ required: true, trigger: 'blur', message: '请输入渠道简称' }],
-                merNo: [{ required: true, trigger: 'blur', message: '请输入商户号' }],
-                merName: [{ required: true, trigger: 'blur', message: '请输入商户名称',  }],
-                payKey: [{ required: true, trigger: 'blur', message: '请输入交易秘钥',  }],
-                signKey: [{ required: true, trigger: 'blur', message: '请输入签名秘钥',  }]
+                requestUrl: [{ required: true, trigger: 'blur', message: '必填' }],
+                queryUrl: [{ required: true, trigger: 'blur', message: '必填' }],
+                notifyUrl: [{ required: true, trigger: 'blur', message: '必填',  }],
+                pageNotifyUrl: [{ required: true, trigger: 'blur', message: '必填',  }],
+                refundUrl: [{ required: true, trigger: 'blur', message: '必填',  }],
+                refundQueryUrl: [{ required: true, trigger: 'blur', message: '必填',  }],
             },
             selectedOptions: []
         }
@@ -36,8 +41,8 @@ export default {
     created() {
         if (this.isEdit) {
             let data = { id: this.$route.query.id }
-            this.$http.post("payChannel/getItem", data).then(data => {
-                this.channel = data.info;
+            this.$http.post("payChannelGateway/getItem", data).then(data => {
+                this.gateway = data.info;
             }).catch(error => {
                 console.log(error);
             });
@@ -53,7 +58,7 @@ export default {
                         type: 'warning'
                     }).then(() => {
                         if (this.isEdit) {
-                            this.$http.post("payChannel/update/channel", this.channel).then(data => {
+                            this.$http.post("payChannelGateway/update/gateway", this.gateway).then(data => {
                                 this.$message({
                                     message: '提交成功',
                                     type: 'success',
@@ -64,7 +69,8 @@ export default {
                                 console.log(error);
                             });
                         } else {
-                            this.$http.post("payChannel/insert", this.channel).then(data => {
+                            this.gateway.channelId = this.$route.query.channelId;
+                            this.$http.post("payChannelGateway/insert", this.gateway).then(data => {
                                 this.$message({
                                     message: '提交成功',
                                     type: 'success',
@@ -88,7 +94,7 @@ export default {
         },
         resetForm(formName) {
             this.$refs[formName].resetFields();
-            this.channel = Object.assign({}, defaultChannel);
+            this.gateway = Object.assign({}, defaultGateway);
         },
     }
 }

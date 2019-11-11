@@ -582,7 +582,31 @@ export const constantRouterMap = [
         component: () => import('@/views/sys/pay/update'),
         meta: { title: '修改支付渠道'},
         hidden: true
-      }
+      },
+      {
+        path: 'channelDetail',
+        name: 'channelDetail',
+        role: 'admin',
+        component: () => import('@/views/sys/pay/detail'),
+        meta: { title: '渠道详情'},
+        hidden: true
+      },
+      {
+        path: 'addGateway',
+        name: 'addGateway',
+        role: 'admin',
+        component: () => import('@/views/sys/pay/addGateway'),
+        meta: { title: '添加通道信息'},
+        hidden: true
+      },
+      {
+        path: 'updateGateway',
+        name: 'updateGateway',
+        role: 'admin',
+        component: () => import('@/views/sys/pay/updateGateway'),
+        meta: { title: '修改通道信息'},
+        hidden: true
+      },
     ]
   },
   { path: '*', redirect: '/404', hidden: true }
