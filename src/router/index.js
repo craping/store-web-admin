@@ -609,6 +609,32 @@ export const constantRouterMap = [
       },
     ]
   },
+  {
+    path: '/user',
+    component: Layout,
+    redirect: '/user/user',
+    name: '',
+    meta: { title: '用户权限', icon: 'table' },
+    role: 'admin',
+    children: [
+      {
+        path: '',
+        name: '用户列表',
+        role: 'admin',
+        component: () => import('@/views/user/user'),
+        meta: { title: '用户列表', icon: 'order-setting' },
+        menu: 'user'
+      },
+      {
+        path: 'role',
+        name: '权限管理',
+        role: 'admin',
+        component: () => import('@/views/user/role'),
+        meta: { title: '权限管理', icon: 'password' },
+        menu: 'role'
+      }
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 
