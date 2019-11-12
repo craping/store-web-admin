@@ -86,7 +86,7 @@
           <el-col class="form-border form-left-bg font-small" :span="6" style="height:100px;line-height:80px">凭证图片
           </el-col>
           <el-col class="form-border font-small" :span="18" style="height:100px">
-            <el-image v-for="item in proofPics" :key="index" :src="item" :preview-src-list="proofPics"
+            <el-image v-for="item in proofPics"  :key="index" :src="item" :preview-src-list="proofPics"
               style="width:80px;height:80px;padding:10px;"></el-image>
           </el-col>
         </el-row>
