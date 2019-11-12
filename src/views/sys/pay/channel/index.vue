@@ -38,7 +38,9 @@
     <el-card class="operate-container" shadow="never">
       <i class="el-icon-tickets"></i>
       <span>数据列表</span>
-      <el-button size="mini" class="btn-add" @click="handleAddChannel()">添加渠道配置</el-button>
+      <el-button size="mini" icon="el-icon-plus" class="btn-add" @click="handleAddChannel()">添加渠道配置</el-button>
+      <el-button size="mini" icon="el-icon-s-tools" class="btn-add" style="float:right;margin-right: 15px"  type="primary"
+        @click="handlePaySetting()">前端支付配置</el-button>
     </el-card>
     <div class="table-container">
       <el-table ref="orderTable" :data="list" style="width: 100%;" @selection-change="handleSelectionChange" v-loading="listLoading">

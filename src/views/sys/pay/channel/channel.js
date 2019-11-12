@@ -42,6 +42,9 @@ export default {
         handleAddChannel(){
             this.$router.push('/scm/addChannel');
         },
+        handlePaySetting() {
+            this.$router.push('/scm/paySetting');
+        },
         handleResetSearch() {
             this.listQuery = Object.assign({}, defaultListQuery);
         },

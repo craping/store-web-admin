@@ -607,6 +607,14 @@ export const constantRouterMap = [
         meta: { title: '修改通道信息'},
         hidden: true
       },
+      {
+        path: 'paySetting',
+        name: 'paySetting',
+        role: 'admin',
+        component: () => import('@/views/sys/pay/setting'),
+        meta: { title: '配置支付信息'},
+        hidden: true
+      },
     ]
   },
   { path: '*', redirect: '/404', hidden: true }
