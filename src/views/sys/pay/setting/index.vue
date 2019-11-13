@@ -15,8 +15,7 @@
       </div>
       <div style="margin-top: 20px">
         <el-checkbox-group v-model="balanceCheck" size="mini">
-          <el-checkbox v-for="item in balanceList" :label="item.methodId" :key="item.methodId" 
-            :checked="isChecked(item.methodId)"  border>
+          <el-checkbox v-for="item in balanceList" :label="item.methodId" :key="item.methodId" border>
             {{item.channelName}}
           </el-checkbox>
         </el-checkbox-group>
@@ -28,7 +27,7 @@
       </div>
       <div style="margin-top: 20px">
         <el-checkbox-group v-model="wxpayCheck" size="mini">
-            <el-checkbox v-for="item in wxpayList" :label="item.methodId" :key="item.methodId" border>
+            <el-checkbox v-for="item in wxpayList" :label="item.methodId" :key="item.methodId" :checked="item.isChecked" border>
               {{item.channelName}} - {{item.methodType}}
             </el-checkbox>
         </el-checkbox-group>
@@ -40,7 +39,7 @@
       </div>
       <div style="margin-top: 20px">
         <el-checkbox-group v-model="alipayCheck" size="mini" :max="1">
-          <el-checkbox v-for="item in alipayList" :label="item.methodId" :key="item.methodId" border>
+          <el-checkbox v-for="item in alipayList" :label="item.methodId" :key="item.methodId" :checked="item.isChecked" border>
             {{item.channelName}} - {{item.methodType}}
           </el-checkbox>
         </el-checkbox-group>
@@ -52,7 +51,7 @@
       </div>
       <div style="margin-top: 20px">
         <el-checkbox-group v-model="unionpayCheck" size="mini">
-          <el-checkbox v-for="item in unionpayList" :label="item.methodId" :key="item.methodId" border>
+          <el-checkbox v-for="item in unionpayList" :label="item.methodId" :key="item.methodId" :checked="item.isChecked" border>
             {{item.channelName}} - {{item.methodType}}
           </el-checkbox>
         </el-checkbox-group>

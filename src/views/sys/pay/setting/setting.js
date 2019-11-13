@@ -100,13 +100,28 @@ export default {
         initSetting() {
             this.$http.post("payClientMethod/list", {clientId: this.settingTableTabsVal}).then(data => {
                this.currentClientMethods = data.info;
+               
+               this.setListChecked(this.balanceList,this.balanceCheck);
+               this.setListChecked(this.wxpayList,this.wxpayCheck);
+               this.setListChecked(this.alipayList,this.alipayCheck);
+               this.setListChecked(this.unionpayList,this.unionpayCheck);
+               console.log('this.balanceList',this.balanceList)
                console.log("1:" + this.currentClientMethods.length);
             }).catch(error => {
                 console.log(error);
             });
         },
+        setListChecked(list,newList){
+            let current = this.currentClientMethods;
+            for(let i =0;i<list.length;i++){
+                for(let j=0;j<current.length;j++){
+                    if(list[i].methodId == current[j].methodId){
+                        newList.push(current[j].methodId)
+                    }
+                }
+            }
+        },
         isChecked(methodId) {
-            //return true;
             console.log("2:" + this.currentClientMethods.length);
             if (this.currentClientMethods.length > 0)
                 this.ischecked = true;
