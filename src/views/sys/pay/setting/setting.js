@@ -12,6 +12,8 @@ export default {
     name: 'channelDetail',
     data() {
         return {
+            num: 0,
+            currentClientMethods: [],
             settings: {},
             balanceList: [],
 	        wxpayList: [],
@@ -22,6 +24,25 @@ export default {
 	        wxpayCheck: [],
 	        alipayCheck: [],
             unionpayCheck: [],
+            //--------
+            settingTableTabsVal: 'APP',
+            settingTableTabs:[
+                {
+                    name: 'APP',
+                    icon: 'iphone',
+                    title: 'APP （客户端）'
+                },
+                {
+                    name: 'WAP',
+                    icon: 'browser',
+                    title: 'WAP （H5手机游览器）'
+                },
+                {
+                    name: 'WX',
+                    icon: 'wechat',
+                    title: 'WX（微信内置游览器）'
+                }
+            ],
 
             id: null,
             channel: {},
@@ -37,10 +58,13 @@ export default {
                 payFee: [{ required: true, trigger: 'blur', message: '必填' }],
                 minFee: [{ required: true, trigger: 'blur', message: '必填' }],
             },
+            ischecked: false,
         }
     },
     created() {
         this.methodSettings();
+        this.initSetting();
+        
     },
     filters: {
         formatCreateTime(time) {
@@ -63,7 +87,7 @@ export default {
     },
     methods: {
         methodSettings() {
-            this.$http.post("payChannel/methodSettings", {}).then(data => {
+            this.$http.post("payChannelMethod/methodSettings", {}).then(data => {
                 this.settings = data.info;
                 this.balanceList = this.settings.balanceList;
                 this.alipayList = this.settings.alipayList;
@@ -73,8 +97,27 @@ export default {
                 console.log(error);
             });
         },
-        gatewayAdd() {
-            this.$router.push({ path: '/scm/addGateway', query: { channelId: this.channel.id } });
+        initSetting() {
+            this.$http.post("payClientMethod/list", {clientId: this.settingTableTabsVal}).then(data => {
+               this.currentClientMethods = data.info;
+               console.log("1:" + this.currentClientMethods.length);
+            }).catch(error => {
+                console.log(error);
+            });
+        },
+        isChecked(methodId) {
+            //return true;
+            console.log("2:" + this.currentClientMethods.length);
+            if (this.currentClientMethods.length > 0)
+                this.ischecked = true;
+            
+        },
+        handleAddChannel() {
+            alert(this.isChecked(4));
+            console.log(this.balanceCheck);
+        },
+        showClientMethod() {
+            alert(this.isChecked(4));
         },
         gatewayEdit(index, row) {
             this.$router.push({ path: '/scm/updateGateway', query: { id: row.id } });
@@ -132,124 +175,6 @@ export default {
                 this.channelMethods = data.info;
             }).catch(error => {
                 console.log(error);
-            });
-        },
-        methodAddShow(gatewayId) {
-            this.methodInfo = Object.assign({}, defaultMethodInfo);
-            this.methodIsEdit = false;
-            this.methodInfo.gatewayId = gatewayId;
-            this.methodDialogVisible = true;
-            this.methodDialogTitle = "添加渠道支付信息";
-        },
-        methodUpdateShow(methodId) {
-            this.$http.post("payChannelMethod/getItem", {id:methodId}).then(data => {
-                this.methodInfo = data.info;
-                this.methodIsEdit = true;
-                this.methodDialogVisible = true;
-                this.methodDialogTitle = "修改渠道支付信息";
-            }).catch(error => {
-                console.log(error);
-            });
-        },
-        methodStatusChange(index, row) {
-            let ids = [];
-            ids.push(row.id);
-            let data = { ids: ids, status: row.status }
-            this.$http.post("payChannelMethod/update/updateStatus", data).then(data => {
-                this.$message({
-                    message: '修改成功',
-                    type: 'success',
-                    duration: 1000
-                });
-            }).catch(error => {
-                console.log(error);
-            });
-        },
-        methodDelete(index, row) {
-            this.$confirm('确定删除通道配置?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                let ids = [];
-                ids.push(row.id);
-                let data = { ids: ids, status: row.status }
-                this.$http.post("payChannelMethod/delete", data).then(data => {
-                    this.$message({
-                        message: '删除成功',
-                        type: 'success',
-                        duration: 1000
-                    });
-                    this.getChannelMethods(this.gatewayIds);
-                }).catch(error => {
-                    console.log(error);
-                });
-            });
-        },
-        methodOnSubmit(formName) {
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
-                    this.$confirm('是否提交数据', '提示', {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                        type: 'warning'
-                    }).then(() => {
-                        if (this.methodIsEdit) {
-                            this.$http.post("payChannelMethod/update/method", this.methodInfo).then(data => {
-                                this.$message({
-                                    message: '修改成功',
-                                    type: 'success',
-                                    duration: 1000
-                                });
-                                this.methodDialogVisible = false;
-                                this.getChannelMethods(this.gatewayIds);
-                                this.methodInfo = Object.assign({}, defaultMethodInfo);
-                            }).catch(error => {
-                                console.log(error);
-                            });
-                        } else {
-                            this.$http.post("payChannelMethod/insert", this.methodInfo).then(data => {
-                                this.$message({
-                                    message: '添加成功',
-                                    type: 'success',
-                                    duration: 1000
-                                });
-                                this.methodDialogVisible = false;
-                                this.getChannelMethods(this.gatewayIds);
-                                this.methodInfo = Object.assign({}, defaultMethodInfo);
-                            }).catch(error => {
-                                console.log(error);
-                            });
-                        }
-                    });
-                } else {
-                    this.$message({
-                        message: '验证失败',
-                        type: 'error',
-                        duration: 1000
-                    });
-                    return false;
-                }
-            });
-        },
-        channelDelete() {
-            this.$confirm('确定删除所有渠道配置?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                let ids = [];
-                ids.push(this.channel.id);
-                this.$http.post("payChannel/delete", { ids: ids }).then(data => {
-                    this.channelMethods = data.info;
-                    this.$message({
-                        type: 'success',
-                        message: '删除成功!'
-                    });
-                    this.$router.back();
-                }).catch(error => {
-                    console.log(error);
-                });
             });
         }
     }
